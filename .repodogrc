@@ -1,0 +1,11 @@
+{
+  "language": "typescript",
+  "packageManager": "pnpm",
+  "templateVariables": {
+    "*": {
+      "author": "Dylan Aubrey",
+      "homepage": "https://github.com/dylanaubrey/dollygrip",
+      "org": "dollygrip"
+    }
+  }
+}

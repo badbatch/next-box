@@ -1,0 +1,72 @@
+{
+  "name": "@next-box/feature-flags",
+  "description": "A library for managing feature flags in React applications.",
+  "version": "0.0.1",
+  "author": "Dylan Aubrey",
+  "license": "MIT",
+  "homepage": "https://github.com/badbatch/next-box",
+  "repository": {
+    "directory": "packages/feature-flags",
+    "type": "git",
+    "url": "https://github.com/badbatch/next-box/packages/feature-flags"
+  },
+  "bugs": "https://github.com/badbatch/next-box/issues",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/cjs/index.d.cts",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/types/esm/index.d.ts",
+        "require": "./dist/types/cjs/index.d.cts"
+      },
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./server": {
+      "types": {
+        "import": "./dist/types/esm/server.d.ts",
+        "require": "./dist/types/cjs/server.d.cts"
+      },
+      "import": "./dist/esm/server.mjs",
+      "require": "./dist/cjs/server.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "pnpm run clean:dist && pnpm run compile",
+    "clean:deps": "del-cli ./node_modules",
+    "clean:dist": "del-cli ./dist",
+    "compile": "pnpm run /^compile:.*/",
+    "compile:cjs": "MODULE_SYSTEM=cjs rollup -c ./rollup.config.cjs",
+    "compile:esm": "rollup -c ./rollup.config.cjs",
+    "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
+  },
+  "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "core-js": "^3.39.0",
+    "js-cookie": "^3.0.5",
+    "type-fest": "^4.31.0"
+  },
+  "peerDependencies": {
+    "next": "<14",
+    "react": "<20",
+    "react-dom": "<20"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.3.1",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "cts-types": "^0.0.8",
+    "del-cli": "^6.0.0",
+    "next": "^13.5.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

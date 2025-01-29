@@ -1,0 +1,36 @@
+import config from '@repodog/eslint-config';
+import jestConfig from '@repodog/eslint-config-jest';
+import reactConfig from '@repodog/eslint-config-react';
+
+// eslint convention is to export default
+// eslint-disable-next-line import-x/no-default-export
+export default [
+  ...config,
+  {
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json', './packages/*/tsconfig.json'],
+      },
+    },
+    rules: {
+      'unicorn/filename-case': [
+        2,
+        {
+          cases: {
+            camelCase: true,
+            pascalCase: true,
+          },
+          ignore: ['^module-defs.d.ts$', '^next-env.d.ts$'],
+        },
+      ],
+    },
+  },
+  ...reactConfig.map(entry => ({
+    ...entry,
+    files: ['**/*.{ts,tsx}'],
+  })),
+  ...jestConfig.map(entry => ({
+    ...entry,
+    files: ['**/*.{spec,test}.*'],
+  })),
+];

@@ -1,0 +1,6 @@
+{
+  "extends": "@repodog/ts-config/index.json",
+  "include": [
+    "packages/**/*"
+  ]
+}
