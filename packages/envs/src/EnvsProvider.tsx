@@ -1,13 +1,12 @@
 import { type ReactNode, createContext } from 'react';
-import { getPublicEnvs } from '#getPublicEnvs.ts';
 
 export type EnvsContextData = {
-  envs: Map<string, string>;
+  envs: Record<string, string | undefined>;
   getEnv: (name: string) => string | undefined;
 };
 
 export const EnvsContext = createContext<EnvsContextData>({
-  envs: new Map(),
+  envs: {},
   getEnv: () => '',
 });
 
@@ -17,8 +16,8 @@ export type EnvsProviderProps = {
 };
 
 export const EnvsProvider = (props: EnvsProviderProps) => {
-  const envs = new Map(Object.entries(getPublicEnvs(props.envs)));
-  const getEnv = (key: string) => envs.get(key);
+  const envs = { ...props.envs };
+  const getEnv = (key: string) => envs[key];
 
   return (
     <EnvsContext.Provider value={{ envs, getEnv }}>
