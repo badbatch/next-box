@@ -18,7 +18,7 @@ export const Context = createContext<FeatureFlagContext>({} as FeatureFlagContex
 export type FeatureFlagProviderProps = {
   children: ReactNode;
   devMode: boolean;
-  envs: Record<string, string>;
+  envs: Record<string, string | undefined>;
 };
 
 export const FeatureFlagProvider = ({ children, devMode, envs }: Readonly<FeatureFlagProviderProps>) => {
