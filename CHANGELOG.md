@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.5 (2025-01-30)
+
+### Bug Fixes
+
+* **feature-flags:**  change to support envs as record (1cc174c0)
+
 ## 0.0.4 (2025-01-30)
 
 ### Refactors
