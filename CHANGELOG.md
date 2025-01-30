@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.3 (2025-01-30)
+
+### Bug Fixes
+
+* **envs:**  server build (b612919a)
+
 ## 0.0.2 (2025-01-29)
 
 ### Documentation Changes
