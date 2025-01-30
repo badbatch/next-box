@@ -1,7 +1,7 @@
 {
   "name": "@next-box/envs",
   "description": "A library for using environment variables with Next.js.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Dylan Aubrey",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",

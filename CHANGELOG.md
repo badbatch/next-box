@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.4 (2025-01-30)
+
+### Refactors
+
+* **envs:**  change map to record (4243953e)
+
 ## 0.0.3 (2025-01-30)
 
 ### Bug Fixes
