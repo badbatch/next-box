@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.6 (2025-02-09)
+
+### New Features
+
+* **root:**  add use client directive to context providers (d4702789)
+
 ## 0.0.5 (2025-01-30)
 
 ### Bug Fixes
