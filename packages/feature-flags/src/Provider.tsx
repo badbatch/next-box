@@ -1,3 +1,5 @@
+'use client';
+
 import { type ReactNode, useEffect, useState } from 'react';
 import { createContext } from 'react';
 import { getFeatureFlagsInBrowser } from '#helpers/getFeatureFlagsInBrowser.ts';
