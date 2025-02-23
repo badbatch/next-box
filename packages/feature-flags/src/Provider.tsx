@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { createContext } from 'react';
 import { getFeatureFlagsInBrowser } from '#helpers/getFeatureFlagsInBrowser.ts';
 import { setFeatureFlagsInBrowser } from '#helpers/setFeatureFlagsInBrowser.ts';
@@ -8,8 +8,6 @@ import { type FeatureFlags } from '#types.ts';
 
 export type FeatureFlagContext = {
   flags: FeatureFlags;
-  setFlag: (name: string, flag: boolean) => void;
-  setFlags: (flags: FeatureFlags) => void;
 };
 
 // Context requires an initial value, but this is set in the provider
@@ -24,7 +22,7 @@ export type FeatureFlagProviderProps = {
 };
 
 export const FeatureFlagProvider = ({ children, devMode, envs }: Readonly<FeatureFlagProviderProps>) => {
-  const [flags, setFlags] = useState<FeatureFlags>(getFeatureFlagsInBrowser(envs, devMode));
+  const flags = getFeatureFlagsInBrowser(envs, devMode);
   const flagsDepsKey = JSON.stringify(flags);
 
   useEffect(() => {
@@ -33,22 +31,5 @@ export const FeatureFlagProvider = ({ children, devMode, envs }: Readonly<Featur
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flagsDepsKey]);
 
-  return (
-    <Context.Provider
-      value={{
-        flags,
-        setFlag: (name: string, flag: boolean) => {
-          // typescript not inferring value passed to setFlags
-          // does conform to FeatureFlags.
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          setFlags({ [name]: String(flag), ...flags } as FeatureFlags);
-        },
-        setFlags: (featureFlags: FeatureFlags) => {
-          setFlags({ ...flags, ...featureFlags });
-        },
-      }}
-    >
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ flags }}>{children}</Context.Provider>;
 };
