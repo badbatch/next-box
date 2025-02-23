@@ -1,7 +1,7 @@
 {
   "name": "@next-box/feature-flags",
   "description": "A library for managing feature flags in React applications.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Dylan Aubrey",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",

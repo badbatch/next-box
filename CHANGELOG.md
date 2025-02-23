@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7 (2025-02-23)
+
+### Refactors
+
+* **feature-flags:**  remove setFlag for now to make overrides easier (b70b943a)
+
 ## 0.0.6 (2025-02-09)
 
 ### New Features
