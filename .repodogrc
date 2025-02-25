@@ -4,8 +4,8 @@
   "templateVariables": {
     "*": {
       "author": "Dylan Aubrey",
-      "homepage": "https://github.com/dylanaubrey/dollygrip",
-      "org": "dollygrip"
+      "homepage": "https://github.com/badbatch/next-box",
+      "org": "next-box"
     }
   }
 }

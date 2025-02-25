@@ -34,7 +34,7 @@
     "@commitlint/cli": "^19.6.1",
     "@jest/globals": "^29.7.0",
     "@repodog/babel-config": "^7.0.4",
-    "@repodog/cli": "^1.6.40",
+    "@repodog/cli": "^1.6.41",
     "@repodog/commitlint-config": "^19.0.3",
     "@repodog/eslint-config": "^9.0.15",
     "@repodog/eslint-config-jest": "^9.0.4",
