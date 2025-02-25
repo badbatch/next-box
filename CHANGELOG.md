@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.8 (2025-02-25)
+
+### New Features
+
+* **link-extra:**  create package (ce28cd65)
+
 ## 0.0.7 (2025-02-23)
 
 ### Refactors
