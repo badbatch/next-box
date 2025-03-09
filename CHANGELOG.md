@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.11 (2025-03-09)
+
+### Bug Fixes
+
+* **link-extra:**  update next link type (fcec51c3)
+
 ## 0.0.10 (2025-03-09)
 
 ### New Features
