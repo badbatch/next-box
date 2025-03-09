@@ -5,7 +5,7 @@ import { useLinkExtra } from './useLinkExtra.ts';
 export type LinkProps = {
   children: ReactNode;
   disableRouterCache?: boolean;
-  href: string;
+  href?: string;
   prefetch?: boolean;
   scroll?: boolean;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -54,7 +54,7 @@ export const addCacheBusterQueryParam = (url: string): string => {
 export const Link = ({
   children,
   disableRouterCache = true,
-  href,
+  href = '#',
   onClick,
   prefetch = false,
   scroll = false,
