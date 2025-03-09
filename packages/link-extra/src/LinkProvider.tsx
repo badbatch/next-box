@@ -1,21 +1,25 @@
 'use client';
 
 import { type ComponentType, type ReactNode, createContext, useEffect, useState } from 'react';
+import { type LinkContextData, type NextLinkProps, type OwnLinkProps } from '#types.js';
 
-export type LinkContextData = {
-  setLinkClicked: (clicked: true) => void;
-};
-
+// Needs to return explicit value
+// eslint-disable-next-line unicorn/no-useless-undefined
+const NoopComponent = () => undefined;
 // This is a noop
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 
 export const LinkContext = createContext<LinkContextData>({
+  NextLink: NoopComponent,
+  OwnLink: NoopComponent,
   setLinkClicked: noop,
 });
 
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
+  NextLink: ComponentType<NextLinkProps>;
+  OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
   loadingTimeout?: number;
   pathname: string;
@@ -23,7 +27,14 @@ export type LinkProviderProps = {
 
 let timeoutId: NodeJS.Timeout | undefined;
 
-export const LinkProvider = ({ LoadingComponent, children, loadingTimeout = 500, pathname }: LinkProviderProps) => {
+export const LinkProvider = ({
+  LoadingComponent,
+  NextLink,
+  OwnLink,
+  children,
+  loadingTimeout = 500,
+  pathname,
+}: LinkProviderProps) => {
   const [linkClicked, setLinkClicked] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
@@ -59,6 +70,8 @@ export const LinkProvider = ({ LoadingComponent, children, loadingTimeout = 500,
   return (
     <LinkContext.Provider
       value={{
+        NextLink,
+        OwnLink,
         setLinkClicked: clicked => {
           setLinkClicked(clicked);
         },

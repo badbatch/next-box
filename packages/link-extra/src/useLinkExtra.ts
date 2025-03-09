@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { LinkContext, type LinkContextData } from './LinkProvider.tsx';
+import { type LinkContextData } from '#types.ts';
+import { LinkContext } from './LinkProvider.tsx';
 
 export const useLinkExtra = (): LinkContextData => {
   return useContext(LinkContext);
