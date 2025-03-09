@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.10 (2025-03-09)
+
+### New Features
+
+* **link-extra:**  make href optional and add default hash (9719f5c4)
+
 ## 0.0.9 (2025-03-09)
 
 ### New Features
