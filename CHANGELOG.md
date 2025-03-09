@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.9 (2025-03-09)
+
+### New Features
+
+* **link-extra:**  add link component (0ef0b05b)
+
 ## 0.0.8 (2025-02-25)
 
 ### New Features
