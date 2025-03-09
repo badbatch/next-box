@@ -67,6 +67,7 @@ export const Link = ({
   }
 
   return (
+    // @ts-expect-error Nextjs types wrong for nodenext
     <NextLink href={href} legacyBehavior passHref prefetch={prefetch} scroll={scroll}>
       <OwnLink
         onClick={event => {

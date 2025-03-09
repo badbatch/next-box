@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link.js';
 import { type ComponentType, type ReactNode, createContext, useEffect, useState } from 'react';
-import { type LinkContextData, type NextLinkProps, type OwnLinkProps } from '#types.js';
+import { type LinkContextData, type OwnLinkProps } from '#types.js';
 
 // Needs to return explicit value
 // eslint-disable-next-line unicorn/no-useless-undefined
@@ -11,14 +12,14 @@ const NoopComponent = () => undefined;
 const noop = () => {};
 
 export const LinkContext = createContext<LinkContextData>({
-  NextLink: NoopComponent,
+  NextLink: Link,
   OwnLink: NoopComponent,
   setLinkClicked: noop,
 });
 
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
-  NextLink: ComponentType<NextLinkProps>;
+  NextLink: typeof Link;
   OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
   loadingTimeout?: number;
