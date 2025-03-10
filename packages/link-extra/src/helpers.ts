@@ -26,7 +26,9 @@ export const doUrlAndLocationMatch = (url: string) => {
     locationSearchParams.delete('y');
   }
 
-  return `${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`;
+  return (
+    `${pathname}?${urlSearchParams.toString()}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`
+  );
 };
 
 export const addCacheBusterQueryParam = (url: string): string => {
