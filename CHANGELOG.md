@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.14 (2025-03-10)
+
+### Bug Fixes
+
+* cache buster changing when clicking link same as location (057f83ae)
+
 ## 0.0.13 (2025-03-10)
 
 ### Refactors
