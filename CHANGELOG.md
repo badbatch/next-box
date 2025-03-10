@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.12 (2025-03-10)
+
+### Bug Fixes
+
+* **link-extra:**  make Link accept type arg (e50a78ce)
+
 ## 0.0.11 (2025-03-09)
 
 ### Bug Fixes
