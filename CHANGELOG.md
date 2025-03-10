@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.13 (2025-03-10)
+
+### Refactors
+
+* **link-extra:**  include search params in comparison to add cache buster (2450a3ea)
+
 ## 0.0.12 (2025-03-10)
 
 ### Bug Fixes
