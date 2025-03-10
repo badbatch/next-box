@@ -1,14 +1,15 @@
-import randomstring from 'randomstring';
+import randomString from 'randomstring';
 import { type AnchorHTMLAttributes, type ReactNode } from 'react';
 import { useLinkExtra } from './useLinkExtra.ts';
 
-export type LinkProps = {
+export type LinkProps<T extends object> = {
   children: ReactNode;
   disableRouterCache?: boolean;
   href?: string;
   prefetch?: boolean;
   scroll?: boolean;
-} & AnchorHTMLAttributes<HTMLAnchorElement>;
+} & AnchorHTMLAttributes<HTMLAnchorElement> &
+  T;
 
 const doUrlAndLocationPathnamesMatch = (url: string) => {
   // It is possible for this to be undefined
@@ -47,11 +48,11 @@ export const addCacheBusterQueryParam = (url: string): string => {
   }
 
   const searchParams = new URLSearchParams(search);
-  searchParams.set('y', randomstring.generate(15));
+  searchParams.set('y', randomString.generate(15));
   return `${pathname}?${searchParams.toString()}`;
 };
 
-export const Link = ({
+export const Link = <T extends object>({
   children,
   disableRouterCache = true,
   href = '#',
@@ -59,7 +60,7 @@ export const Link = ({
   prefetch = false,
   scroll = false,
   ...otherProps
-}: LinkProps) => {
+}: LinkProps<T>) => {
   const { NextLink, OwnLink, setLinkClicked } = useLinkExtra();
 
   if (disableRouterCache) {
