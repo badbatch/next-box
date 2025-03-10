@@ -13,14 +13,19 @@ export const doUrlAndLocationMatch = (url: string) => {
     return false;
   }
 
-  const locationSearchParams = new URLSearchParams(globalThis.location.search);
-  const locationCacheBusterSearchParam = locationSearchParams.get('y');
+  const { pathname, search } = parsedUrl;
+  const urlSearchParams = new URLSearchParams(search);
 
-  if (locationCacheBusterSearchParam) {
+  if (urlSearchParams.has('y')) {
+    urlSearchParams.delete('y');
+  }
+
+  const locationSearchParams = new URLSearchParams(globalThis.location.search);
+
+  if (locationSearchParams.has('y')) {
     locationSearchParams.delete('y');
   }
 
-  const { pathname, search } = parsedUrl;
   return `${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`;
 };
 
