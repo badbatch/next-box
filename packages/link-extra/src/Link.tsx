@@ -42,12 +42,16 @@ export const addCacheBusterQueryParam = (url: string): string => {
   }
 
   const { pathname, search } = parsedUrl;
+  const searchParams = new URLSearchParams(search);
 
-  if (pathname === globalThis.location.pathname) {
+  if (searchParams.has('y')) {
+    searchParams.delete('y');
+  }
+
+  if (`${pathname}?${searchParams.toString()}` === `${globalThis.location.pathname}?${globalThis.location.search}`) {
     return url;
   }
 
-  const searchParams = new URLSearchParams(search);
   searchParams.set('y', randomString.generate(15));
   return `${pathname}?${searchParams.toString()}`;
 };
