@@ -1,5 +1,3 @@
-'use client';
-
 import { Core as Cachemap } from '@cachemap/core';
 import { isFunction, memoize } from 'lodash-es';
 import { type ReactNode, useEffect, useRef, useState } from 'react';

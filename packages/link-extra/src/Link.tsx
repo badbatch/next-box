@@ -1,5 +1,5 @@
-import randomString from 'randomstring';
 import { type AnchorHTMLAttributes, type ReactNode } from 'react';
+import { addCacheBusterQueryParam, doUrlAndLocationMatch } from '#helpers.ts';
 import { useLinkExtra } from './useLinkExtra.ts';
 
 export type LinkProps<T extends object> = {
@@ -10,51 +10,6 @@ export type LinkProps<T extends object> = {
   scroll?: boolean;
 } & AnchorHTMLAttributes<HTMLAnchorElement> &
   T;
-
-const doUrlAndLocationPathnamesMatch = (url: string) => {
-  // It is possible for this to be undefined
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!globalThis.location) {
-    return false;
-  }
-
-  const parsedUrl = URL.parse(url, globalThis.location.origin);
-
-  if (!parsedUrl) {
-    return false;
-  }
-
-  const { pathname } = parsedUrl;
-  return pathname === globalThis.location.pathname;
-};
-
-export const addCacheBusterQueryParam = (url: string): string => {
-  // It is possible for this to be undefined
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!globalThis.location) {
-    return url;
-  }
-
-  const parsedUrl = URL.parse(url, globalThis.location.origin);
-
-  if (!parsedUrl) {
-    return url;
-  }
-
-  const { pathname, search } = parsedUrl;
-  const searchParams = new URLSearchParams(search);
-
-  if (searchParams.has('y')) {
-    searchParams.delete('y');
-  }
-
-  if (`${pathname}?${searchParams.toString()}` === `${globalThis.location.pathname}?${globalThis.location.search}`) {
-    return url;
-  }
-
-  searchParams.set('y', randomString.generate(15));
-  return `${pathname}?${searchParams.toString()}`;
-};
 
 export const Link = <T extends object>({
   children,
@@ -80,7 +35,7 @@ export const Link = <T extends object>({
             onClick(event);
           }
 
-          if (!doUrlAndLocationPathnamesMatch(href) && !event.defaultPrevented) {
+          if (!doUrlAndLocationMatch(href) && !event.defaultPrevented) {
             setLinkClicked(true);
           }
         }}

@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link.js';
 import { type ComponentType, type ReactNode, createContext, useEffect, useState } from 'react';
 import { type LinkContextData, type OwnLinkProps } from '#types.js';

@@ -1,0 +1,57 @@
+import randomString from 'randomstring';
+
+export const doUrlAndLocationMatch = (url: string) => {
+  // It is possible for this to be undefined
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!globalThis.location) {
+    return false;
+  }
+
+  const parsedUrl = URL.parse(url, globalThis.location.origin);
+
+  if (!parsedUrl) {
+    return false;
+  }
+
+  const locationSearchParams = new URLSearchParams(globalThis.location.search);
+  const locationCacheBusterSearchParam = locationSearchParams.get('y');
+
+  if (locationCacheBusterSearchParam) {
+    locationSearchParams.delete('y');
+  }
+
+  const { pathname, search } = parsedUrl;
+  return `${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`;
+};
+
+export const addCacheBusterQueryParam = (url: string): string => {
+  // It is possible for this to be undefined
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!globalThis.location) {
+    return url;
+  }
+
+  const parsedUrl = URL.parse(url, globalThis.location.origin);
+
+  if (!parsedUrl) {
+    return url;
+  }
+
+  const locationSearchParams = new URLSearchParams(globalThis.location.search);
+  const locationCacheBusterSearchParam = locationSearchParams.get('y');
+
+  if (locationCacheBusterSearchParam) {
+    locationSearchParams.delete('y');
+  }
+
+  const { pathname, search } = parsedUrl;
+  const searchParams = new URLSearchParams(search);
+
+  if (`${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`) {
+    searchParams.set('y', locationCacheBusterSearchParam ?? randomString.generate(15));
+  } else {
+    searchParams.set('y', randomString.generate(15));
+  }
+
+  return `${pathname}?${searchParams.toString()}`;
+};

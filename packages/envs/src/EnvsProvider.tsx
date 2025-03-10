@@ -1,5 +1,3 @@
-'use client';
-
 import { type ReactNode, createContext } from 'react';
 
 export type EnvsContextData = {
