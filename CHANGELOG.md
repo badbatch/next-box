@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.15 (2025-03-10)
+
+### Bug Fixes
+
+* regressed url comparison (b14e3bbe)
+
 ## 0.0.14 (2025-03-10)
 
 ### Bug Fixes
