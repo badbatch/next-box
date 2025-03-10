@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.16 (2025-03-10)
+
+### Bug Fixes
+
+* wrong search params (420390d4)
+
 ## 0.0.15 (2025-03-10)
 
 ### Bug Fixes
