@@ -1,4 +1,4 @@
-import randomString from 'randomstring';
+import { nanoid } from 'nanoid';
 
 export const doUrlAndLocationMatch = (url: string) => {
   // It is possible for this to be undefined
@@ -55,9 +55,9 @@ export const addCacheBusterQueryParam = (url: string): string => {
   const searchParams = new URLSearchParams(search);
 
   if (`${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`) {
-    searchParams.set('y', locationCacheBusterSearchParam ?? randomString.generate(15));
+    searchParams.set('y', locationCacheBusterSearchParam ?? nanoid());
   } else {
-    searchParams.set('y', randomString.generate(15));
+    searchParams.set('y', nanoid());
   }
 
   return `${pathname}?${searchParams.toString()}`;

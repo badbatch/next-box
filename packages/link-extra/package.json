@@ -41,8 +41,7 @@
     "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
   },
   "dependencies": {
-    "@types/randomstring": "^1.3.0",
-    "randomstring": "^1.3.1"
+    "nanoid": "^5.1.3"
   },
   "peerDependencies": {
     "next": "<14",
