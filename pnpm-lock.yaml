@@ -187,15 +187,9 @@ importers:
 
   packages/feature-flags:
     dependencies:
-      '@types/js-cookie':
-        specifier: ^3.0.6
-        version: 3.0.6
       core-js:
         specifier: ^3.39.0
         version: 3.40.0
-      js-cookie:
-        specifier: ^3.0.5
-        version: 3.0.5
       type-fest:
         specifier: ^4.31.0
         version: 4.35.0
@@ -215,9 +209,6 @@ importers:
       del-cli:
         specifier: ^6.0.0
         version: 6.0.0
-      next:
-        specifier: ^13.5.6
-        version: 13.5.8(@babel/core@7.26.9)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1612,9 +1603,6 @@ packages:
 
   '@types/jest@29.5.14':
     resolution: {integrity: sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==}
-
-  '@types/js-cookie@3.0.6':
-    resolution: {integrity: sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==}
 
   '@types/jsdom@20.0.1':
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
@@ -3449,10 +3437,6 @@ packages:
 
   js-base64@3.7.7:
     resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
-
-  js-cookie@3.0.5:
-    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
-    engines: {node: '>=14'}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -6720,8 +6704,6 @@ snapshots:
       expect: 29.7.0
       pretty-format: 29.7.0
 
-  '@types/js-cookie@3.0.6': {}
-
   '@types/jsdom@20.0.1':
     dependencies:
       '@types/node': 22.13.5
@@ -9046,8 +9028,6 @@ snapshots:
   jiti@2.4.2: {}
 
   js-base64@3.7.7: {}
-
-  js-cookie@3.0.5: {}
 
   js-tokens@4.0.0: {}
 
