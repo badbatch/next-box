@@ -1,5 +1,6 @@
-import { type FeatureFlags } from '#types.ts';
+import { getFeatureFlagsOnServer } from '#helpers/getFeatureFlagsOnServer.ts';
 
-export const createHasFeature = (featureFlags: FeatureFlags) => (name: string) => {
-  return featureFlags[name] === 'true';
+export const hasFeature = (feature: string) => {
+  const featureFlags = getFeatureFlagsOnServer();
+  return featureFlags[feature] === 'true';
 };
