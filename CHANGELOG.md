@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.19 (2025-05-08)
+
+### Bug Fixes
+
+* **feature-flags:**  update lock file (c521d67d)
+
 ## 0.0.18 (2025-05-08)
 
 ### Refactors
