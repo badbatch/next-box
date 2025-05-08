@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.18 (2025-05-08)
+
+### Refactors
+
+* **feature-flags:**  remove cookie functionality (cd1a9f08)
+
 ## 0.0.17 (2025-03-14)
 
 ### Refactors
