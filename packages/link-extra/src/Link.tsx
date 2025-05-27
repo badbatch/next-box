@@ -27,7 +27,7 @@ export const Link = <T extends object>({
   }
 
   return (
-    // @ts-expect-error Nextjs types wrong for nodenext
+    // @ts-expect-error Next.js types wrong for nodenext
     <NextLink href={href} passHref prefetch={prefetch} scroll={scroll}>
       <OwnLink
         onClick={event => {
