@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.21 (2025-05-27)
+
+### Bug Fixes
+
+* **link-extra:**
+  * typo (ca056d95)
+  * move legacy behaviour flag (b5ec25e1)
+
 ## 0.0.20 (2025-05-27)
 
 ### Chores
