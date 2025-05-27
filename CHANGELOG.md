@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.20 (2025-05-27)
+
+### Chores
+
+* **root:**  upgrade deps (a7f642c4)
+
 ## 0.0.19 (2025-05-08)
 
 ### Bug Fixes
