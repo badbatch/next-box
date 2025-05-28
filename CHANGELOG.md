@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.22 (2025-05-28)
+
+### Refactors
+
+* **root:**  move to swc over babel (45d5d9d8)
+
 ## 0.0.21 (2025-05-27)
 
 ### Bug Fixes
