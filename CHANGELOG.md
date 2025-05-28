@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.23 (2025-05-28)
+
+### Bug Fixes
+
+* **link-extra:**  add legacy behaviour flag back in (f9b5419f)
+
 ## 0.0.22 (2025-05-28)
 
 ### Refactors
