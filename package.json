@@ -63,5 +63,11 @@
     "suppress-experimental-warnings": "^2.0.0",
     "syncpack": "^13.0.0",
     "typescript": "^5.7.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@babel/helpers": ">=7.26.10",
+      "@babel/runtime": ">=7.26.10"
+    }
   }
 }
