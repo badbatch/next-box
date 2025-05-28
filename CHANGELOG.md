@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.24 (2025-05-28)
+
+### Bug Fixes
+
+* **root:**  vulnerabilities (3aaa4eb1)
+
 ## 0.0.23 (2025-05-28)
 
 ### Bug Fixes
