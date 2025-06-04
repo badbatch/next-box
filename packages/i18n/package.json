@@ -1,7 +1,7 @@
 {
   "name": "@next-box/i18n",
   "description": "A type-safe content resolver with content path auto-complete and value preview.",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha-3.0",
   "author": "Dylan Aubrey",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",
