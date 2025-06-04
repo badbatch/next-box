@@ -29,9 +29,7 @@ describe('md', () => {
 
   describe('when a valid path is not provided', () => {
     it('should throw the expected error', () => {
-      expect(() => md('./packages/i18n/src/__testUtils__/no-content.md')).toThrow(
-        "ENOENT: no such file or directory, open '/Users/dylan.aubrey/workspaces/personal/next-box/packages/i18n/src/__testUtils__/no-content.md'",
-      );
+      expect(() => md('./packages/i18n/src/__testUtils__/no-content.md')).toThrow();
     });
   });
 });
