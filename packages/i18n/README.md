@@ -51,6 +51,10 @@ const documentTitle = tt('en.pages.homepage.documentTitle'); // path is type-che
 console.log(documentTitle); // Will log 'This is the homepage'
 ```
 
+The `t` function is an untyped content lookup. The function takes a string and returns the value that path resolves to in the i18n object passed into `createI18n`. If the function resolves no value, then it returns undefined.
+
+The `tt` function, on the other hand, is a typed content lookup. The function takes a string that is type-checked against all the possible paths in the i18n object passed into `createI18n`. The value that path resolves to can be previewed through IDE's inbuilt Typescript type preview. If the function resolves no value, then it throws an error.
+
 #### Templating
 
 The `t` and `tt` functions support content with template variables. You can define template variables in content with double curley braces either side of a camelcase variable name, i.e. `Welcome back, {{fullName}}!`.
