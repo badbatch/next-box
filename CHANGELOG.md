@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.0.25-alpha-3.0 (2025-06-04)
+
+### Chores
+
+* **root:**  update repodog deps (7b201cb3)
+
+### New Features
+
+* **i18n:**  add library (d08d2853)
+
+### Bug Fixes
+
+* **i18n:**  just check for error rather than message as it has file path (9422b781)
+
 ## 0.0.24 (2025-05-28)
 
 ### Bug Fixes
