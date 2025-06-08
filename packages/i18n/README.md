@@ -18,27 +18,79 @@ npm add @next-box/i18n
 
 ### Create content files
 
-Content needs to be fed into the library's `createI18n` init function in the form of a serializable object. This can be defined in a single typescript file or multiple files with a barrel file. Each language for which you have content should be a root property on the object, i.e. ```{ en: {...}, fr: {...} }```
+Content needs to be fed into the library's `createI18n` init function in the form of a serializable object. Each language for which you have content should live in its own file and be structured the same way and have a `content` named export.
 
-The function returns an object with the `t` and `tt` content resolver functions as properties. You can then use those functions to look up content by its path from the root of the object.
-
-Below is a simplistic example of how to define a content object that would be compatible with `createI18n`.
+Below is a simplistic example of how to define a content file that would be compatible with `createI18n`.
 
 ```ts
+// ./content.ts
 export const content = {
-  en: {
-    pages: {
-      homepage: {
-        documentTitle: 'This is the homepage',
-      },
+  pages: {
+    homepage: {
+      documentTitle: 'This is the homepage',
     },
   },
 } as const; // This is important!
 ```
 
+If you were to support multiple languages, your content files might look like the examples below.
+
+```ts
+// ./content/fr/index.ts
+export const content = {
+  pages: {
+    homepage: {
+      documentTitle: 'Voici la page d’accueil'
+    },
+  },
+} as const; // This is important!
+```
+
+```ts
+// ./content/en/index.ts
+export const content = {
+  pages: {
+    homepage: {
+      documentTitle: 'This is the homepage'
+    },
+  },
+} as const; // This is important!
+```
+
+```ts
+// ./.env.d.ts
+declare namespace NodeJS {
+  interface ProcessEnv {
+    LANGUAGE_CODE: 'en' | 'fr';
+  }
+}
+```
+
+```ts
+// ./content/index.ts
+const { LANGUAGE_CODE } = process.env;
+let language: typeof import('./en/index.ts') | typeof import('./fr/index.ts');
+
+switch (LANGUAGE_CODE) {
+  case 'en': {
+    language = await import('./en/index.ts');
+    break;
+  }
+
+  case 'fr': {
+    language = await import('./fr/index.ts');
+    break;
+  }
+}
+
+export const { content } = language;
+```
+
 Read the [typescript docs]((https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)) on it for more details on `as const`.
 
 ### Create an instance of the i18n
+
+`createI18n` takes the `content` object as an argument and returns an object with the `t` and `tt` content resolver functions as properties. You can then use those functions to look up content by its path from the root of the object.
 
 If you pass the above content into `createI18n`, you can use the `t` and `tt` functions to retrieve the `documentTitle` like in the example below.
 
@@ -47,8 +99,12 @@ import { createI18n } from '@next-box/i18n';
 import { content } from './content.ts';
 
 const { tt } = createI18n(content);
-const documentTitle = tt('en.pages.homepage.documentTitle'); // path is type-checked against the object passed into `createI18n`
-console.log(documentTitle); // Will log 'This is the homepage'
+// Path passed into `tt` is type-checked against the object passed into `createI18n`
+// Hover over `documentTitle` or `tt` and get value preview.
+// This would be "This is the homepage" for the single language example.
+// This would be "Films populaires" | "Popular Movies" for the multi-language example.
+const documentTitle = tt('pages.homepage.documentTitle');
+// Do something with `documentTitle`
 ```
 
 The `t` function is an untyped content lookup. The function takes a string and returns the value that path resolves to in the i18n object passed into `createI18n`. If the function resolves no value, then it returns undefined.
