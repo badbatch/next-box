@@ -18,6 +18,7 @@ export type EnvsProviderProps = {
 export const EnvsProvider = (props: EnvsProviderProps) => {
   const envs = { ...props.envs };
   const getEnv = (key: string) => envs[key];
+  globalThis.envs = envs;
 
   return (
     <EnvsContext.Provider value={{ envs, getEnv }}>
