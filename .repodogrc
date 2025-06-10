@@ -3,7 +3,7 @@
   "packageManager": "pnpm",
   "templateVariables": {
     "*": {
-      "author": "Dylan Aubrey",
+      "author": "miami-man",
       "homepage": "https://github.com/badbatch/next-box",
       "org": "next-box"
     }
