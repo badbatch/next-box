@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.28 (2025-06-10)
+
+### Bug Fixes
+
+* **envs:**  guard against envs not being set on globalThis (e479bcf5)
+
 ## 0.0.27 (2025-06-10)
 
 ### New Features
