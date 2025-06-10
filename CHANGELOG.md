@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.25 (2025-06-10)
+
+### Documentation Changes
+
+* **i18n:**
+  * update readme (f4c9358c)
+  * update readme (55c24fad)
+
 ## 0.0.25-alpha-3.0 (2025-06-04)
 
 ### Chores
