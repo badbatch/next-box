@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.27 (2025-06-10)
+
+### New Features
+
+* **envs:**  make getEnv generic (11243627)
+
 ## 0.0.26 (2025-06-10)
 
 ### Chores
