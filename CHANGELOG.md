@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.26 (2025-06-10)
+
+### Chores
+
+* **root:**  minor updates (fcf02bac)
+
+### New Features
+
+* **envs:**  ability to get next public env outside of react (4824d37d)
+
 ## 0.0.25 (2025-06-10)
 
 ### Documentation Changes
