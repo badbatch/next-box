@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.31 (2025-06-11)
+
+### Refactors
+
+* **envs:**  change how public envs are passed to client (098c3fa8)
+
 ## 0.0.30 (2025-06-11)
 
 ### Bug Fixes

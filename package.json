@@ -1,7 +1,7 @@
 {
   "name": "next-box",
   "description": "A collection of libraries for use primarily with Next.js.",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "author": "miami-man",
   "license": "MIT",
   "private": true,
