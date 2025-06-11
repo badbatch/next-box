@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.35 (2025-06-11)
+
+### Bug Fixes
+
+* **envs:**  more issues with server/client code splitting (291db03c)
+
 ## 0.0.34 (2025-06-11)
 
 ### Bug Fixes
