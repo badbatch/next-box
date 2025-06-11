@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.32 (2025-06-11)
+
+### Bug Fixes
+
+* **envs:**  export component from server output (08860223)
+
 ## 0.0.31 (2025-06-11)
 
 ### Refactors
