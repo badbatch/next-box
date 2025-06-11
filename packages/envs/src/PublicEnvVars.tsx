@@ -3,7 +3,7 @@ import { getPublicEnvs } from '#getPublicEnvs.ts';
 
 export type PublicEnvVarsProps = {
   id?: string;
-  nonce: string;
+  nonce?: string;
   strategy?: ScriptProps['strategy'];
 };
 
