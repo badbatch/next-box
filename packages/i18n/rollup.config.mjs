@@ -8,6 +8,14 @@ export default [
   config,
   {
     ...otherConfig,
+    input: input.replace('index', 'client'),
+    output: {
+      ...output,
+      file: output.file.replace('index', 'client'),
+    },
+  },
+  {
+    ...otherConfig,
     input: input.replace('index', 'macros'),
     output: {
       ...output,

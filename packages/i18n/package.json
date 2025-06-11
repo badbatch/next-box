@@ -27,6 +27,14 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
+    "./client": {
+      "types": {
+        "import": "./dist/types/esm/client.d.ts",
+        "require": "./dist/types/cjs/client.d.cts"
+      },
+      "import": "./dist/esm/client.mjs",
+      "require": "./dist/cjs/client.cjs"
+    },
     "./macros": {
       "types": {
         "import": "./dist/types/esm/macros.d.ts",
@@ -45,7 +53,7 @@
     "clean:dist": "del-cli ./dist",
     "compile": "pnpm run /^compile:.*/",
     "compile:cjs": "MODULE_SYSTEM=cjs rollup -c ./rollup.config.mjs",
-    "compile:esm": "rollup -c ../../rollup.config.mjs",
+    "compile:esm": "rollup -c ./rollup.config.mjs",
     "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
   },
   "dependencies": {
