@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.33 (2025-06-11)
+
+### Bug Fixes
+
+* **envs:**  make nonce optional (9712ddf0)
+
 ## 0.0.32 (2025-06-11)
 
 ### Bug Fixes
