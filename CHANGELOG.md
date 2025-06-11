@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.29 (2025-06-11)
+
+### Bug Fixes
+
+* **root:**  build outputs wrong on some packages (f60453b7)
+
 ## 0.0.28 (2025-06-10)
 
 ### Bug Fixes
