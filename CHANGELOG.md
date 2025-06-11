@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.30 (2025-06-11)
+
+### Bug Fixes
+
+* **i18n:**  remove client exports from index (0a8dd7bb)
+
 ## 0.0.29 (2025-06-11)
 
 ### Bug Fixes
