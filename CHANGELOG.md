@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.34 (2025-06-11)
+
+### Bug Fixes
+
+* **envs:**  remove component from server output (132b12e3)
+
 ## 0.0.33 (2025-06-11)
 
 ### Bug Fixes
