@@ -1,11 +1,10 @@
 import Link from 'next/link.js';
 import { type ComponentType, type ReactNode, createContext, useEffect, useState } from 'react';
-import { type LinkContextData, type OwnLinkForwardRef } from '#types.js';
+import { type LinkContextData, type OwnLinkProps } from '#types.js';
 
 // Needs to return explicit value
-// eslint-disable-next-line @stylistic/max-len
-// eslint-disable-next-line unicorn/no-useless-undefined,@typescript-eslint/consistent-type-assertions
-const NoopComponent = (() => undefined) as unknown as OwnLinkForwardRef;
+// eslint-disable-next-line unicorn/no-useless-undefined
+const NoopComponent = () => undefined;
 // This is a noop
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -19,7 +18,7 @@ export const LinkContext = createContext<LinkContextData>({
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
   NextLink: typeof Link;
-  OwnLink: OwnLinkForwardRef;
+  OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
   loadingTimeout?: number;
   pathname: string;
