@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.39 (2025-06-12)
+
+### Other Changes
+
+* **link-extra:**  specify forward ref for own link" (58c8a65f)
+
 ## 0.0.38 (2025-06-12)
 
 ### Refactors
