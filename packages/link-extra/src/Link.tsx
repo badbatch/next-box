@@ -1,4 +1,4 @@
-import { type AnchorHTMLAttributes, type ReactNode } from 'react';
+import { type AnchorHTMLAttributes, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 import { addCacheBusterQueryParam, doUrlAndLocationMatch } from '#helpers.ts';
 import { useLinkExtra } from './useLinkExtra.ts';
 
@@ -28,9 +28,9 @@ export const Link = <T extends object>({
 
   return (
     // @ts-expect-error Next.js types wrong for nodenext
-    <NextLink href={href} legacyBehavior passHref prefetch={prefetch} scroll={scroll}>
+    <NextLink href={href} passHref prefetch={prefetch} scroll={scroll}>
       <OwnLink
-        onClick={event => {
+        onClick={(event: ReactMouseEvent<HTMLAnchorElement>) => {
           if (onClick) {
             onClick(event);
           }
