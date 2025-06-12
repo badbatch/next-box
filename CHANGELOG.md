@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.36 (2025-06-12)
+
+### Refactors
+
+* **envs:**  get public envs added pre next.js init (4a111e23)
+
 ## 0.0.35 (2025-06-11)
 
 ### Bug Fixes
