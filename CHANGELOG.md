@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.37 (2025-06-12)
+
+### Bug Fixes
+
+* **envs:**  lock file (6cdf43cf)
+
 ## 0.0.36 (2025-06-12)
 
 ### Refactors
