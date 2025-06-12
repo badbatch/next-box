@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.40 (2025-06-12)
+
+### Documentation Changes
+
+* **envs:**  update readme (c386aaac)
+
 ## 0.0.39 (2025-06-12)
 
 ### Other Changes
