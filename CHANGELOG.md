@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.41 (2025-06-19)
+
+### Bug Fixes
+
+* **i18n:**  make path relative to file (27bef0b8)
+
 ## 0.0.40 (2025-06-12)
 
 ### Documentation Changes
