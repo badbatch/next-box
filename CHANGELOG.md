@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.42 (2025-06-19)
+
+### Chores
+
+* **i18n:**  add logging to get all args (36c6b74c)
+
 ## 0.0.41 (2025-06-19)
 
 ### Bug Fixes
