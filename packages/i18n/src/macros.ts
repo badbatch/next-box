@@ -4,11 +4,12 @@ import { fileURLToPath } from 'node:url';
 
 const dir = dirname(fileURLToPath(import.meta.url));
 
-export const md = <P extends string>(path: P): P => {
+export const md = <P extends string>(path: P, ...args: never[]): P => {
   if (!path) {
     throw new Error('md expected a path, but received none');
   }
 
+  console.log('arguments', ...args);
   const fullPath = resolve(dir, path);
   // @ts-expect-error `md` function runs and build time and its return value
   // replaces the `md` invocation. We are forcing the return type to be the
