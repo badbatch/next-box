@@ -3,7 +3,7 @@ import { md } from '#macros.ts';
 describe('md', () => {
   describe('when a valid path is provided', () => {
     it('should return the markdown content in the file the path resolves to', () => {
-      const content = md('./packages/i18n/src/__testUtils__/content.md');
+      const content = md('./__testUtils__/content.md');
 
       expect(content).toMatchInlineSnapshot(`
         "# Page title
@@ -23,13 +23,13 @@ describe('md', () => {
 
   describe('when no path is not provided', () => {
     it('should throw the expected error', () => {
-      expect(() => md('')).toThrow('Tagged template expected a path, but received none');
+      expect(() => md('')).toThrow('md expected a path, but received none');
     });
   });
 
   describe('when a valid path is not provided', () => {
     it('should throw the expected error', () => {
-      expect(() => md('./packages/i18n/src/__testUtils__/no-content.md')).toThrow();
+      expect(() => md('./__testUtils__/no-content.md')).toThrow();
     });
   });
 });

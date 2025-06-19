@@ -150,7 +150,7 @@ import { md } from '@next-box/i18n/macros' with { type: 'macro' }; // This is im
 
 const content = {
   en: {
-    contactUs: md('./src/markdown/contactUs.md'),
+    contactUs: md('./markdown/contactUs.md'), // relative to the file's directory
   },
 } as const;
 ```

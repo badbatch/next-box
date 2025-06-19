@@ -1,6 +1,6 @@
 {
   "name": "@next-box/link-extra",
-  "description": "A collection of link click side effects for use primarily with Next.js.",
+  "description": "A collection of link components for use primarily with Next.js.",
   "version": "0.0.18",
   "author": "miami-man",
   "license": "MIT",
