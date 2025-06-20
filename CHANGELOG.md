@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.45 (2025-06-20)
+
+### Bug Fixes
+
+* **i18n:**  config file path resolves wrong (c24b27a5)
+
 ## 0.0.44 (2025-06-20)
 
 ### Refactors
