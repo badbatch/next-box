@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.44 (2025-06-20)
+
+### Refactors
+
+* **i18n:**  move to using config for markdown dir (4eca8a78)
+
 ## 0.0.43 (2025-06-20)
 
 ### Refactors
