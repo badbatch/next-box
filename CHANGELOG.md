@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.43 (2025-06-20)
+
+### Refactors
+
+* **i18n:**  change way caller filename is derived (5c24822e)
+
 ## 0.0.42 (2025-06-19)
 
 ### Chores
