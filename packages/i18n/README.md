@@ -61,17 +61,17 @@ export const content = {
 // ./.env.d.ts
 declare namespace NodeJS {
   interface ProcessEnv {
-    LANGUAGE_CODE: 'en' | 'fr';
+    NEXT_PUBLIC_LANGUAGE_CODE: 'en' | 'fr';
   }
 }
 ```
 
 ```ts
 // ./content/index.ts
-const { LANGUAGE_CODE } = process.env;
+const { NEXT_PUBLIC_LANGUAGE_CODE } = process.env;
 let language: typeof import('./en/index.ts') | typeof import('./fr/index.ts');
 
-switch (LANGUAGE_CODE) {
+switch (NEXT_PUBLIC_LANGUAGE_CODE) {
   case 'en': {
     language = await import('./en/index.ts');
     break;
@@ -150,12 +150,30 @@ import { md } from '@next-box/i18n/macros' with { type: 'macro' }; // This is im
 
 const content = {
   en: {
-    contactUs: md('./markdown/contactUs.md'), // relative to the caller file's directory
+    contactUs: md('./markdown/contactUs.md'),
   },
 } as const;
 ```
 
 > All the functions exported from the `'/macros'` sub-path are intended to be imported with the `with { type: 'macro' }` import attribute in conjunction with the use of the `unplugin-macros` [plugin](https://github.com/unplugin/unplugin-macros) or a compiler/bundler that supports the macros import attribute such as [Bun](https://bun.sh/) or [Parcel](https://parceljs.org/).
+
+By default, the path you pass into the `md` macro is relative to the current working directory. You can change this via the `.i18n-macro.config.json` config file. Create one in your project root and add a `markdownDir` property with a relative path from the current working directory to the directory where your markdown files live.
+
+```json
+{
+  "markdownDir": "./src/content/markdown"
+}
+```
+
+The `markdownDir` path supports a template variable `NEXT_PUBLIC_LANGUAGE_CODE`, which is populated by setting an environment variable with the same name. You can use this if you support multiple languages. Please note, the multi-language content directory structure must be the same for this approach to work correctly.
+
+```json
+{
+  "markdownDir": "./src/content/{{NEXT_PUBLIC_LANGUAGE_CODE}}/markdown"
+}
+```
+
+#### Markdown to JSX
 
 The `md` macro is designed to be used with the `Md` markdown render component and `I18nProvider` context provider. `Md` transforms markdown into React components, while `I18nProvider` provides a way to share a component mapper and `markdown-to-jsx` options between instances of `Md`.
 

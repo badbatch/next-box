@@ -1,4 +1,10 @@
-import { md } from '#macros.ts';
+import { jest } from '@jest/globals';
+
+jest.unstable_mockModule('#helpers/loadConfig.ts', () => ({
+  loadConfig: jest.fn().mockReturnValue({ markdownDir: './packages/i18n/src' }),
+}));
+
+const { md } = await import('#macros.ts');
 
 describe('md', () => {
   describe('when a valid path is provided', () => {
