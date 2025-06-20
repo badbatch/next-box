@@ -57,6 +57,7 @@
     "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
   },
   "dependencies": {
+    "callsites": "^4.2.0",
     "markdown-to-jsx": "^7.7.6",
     "type-fest": "^4.41.0",
     "zcb": "^0.3.0"
