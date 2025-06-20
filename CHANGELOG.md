@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.46 (2025-06-20)
+
+### Bug Fixes
+
+* **i18n:**  component mapper type wrong (640faf92)
+
 ## 0.0.45 (2025-06-20)
 
 ### Bug Fixes
