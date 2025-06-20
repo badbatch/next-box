@@ -1,8 +1,7 @@
-import MarkdownToJsx from 'markdown-to-jsx';
-import { type ComponentProps, type JSX, useContext } from 'react';
+import MarkdownToJsx, { type MarkdownToJSX } from 'markdown-to-jsx';
+import { type JSX, useContext } from 'react';
 import { I18nContext } from '#components/I18nProvider.tsx';
 import { injectVariables } from '#helpers/injectVariables.ts';
-import { type ComponentMapper } from '#types.ts';
 
 export type MdProps = {
   // The markdown to convert into JSX.
@@ -12,10 +11,10 @@ export type MdProps = {
   // the name of a React component, and the value being a
   // React component. This prop is designed as an override
   // for the componentMapper passed into the I18nProvider.
-  componentMapper?: ComponentMapper;
+  componentMapper?: MarkdownToJSX.Overrides;
   // An object of key/value pairs for content with template variables.
   variables?: Record<string, string | number>;
-} & Omit<ComponentProps<typeof MarkdownToJsx>['options'], 'overrides'>;
+} & Omit<MarkdownToJSX.Options, 'overrides'>;
 
 export const Md = ({
   children,

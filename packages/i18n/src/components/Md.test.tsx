@@ -2,17 +2,19 @@
  * @jest-environment jsdom
  */
 import { render } from '@testing-library/react';
+import { type MarkdownToJSX } from 'markdown-to-jsx';
 import { type ReactNode } from 'react';
 import { I18nProvider } from '#components/I18nProvider.tsx';
-import { type ComponentMapper } from '#types.js';
 import { Md } from './Md.tsx';
 
 type ComponentProps = {
   children: ReactNode;
 };
 
-const componentMapper: ComponentMapper = {
-  CustomComponent: ({ children }: ComponentProps) => <div data-display-name="CustomComponent">{children}</div>,
+const componentMapper: MarkdownToJSX.Overrides = {
+  CustomComponent: {
+    component: ({ children }: ComponentProps) => <div data-display-name="CustomComponent">{children}</div>,
+  },
   p: ({ children }: ComponentProps) => <p data-disaplay-name="p">{children}</p>,
 };
 

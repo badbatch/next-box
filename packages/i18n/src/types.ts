@@ -1,9 +1,4 @@
-import { type ComponentType } from 'react';
 import { type AnyRecord, type ConfigReader } from 'zcb';
-
-// Need to keep as generic as possible.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ComponentMapper = Record<string, ComponentType<any>>;
 
 export type CreateI18nResult<U extends object> = {
   // Untyped content lookup. Function takes a string and returns the

@@ -1,19 +1,18 @@
-import type MarkdownToJsx from 'markdown-to-jsx';
-import { type ComponentProps, type JSX, type ReactNode, createContext } from 'react';
-import { type ComponentMapper } from '#types.ts';
+import { type MarkdownToJSX } from 'markdown-to-jsx';
+import { type JSX, type ReactNode, createContext } from 'react';
 
 export const I18nContext = createContext<
   {
-    componentMapper: ComponentMapper;
-  } & Omit<ComponentProps<typeof MarkdownToJsx>['options'], 'overrides'>
+    componentMapper: MarkdownToJSX.Overrides;
+  } & Omit<MarkdownToJSX.Options, 'overrides'>
 >({
   componentMapper: {},
 });
 
 export type I18nProviderProps = {
   children: ReactNode;
-  componentMapper: ComponentMapper;
-} & Omit<ComponentProps<typeof MarkdownToJsx>['options'], 'overrides'>;
+  componentMapper: MarkdownToJSX.Overrides;
+} & Omit<MarkdownToJSX.Options, 'overrides'>;
 
 export const I18nProvider = ({
   children,

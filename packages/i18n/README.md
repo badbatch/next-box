@@ -177,12 +177,12 @@ The `markdownDir` path supports a template variable `NEXT_PUBLIC_LANGUAGE_CODE`,
 
 The `md` macro is designed to be used with the `Md` markdown render component and `I18nProvider` context provider. `Md` transforms markdown into React components, while `I18nProvider` provides a way to share a component mapper and `markdown-to-jsx` options between instances of `Md`.
 
-> Under the hood, the library uses the `markdown-to-jsx` npm package to transform markdown into JSX.
+> Under the hood, the library uses the `markdown-to-jsx` npm package to transform markdown into JSX. See [the package's documentation](https://github.com/quantizor/markdown-to-jsx) for more information on its configuration options. Our `componentMapper` prop maps to the `markdown-to-jsx` `overrides` option.
 
 The contrived example below illustrates how to use the `md` macro, `I18nProvider`, and `Md` component together.
 
 ```tsx
-import { md } from '@next-box/i18n/macros' with {type: 'macro'};
+import { md } from '@next-box/i18n/macros' with { type: 'macro' };
 import { I18nProvider, Md } from '@next-box/i18n';
 import { componentMapper } from './componentMapper.ts';
 
