@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.0.47 (2025-08-12)
+
+### Chores
+
+* **root:**  bump deps, including zcb (880a2084)
+
+### New Features
+
+* **root:**  add logo to readme (50bcf9f2)
+
+### Bug Fixes
+
+* **root:**
+  * vulnerabilities (41b30ede)
+  * readme linting (4634365b)
+
 ## 0.0.46 (2025-06-20)
 
 ### Bug Fixes
