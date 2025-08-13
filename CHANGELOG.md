@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.48 (2025-08-13)
+
+### Chores
+
+* **i18n:**  upgrade zcb (42d4e3ca)
+
 ## 0.0.47 (2025-08-12)
 
 ### Chores
