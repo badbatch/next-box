@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 (2026-01-29)
+
+### Refactors
+
+* **envs:**  change how public env vars are configured (0ebe8ac5)
+
 ## 0.0.48 (2025-08-13)
 
 ### Chores
