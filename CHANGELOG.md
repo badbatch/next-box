@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 (2026-01-29)
+
+### Bug Fixes
+
+* **env:**  optional prop was required (fb06a24e)
+
 ## 0.1.0 (2026-01-29)
 
 ### Refactors
