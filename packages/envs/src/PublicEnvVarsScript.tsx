@@ -1,10 +1,12 @@
 import { type HTMLAttributes } from 'react';
 import { getPublicEnvs } from '#getPublicEnvs.ts';
 
-export type PublicEnvVarsScriptProps = HTMLAttributes<HTMLScriptElement>;
+export type PublicEnvVarsScriptProps = HTMLAttributes<HTMLScriptElement> & {
+  whitelist: string[];
+};
 
-export const PublicEnvVarsScript = (props: PublicEnvVarsScriptProps) => {
-  const envs = getPublicEnvs(process.env);
+export const PublicEnvVarsScript = ({ whitelist, ...restProps }: PublicEnvVarsScriptProps) => {
+  const envs = getPublicEnvs(process.env, whitelist);
 
   return (
     <script
@@ -17,7 +19,7 @@ export const PublicEnvVarsScript = (props: PublicEnvVarsScriptProps) => {
         `,
       }}
       defer
-      {...props}
+      {...restProps}
     />
   );
 };

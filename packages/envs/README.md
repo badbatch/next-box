@@ -74,7 +74,7 @@ export const RandomComponent = () => {
 
 ### Outside React
 
-The other way of getting public env vars to the client is to use our `PublicEnvVarsScript` component. As it is a script, the component must be used within your root `layout.tsx`. With this approach, you pass public env vars into the component in a similar way to the previous example, however, you are able to access env vars outside React using the `getPublicEnv` function.
+The other way of getting public env vars to the client is to use our `PublicEnvVarsScript` component. As it is a script, the component must be used within your root `layout.tsx`. With this approach, you pass public env vars into the component in a similar way to the previous example, however, you are able to access env vars outside React using the `getEnv` function.
 
 The `PublicEnvVarsScript` component renders a script that runs before Next.js is initialised and adds the public env vars to `globalThis.env`.
 
@@ -100,7 +100,7 @@ export default RootLayout;
 
 ```ts
 // ./fileOutsideReact
-import { getPublicEnv } from '@next-box/envs/server';
+import { getEnv } from '@next-box/envs/server';
 import { content as en } from './en/index.ts';
 import { content as fr } from './fr/index.ts';
 
@@ -109,11 +109,11 @@ const languages = {
   fr,
 };
 
-const languageCode = getPublicEnv<'en' | 'fr'>('NEXT_PUBLIC_LANGUAGE_CODE');
+const languageCode = getEnv<'en' | 'fr'>('NEXT_PUBLIC_LANGUAGE_CODE');
 export const content = languages[languageCode];
 ```
 
-The other thing to note about `getPublicEnv` is it works across Next.js environments. If `window` is defined, the function will get the env var from `globalThis.env`, but if `window` is not defined the function will get the env var from `process.env`.
+The other thing to note about `getEnv` is it works across Next.js environments. If `window` is defined, the function will get the env var from `globalThis.env`, but if `window` is not defined the function will get the env var from `process.env`.
 
 > If you need to access env vars outside React, you can use both approaches in parallel or just use `PublicEnvVarsScript` and instead of passing the public env vars down into the `EnvsProviderWrapper`, just get the env vars from `globalThis.env` within the wrapper component and pass them down into `EnvsProvider`.
 
