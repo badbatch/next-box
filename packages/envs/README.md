@@ -117,6 +117,27 @@ The other thing to note about `getEnv` is it works across Next.js environments. 
 
 > If you need to access env vars outside React, you can use both approaches in parallel or just use `PublicEnvVarsScript` and instead of passing the public env vars down into the `EnvsProviderWrapper`, just get the env vars from `globalThis.env` within the wrapper component and pass them down into `EnvsProvider`.
 
+### In Web Workers
+
+You can also access environment variables in web workers through a couple of utility functions. In your main thread, pass the worker into `sendEnvsToWorker` as soon as it is initialised. The function takes the environment variables already assigned to `globalThis.env` and sends them to the worker thread.
+
+```ts
+import { sendEnvsToWorker } from '@next-box/envs';
+
+const worker = new Worker(new URL('worker.ts', import.meta.url));
+sendEnvsToWorker(worker);
+```
+
+In your worker file, you can then use `setWorkerEnvs` to listen for the message from the main thread and set the received environment variables onto the workers `globalThis.env`. The function accepts a callback it will execute once the environment variables are set. This is useful to run defer running code that depends the environment variables.
+
+```ts
+import { setWorkerEnvs } from '@next-box/envs';
+
+setWorkerEnvs(() => {
+  // Run code
+});
+```
+
 ## Changelog
 
 Check out the [features, fixes and more](../../CHANGELOG.md) that go into each major, minor and patch version.
