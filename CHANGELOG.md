@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 (2026-02-23)
+
+### New Features
+
+* **envs:**  support envs in workers (2148267e)
+
 ## 0.1.1 (2026-01-29)
 
 ### Bug Fixes
