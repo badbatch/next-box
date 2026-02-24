@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.3 (2026-02-24)
+
+### Bug Fixes
+
+* **envs:**  remove redundant code (59bd6e83)
+
 ## 0.1.2 (2026-02-23)
 
 ### New Features
