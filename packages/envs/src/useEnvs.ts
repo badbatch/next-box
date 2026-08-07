@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import { EnvsContext } from './EnvsProvider.tsx';
+import { use } from 'react';
+import { EnvsContext, type EnvsContextData } from './EnvsProvider.tsx';
 
-export const useEnvs = () => {
-  return useContext(EnvsContext);
+export const useEnvs = (): EnvsContextData => {
+  return use(EnvsContext);
 };

@@ -1,10 +1,10 @@
 import { Core as Cachemap } from '@cachemap/core';
 import { isFunction, memoize } from 'lodash-es';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type FC, type ReactNode, useEffect, useRef, useState } from 'react';
 import { BreadcrumbContext } from './BreadcrumbContext.ts';
 import { collateHistory } from './helpers/collateHistory.ts';
 import { createBreadcrumbs } from './helpers/createBreadcrumbs.ts';
-import { type BreadcrumbEntry, type LabelMapperEntry, type Transforms } from './types.ts';
+import { type BreadcrumbEntry, type LabelMapperEntry, type TransformCallback, type Transforms } from './types.ts';
 
 export type BreadcrumbProviderProps = {
   children: ReactNode;
@@ -21,7 +21,7 @@ export type BreadcrumbProviderProps = {
   transforms?: Transforms | (() => Transforms);
 };
 
-const memoriseTransforms = (transforms: Transforms) => {
+const memoriseTransforms = (transforms: Transforms): Record<string, TransformCallback & ReturnType<typeof memoize>> => {
   const entries = Object.entries(transforms);
 
   if (entries.length === 0) {
@@ -31,7 +31,7 @@ const memoriseTransforms = (transforms: Transforms) => {
   return Object.fromEntries(entries.map(([key, value]) => [key, memoize(value)]));
 };
 
-export const BreadcrumbProvider = ({
+export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
   children,
   excludeQueryParams = [],
   labelMapper,
@@ -40,59 +40,59 @@ export const BreadcrumbProvider = ({
   rootPath = '/',
   search,
   transforms = {},
-}: BreadcrumbProviderProps) => {
-  const cachemap = useRef<Cachemap>(undefined);
-  const history = useRef<string[]>([]);
+}) => {
+  const cachemapRef = useRef<Cachemap>(undefined);
+  const historyRef = useRef<string[]>([]);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbEntry[]>([]);
-  const memorisedTransforms = useRef<Transforms>({});
+  const memorisedTransformsRef = useRef<Transforms>({});
   const [cachemapInitialised, setCachemapInitialised] = useState(false);
 
   useEffect(() => {
-    void (async () => {
+    void (async (): Promise<void> => {
       const { init: webStorage } = await import('@cachemap/web-storage');
 
-      cachemap.current = new Cachemap({
+      cachemapRef.current = new Cachemap({
         name: 'breadcrumb',
         store: webStorage({ storageType: 'session' }),
         type: 'breadcrumb',
       });
 
-      const cachedHistory = await cachemap.current.get<string[]>('history');
+      const cachedHistory = await cachemapRef.current.get<string[]>('history');
 
       if (cachedHistory) {
         const lastEntry = cachedHistory.at(-1);
 
-        if (lastEntry && new URL(lastEntry, globalThis.location.origin).pathname === pathname) {
-          history.current = cachedHistory;
+        if (lastEntry && new URL(lastEntry, location.origin).pathname === pathname) {
+          historyRef.current = cachedHistory;
         } else {
-          void cachemap.current.clear();
+          void cachemapRef.current.clear();
         }
       }
 
-      memorisedTransforms.current = memoriseTransforms(isFunction(transforms) ? transforms() : transforms);
+      memorisedTransformsRef.current = memoriseTransforms(isFunction(transforms) ? transforms() : transforms);
       setCachemapInitialised(true);
     })();
 
     // We only want this to run on initial render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    void (async () => {
+    void (async (): Promise<void> => {
       if (!cachemapInitialised) {
         return;
       }
 
-      history.current = collateHistory(history.current, { maxHistory, pathname, rootPath, search });
-      void cachemap.current?.set('history', history.current);
+      historyRef.current = collateHistory(historyRef.current, { maxHistory, pathname, rootPath, search });
+      void cachemapRef.current?.set('history', historyRef.current);
 
       setBreadcrumbs(
-        await createBreadcrumbs(history.current, labelMapper, excludeQueryParams, memorisedTransforms.current),
+        await createBreadcrumbs(historyRef.current, labelMapper, excludeQueryParams, memorisedTransformsRef.current),
       );
     })();
     // We only want to re-execute when pathname or search changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
   }, [pathname, search, cachemapInitialised]);
 
-  return <BreadcrumbContext.Provider value={{ breadcrumbs }}>{children}</BreadcrumbContext.Provider>;
+  return <BreadcrumbContext value={{ breadcrumbs }}>{children}</BreadcrumbContext>;
 };

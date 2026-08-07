@@ -14,7 +14,7 @@ export const md = <P extends string>(path: P): P => {
 
   if (markdownDir) {
     if (NEXT_PUBLIC_LANGUAGE_CODE) {
-      markdownDir = markdownDir.replaceAll('{{NEXT_PUBLIC_LANGUAGE_CODE}}', NEXT_PUBLIC_LANGUAGE_CODE);
+      markdownDir = markdownDir.replaceAll('{{NEXT_PUBLIC_LANGUAGE_CODE}}', () => NEXT_PUBLIC_LANGUAGE_CODE);
     }
 
     dir = resolve(dir, markdownDir);

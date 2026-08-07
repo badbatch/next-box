@@ -1,19 +1,19 @@
-import Link from 'next/link.js';
-import { type ComponentType, type ReactNode, createContext, useEffect, useState } from 'react';
-import { type LinkContextData, type OwnLinkProps } from '#types.js';
+import type Link from 'next/link.js';
+import {
+  type ComponentType,
+  type FC,
+  type ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { type LinkContextData, type NextLinkComponent, type OwnLinkProps } from '#types.js';
 
-// Needs to return explicit value
-// eslint-disable-next-line unicorn/no-useless-undefined
-const NoopComponent = () => undefined;
-// This is a noop
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {};
-
-export const LinkContext = createContext<LinkContextData>({
-  NextLink: Link,
-  OwnLink: NoopComponent,
-  setLinkClicked: noop,
-});
+// Context requires an initial value, but this is set in the provider so casting
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+export const LinkContext = createContext<LinkContextData>({} as LinkContextData);
 
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
@@ -24,55 +24,47 @@ export type LinkProviderProps = {
   pathname: string;
 };
 
-let timeoutId: NodeJS.Timeout | undefined;
-
-export const LinkProvider = ({
+export const LinkProvider: FC<LinkProviderProps> = ({
   LoadingComponent,
   NextLink,
   OwnLink,
   children,
   loadingTimeout = 500,
   pathname,
-}: LinkProviderProps) => {
-  const [linkClicked, setLinkClicked] = useState<boolean>(false);
+}) => {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (linkClicked) {
-      timeoutId = setTimeout(() => {
-        setShowLoading(true);
-      }, loadingTimeout);
+  const onLinkClicked = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-    // We only want to re-execute when linkClicked changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [linkClicked]);
+    timeoutRef.current = setTimeout(() => {
+      setShowLoading(true);
+    }, loadingTimeout);
+  }, [loadingTimeout]);
 
   useEffect(() => {
-    if (linkClicked) {
-      setLinkClicked(false);
-      setShowLoading(false);
-      globalThis.scroll(0, 0);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
 
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    // We only want to re-execute when pathname changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // This is setting state based on pathname change
+    // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
+    setShowLoading(false);
+    scroll(0, 0);
   }, [pathname]);
 
   return (
-    <LinkContext.Provider
+    <LinkContext
       value={{
-        NextLink,
+        // Casting due to issues marrying up prop type and context type
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        NextLink: NextLink as unknown as NextLinkComponent,
         OwnLink,
-        setLinkClicked: clicked => {
-          setLinkClicked(clicked);
+        onLinkClicked: () => {
+          onLinkClicked();
         },
       }}
     >
@@ -80,6 +72,6 @@ export const LinkProvider = ({
         {children}
         {showLoading ? <LoadingComponent /> : undefined}
       </>
-    </LinkContext.Provider>
+    </LinkContext>
   );
 };

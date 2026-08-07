@@ -8,18 +8,19 @@
   "repository": {
     "directory": "packages/breadcrumb",
     "type": "git",
-    "url": "https://github.com/badbatch/next-box/packages/breadcrumb"
+    "url": "https://github.com/badbatch/next-box.git"
   },
   "bugs": "https://github.com/badbatch/next-box/issues",
   "type": "module",
-  "main": "./dist/cjs/index.cjs",
+  "main": "./dist/cjs/index.mjs",
   "module": "./dist/esm/index.mjs",
-  "types": "./dist/types/cjs/index.d.cts",
+  "types": "./dist/types/cjs/index.d.ts",
   "imports": {
     "#*": "./src/*"
   },
   "exports": {
     ".": {
+      "source": "./src/index.ts",
       "types": {
         "import": "./dist/types/esm/index.d.ts",
         "require": "./dist/types/cjs/index.d.cts"
@@ -41,24 +42,24 @@
     "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
   },
   "dependencies": {
-    "@cachemap/core": "^5.2.8",
-    "@cachemap/web-storage": "^5.1.4",
+    "@cachemap/core": "^5.3.2",
+    "@cachemap/web-storage": "^5.2.0",
     "@types/lodash-es": "^4.17.12",
-    "core-js": "^3.45.0",
-    "lodash-es": "^4.17.21",
-    "type-fest": "^4.41.0"
+    "core-js": "^3.50.0",
+    "lodash-es": "^4.18.1",
+    "type-fest": "^5.8.0"
   },
   "peerDependencies": {
     "react": "<20",
     "react-dom": "<20"
   },
   "devDependencies": {
-    "@jest/globals": "^29.3.1",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "cts-types": "^0.0.10",
-    "del-cli": "^6.0.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "@jest/globals": "^30.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "cts-types": "^0.0.15",
+    "del-cli": "^7.0.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

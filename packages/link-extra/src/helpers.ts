@@ -1,13 +1,13 @@
 import { nanoid } from 'nanoid';
 
-export const doUrlAndLocationMatch = (url: string) => {
+export const shouldUrlAndLocationMatch = (url: string): boolean => {
   // It is possible for this to be undefined
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!globalThis.location) {
     return false;
   }
 
-  const parsedUrl = URL.parse(url, globalThis.location.origin);
+  const parsedUrl = URL.parse(url, location.origin);
 
   if (!parsedUrl) {
     return false;
@@ -20,15 +20,13 @@ export const doUrlAndLocationMatch = (url: string) => {
     urlSearchParams.delete('y');
   }
 
-  const locationSearchParams = new URLSearchParams(globalThis.location.search);
+  const locationSearchParams = new URLSearchParams(location.search);
 
   if (locationSearchParams.has('y')) {
     locationSearchParams.delete('y');
   }
 
-  return (
-    `${pathname}?${urlSearchParams.toString()}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`
-  );
+  return `${pathname}?${urlSearchParams.toString()}` === `${location.pathname}?${locationSearchParams.toString()}`;
 };
 
 export const addCacheBusterQueryParam = (url: string): string => {
@@ -38,13 +36,13 @@ export const addCacheBusterQueryParam = (url: string): string => {
     return url;
   }
 
-  const parsedUrl = URL.parse(url, globalThis.location.origin);
+  const parsedUrl = URL.parse(url, location.origin);
 
   if (!parsedUrl) {
     return url;
   }
 
-  const locationSearchParams = new URLSearchParams(globalThis.location.search);
+  const locationSearchParams = new URLSearchParams(location.search);
   const locationCacheBusterSearchParam = locationSearchParams.get('y');
 
   if (locationCacheBusterSearchParam) {
@@ -54,7 +52,7 @@ export const addCacheBusterQueryParam = (url: string): string => {
   const { pathname, search } = parsedUrl;
   const searchParams = new URLSearchParams(search);
 
-  if (`${pathname}?${search}` === `${globalThis.location.pathname}?${locationSearchParams.toString()}`) {
+  if (`${pathname}?${search}` === `${location.pathname}?${locationSearchParams.toString()}`) {
     searchParams.set('y', locationCacheBusterSearchParam ?? nanoid());
   } else {
     searchParams.set('y', nanoid());

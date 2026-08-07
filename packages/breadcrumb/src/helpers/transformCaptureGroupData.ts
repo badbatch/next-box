@@ -8,7 +8,7 @@ export const transformCaptureGroupData = async (
   groups: Record<string, string>,
   transforms: string[],
   availableTransforms: Transforms,
-) => {
+): Promise<Record<string, string>> => {
   let transformedData: Record<string, string> = groups;
 
   for (const transformName of transforms) {

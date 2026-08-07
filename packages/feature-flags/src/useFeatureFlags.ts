@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import { Context } from '#Provider.tsx';
+import { use } from 'react';
+import { Context, type FeatureFlagContext } from '#Provider.tsx';
 
-export const useFeatureFlags = () => {
-  return useContext(Context);
+export const useFeatureFlags = (): FeatureFlagContext => {
+  return use(Context);
 };

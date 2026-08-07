@@ -1,5 +1,5 @@
 import MarkdownToJsx, { type MarkdownToJSX } from 'markdown-to-jsx';
-import { type JSX, useContext } from 'react';
+import { type FC, use } from 'react';
 import { I18nContext } from '#components/I18nProvider.tsx';
 import { injectVariables } from '#helpers/injectVariables.ts';
 
@@ -16,13 +16,13 @@ export type MdProps = {
   variables?: Record<string, string | number>;
 } & Omit<MarkdownToJSX.Options, 'overrides'>;
 
-export const Md = ({
+export const Md: FC<MdProps> = ({
   children,
   componentMapper: componentMapperOverrides,
   variables,
   ...markdownToJsxOptionOverrides
-}: MdProps): JSX.Element => {
-  const { componentMapper, ...markdownToJsxOptions } = useContext(I18nContext);
+}) => {
+  const { componentMapper, ...markdownToJsxOptions } = use(I18nContext);
 
   return (
     <MarkdownToJsx

@@ -1,4 +1,4 @@
-import { type ReactNode, createContext } from 'react';
+import { type FC, type ReactNode, createContext } from 'react';
 
 export type EnvsContextData = {
   envs: Record<string, string | undefined>;
@@ -15,13 +15,13 @@ export type EnvsProviderProps = {
   envs: Record<string, string | undefined>;
 };
 
-export const EnvsProvider = (props: EnvsProviderProps) => {
+export const EnvsProvider: FC<EnvsProviderProps> = props => {
   const envs = { ...props.envs };
-  const getEnv = (key: string) => envs[key];
+  const getEnv = (key: string): string | undefined => envs[key];
 
   return (
-    <EnvsContext.Provider value={{ envs, getEnv }}>
+    <EnvsContext value={{ envs, getEnv }}>
       {typeof props.children === 'function' ? props.children({ envs, getEnv }) : props.children}
-    </EnvsContext.Provider>
+    </EnvsContext>
   );
 };

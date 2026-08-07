@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import { useFeature } from './useFeature.ts';
 
 export type FeatureProps = {
@@ -6,7 +6,7 @@ export type FeatureProps = {
   name: string;
 };
 
-export const Feature = ({ children, name }: FeatureProps) => {
-  const feature = useFeature(name);
-  return feature ? children : undefined;
+export const Feature: FC<FeatureProps> = ({ children, name }) => {
+  const isFeature = useFeature(name);
+  return isFeature ? children : undefined;
 };

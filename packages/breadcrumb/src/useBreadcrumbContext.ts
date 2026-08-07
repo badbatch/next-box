@@ -1,4 +1,4 @@
-import { useContext } from 'react';
-import { BreadcrumbContext } from './BreadcrumbContext.ts';
+import { use } from 'react';
+import { type BreadcrumbConfig, BreadcrumbContext } from './BreadcrumbContext.ts';
 
-export const useBreadcrumbContext = () => useContext(BreadcrumbContext);
+export const useBreadcrumbContext = (): BreadcrumbConfig => use(BreadcrumbContext);

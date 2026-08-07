@@ -13,7 +13,7 @@ export const createBreadcrumbs = async (
   labelMapper: Record<string, LabelMapperEntry>,
   excludeQueryParams: string[],
   availableTransforms: Transforms = {},
-) => {
+): Promise<BreadcrumbEntry[]> => {
   const breadcrumbs: BreadcrumbEntry[] = [];
 
   for (const entry of history) {
@@ -30,7 +30,7 @@ export const createBreadcrumbs = async (
     const [regex, labelAndOptions] = match;
     // Need to refactor surrounding code to make this change
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const [label, options = {}] = castArray(labelAndOptions) as [string, LabelMapperEntryOptions];
+    const [label, options] = castArray(labelAndOptions) as [string, LabelMapperEntryOptions];
 
     if (!/{{.+}}/.test(label)) {
       const index = breadcrumbs.findIndex(breadcrumb => breadcrumb.label === label);
@@ -68,7 +68,7 @@ export const createBreadcrumbs = async (
 
     for (const [key, value] of Object.entries(templateArgs)) {
       if (populatedLabel.includes(`{{${key}}}`) || populatedLabel.includes(`{{ ${key} }}`)) {
-        populatedLabel = populatedLabel.replace(new RegExp(`{{${key}}}|{{ ${key} }}`), value);
+        populatedLabel = populatedLabel.replace(new RegExp(`{{${key}}}|{{ ${key} }}`), () => value);
       }
     }
 

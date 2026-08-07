@@ -1,5 +1,5 @@
 import { type MarkdownToJSX } from 'markdown-to-jsx';
-import { type JSX, type ReactNode, createContext } from 'react';
+import { type FC, type ReactNode, createContext } from 'react';
 
 export const I18nContext = createContext<
   {
@@ -14,10 +14,6 @@ export type I18nProviderProps = {
   componentMapper: MarkdownToJSX.Overrides;
 } & Omit<MarkdownToJSX.Options, 'overrides'>;
 
-export const I18nProvider = ({
-  children,
-  componentMapper,
-  ...markdownToJsxOptions
-}: I18nProviderProps): JSX.Element => {
-  return <I18nContext.Provider value={{ componentMapper, ...markdownToJsxOptions }}>{children}</I18nContext.Provider>;
+export const I18nProvider: FC<I18nProviderProps> = ({ children, componentMapper, ...markdownToJsxOptions }) => {
+  return <I18nContext value={{ componentMapper, ...markdownToJsxOptions }}>{children}</I18nContext>;
 };

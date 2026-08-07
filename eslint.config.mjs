@@ -12,18 +12,6 @@ export default [
         project: ['./tsconfig.json', './packages/*/tsconfig.json'],
       },
     },
-    rules: {
-      'unicorn/filename-case': [
-        2,
-        {
-          cases: {
-            camelCase: true,
-            pascalCase: true,
-          },
-          ignore: ['^module-defs.d.ts$', '^next-env.d.ts$'],
-        },
-      ],
-    },
   },
   ...reactConfig.map(entry => ({
     ...entry,
