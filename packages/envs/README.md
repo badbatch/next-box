@@ -1,6 +1,6 @@
 # @next-box/envs
 
-A library for accessing environment variables on the client in Next.js.
+A library for accessing environment variables in Next.js.
 
 [![npm version](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb.svg)](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

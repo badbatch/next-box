@@ -1,98 +1,90 @@
-import { Core as Cachemap } from '@cachemap/core';
-import { isFunction, memoize } from 'lodash-es';
-import { type FC, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type Core as Cachemap } from '@cachemap/core';
+import { type FC, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { loadStorageAndRetrieveHistory } from '#helpers/loadStorageAndRetrieveHistory.ts';
 import { BreadcrumbContext } from './BreadcrumbContext.ts';
+import { buildBreadcrumb } from './helpers/buildBreadcrumb.ts';
 import { collateHistory } from './helpers/collateHistory.ts';
-import { createBreadcrumbs } from './helpers/createBreadcrumbs.ts';
-import { type BreadcrumbEntry, type LabelMapperEntry, type TransformCallback, type Transforms } from './types.ts';
+import { type BreadcrumbItem, type BreadcrumbRouteRule, type OnBreadcrumbLinkClick } from './types.ts';
 
 export type BreadcrumbProviderProps = {
   children: ReactNode;
-  /**
-   * Name of query params to exclude from href
-   * used in the link of each breadcrumb.
-   */
-  excludeQueryParams?: string[];
-  labelMapper: Record<string, LabelMapperEntry>;
+  currentPathname: string;
+  initialHistory?: string[];
   maxHistory?: number;
-  pathname: string;
   rootPath?: string;
+  routeRules: BreadcrumbRouteRule[];
   search?: string;
-  transforms?: Transforms | (() => Transforms);
-};
-
-const memoriseTransforms = (transforms: Transforms): Record<string, TransformCallback & ReturnType<typeof memoize>> => {
-  const entries = Object.entries(transforms);
-
-  if (entries.length === 0) {
-    return {};
-  }
-
-  return Object.fromEntries(entries.map(([key, value]) => [key, memoize(value)]));
 };
 
 export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
   children,
-  excludeQueryParams = [],
-  labelMapper,
+  currentPathname,
+  initialHistory,
   maxHistory = 10,
-  pathname,
   rootPath = '/',
+  routeRules,
   search,
-  transforms = {},
 }) => {
   const cachemapRef = useRef<Cachemap>(undefined);
   const historyRef = useRef<string[]>([]);
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbEntry[]>([]);
-  const memorisedTransformsRef = useRef<Transforms>({});
-  const [cachemapInitialised, setCachemapInitialised] = useState(false);
+  const [breadcrumb, setBreadcrumb] = useState<BreadcrumbItem[]>([]);
+  const [error, setError] = useState<Error | undefined>();
+  const [activeBreadcrumbItem, setActiveBreadcrumbItem] = useState<BreadcrumbItem | undefined>();
 
-  useEffect(() => {
-    void (async (): Promise<void> => {
-      const { init: webStorage } = await import('@cachemap/web-storage');
+  if (error) {
+    throw error;
+  }
 
-      cachemapRef.current = new Cachemap({
-        name: 'breadcrumb',
-        store: webStorage({ storageType: 'session' }),
-        type: 'breadcrumb',
-      });
+  const setCachemapAndInitialHistory = useCallback(async (): Promise<void> => {
+    try {
+      const [cachemap, history] = await loadStorageAndRetrieveHistory(currentPathname, initialHistory);
+      cachemapRef.current = cachemap;
+      historyRef.current = history;
+    } catch (error_: unknown) {
+      setError(
+        new Error('There was a problem loading breadcrumb storage and/or retrieving history', { cause: error_ }),
+      );
+    }
 
-      const cachedHistory = await cachemapRef.current.get<string[]>('history');
-
-      if (cachedHistory) {
-        const lastEntry = cachedHistory.at(-1);
-
-        if (lastEntry && new URL(lastEntry, location.origin).pathname === pathname) {
-          historyRef.current = cachedHistory;
-        } else {
-          void cachemapRef.current.clear();
-        }
-      }
-
-      memorisedTransformsRef.current = memoriseTransforms(isFunction(transforms) ? transforms() : transforms);
-      setCachemapInitialised(true);
-    })();
-
-    // We only want this to run on initial render.
+    // We only want to memorize on initial render
     // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
   }, []);
 
+  const setBreadcrumbAndHistory = useCallback(async (): Promise<void> => {
+    const history = collateHistory(historyRef.current, {
+      activeBreadcrumbItem,
+      currentPathname,
+      maxHistory,
+      rootPath,
+      search,
+    });
+
+    const breadcrumbEntries = await buildBreadcrumb(routeRules, history);
+    historyRef.current = history;
+    // setBreadcrumbAndHistory is called below after checking whether
+    // cachemapRef.current is defined.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    void cachemapRef.current!.set('history', history);
+    setBreadcrumb(breadcrumbEntries);
+  }, [activeBreadcrumbItem, currentPathname, maxHistory, rootPath, routeRules, search]);
+
+  const onBreadcrumbLinkClick = useCallback<OnBreadcrumbLinkClick>(
+    breadcrumbItem => {
+      setActiveBreadcrumbItem(breadcrumbItem);
+    },
+    [setActiveBreadcrumbItem],
+  );
+
   useEffect(() => {
-    void (async (): Promise<void> => {
-      if (!cachemapInitialised) {
-        return;
-      }
+    // This refers to setting the error into state, which we need to do in
+    // order for the error to bubble up to the closest error boundary.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void setCachemapAndInitialHistory();
+  }, [setCachemapAndInitialHistory]);
 
-      historyRef.current = collateHistory(historyRef.current, { maxHistory, pathname, rootPath, search });
-      void cachemapRef.current?.set('history', historyRef.current);
+  useEffect(() => {
+    void setBreadcrumbAndHistory();
+  }, [setBreadcrumbAndHistory]);
 
-      setBreadcrumbs(
-        await createBreadcrumbs(historyRef.current, labelMapper, excludeQueryParams, memorisedTransformsRef.current),
-      );
-    })();
-    // We only want to re-execute when pathname or search changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
-  }, [pathname, search, cachemapInitialised]);
-
-  return <BreadcrumbContext value={{ breadcrumbs }}>{children}</BreadcrumbContext>;
+  return <BreadcrumbContext value={{ breadcrumb, onBreadcrumbLinkClick }}>{children}</BreadcrumbContext>;
 };

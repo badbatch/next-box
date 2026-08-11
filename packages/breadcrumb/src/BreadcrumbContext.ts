@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { type BreadcrumbEntry } from './types.ts';
+import { type BreadcrumbItem, type OnBreadcrumbLinkClick } from './types.ts';
 
 export type BreadcrumbConfig = {
-  breadcrumbs: BreadcrumbEntry[];
+  breadcrumb: BreadcrumbItem[];
+  onBreadcrumbLinkClick?: OnBreadcrumbLinkClick;
 };
 
-export const BreadcrumbContext = createContext<BreadcrumbConfig>({ breadcrumbs: [] });
+export const BreadcrumbContext = createContext<BreadcrumbConfig>({ breadcrumb: [] });

@@ -1,21 +1,15 @@
-import { type Promisable } from 'type-fest';
+import { type MouseEvent } from 'react';
 
-export type BreadcrumbEntry = {
+export type BreadcrumbItem = {
   href: string;
+  index: number;
   label: string;
 };
 
-export type LabelMapperEntryOptions = {
-  /**
-   * Name of query params to exclude from href
-   * used in the link of these breadcrumb.
-   */
-  excludeQueryParams?: string[];
-  transforms?: string[];
-};
+export interface BreadcrumbRouteRule {
+  regex: string;
+  resolve: (captured?: Record<string, unknown>) => string;
+  searchParmExclusions?: string[];
+}
 
-export type LabelMapperEntry = string | [string, LabelMapperEntryOptions];
-
-export type TransformCallback = (value: Record<string, unknown>) => Promisable<Record<string, string | undefined>>;
-
-export type Transforms = Record<string, TransformCallback>;
+export type OnBreadcrumbLinkClick = (breadcrumbEntry: BreadcrumbItem, event: MouseEvent<HTMLAnchorElement>) => void;
