@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 (2026-08-11)
+
+### Refactors
+
+* **breadcrumb:**  restructure code ([7ddf24ac](https://github.com/badbatch/next-box/commit/7ddf24acea6ab4f1afbf2d669e2116486e4725f0))
+* **root:**  upgrade deps and fix linting and other issues ([d77837d4](https://github.com/badbatch/next-box/commit/d77837d4fef4a2782d9c3e89b173fa3b598050eb))
+
 ## 0.1.3 (2026-02-24)
 
 ### Bug Fixes
