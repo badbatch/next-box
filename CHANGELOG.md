@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (2026-08-24)
+
+### Chores
+
+* **root:**  update npm publishing workflow ([1ba4e15c](https://github.com/badbatch/next-box/commit/1ba4e15ca4e9c4a7139289460f2431ebfeedbef3))
+
 ## 0.2.0 (2026-08-11)
 
 ### Refactors
