@@ -1,7 +1,7 @@
 {
   "name": "@next-box/breadcrumb",
   "description": "A library for creating a breadcrumb for use in React applications.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "miami-man",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",

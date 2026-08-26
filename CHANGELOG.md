@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 (2026-08-26)
+
+### Bug Fixes
+
+* **breadcrumb:**  update type of rule ([127cf08b](https://github.com/badbatch/next-box/commit/127cf08bbfa3922eb5ad3db44f802cb867cbfcfc))
+
 ## 0.2.4 (2026-08-26)
 
 ### Bug Fixes
