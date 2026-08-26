@@ -8,7 +8,7 @@ export type BreadcrumbItem = {
 
 export interface BreadcrumbRouteRule {
   regex: string;
-  resolve: (captured?: Record<string, unknown>) => string;
+  resolve: <T extends Record<string, unknown>>(captured?: T) => string;
   searchParmExclusions?: string[];
 }
 
