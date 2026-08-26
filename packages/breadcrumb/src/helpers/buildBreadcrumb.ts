@@ -22,7 +22,7 @@ export const buildBreadcrumb = async (
     items.push({
       href: removeExcludedQueryParams(entry, [...searchParmExclusions]),
       index,
-      label: await Promise.resolve(resolve(result?.groups)),
+      label: await Promise.resolve(resolve(result?.groups ?? {})),
     });
   }
 

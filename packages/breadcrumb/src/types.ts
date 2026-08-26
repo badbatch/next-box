@@ -11,7 +11,7 @@ export interface BreadcrumbRouteRule {
   regex: string;
   // Need to keep this as permissable as possible
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve: (captured?: Record<string, any>) => Promisable<string>;
+  resolve: (captured: Record<string, any>) => Promisable<string>;
   searchParmExclusions?: string[];
 }
 
