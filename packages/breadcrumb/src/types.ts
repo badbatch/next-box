@@ -7,11 +7,9 @@ export type BreadcrumbItem = {
   label: string;
 };
 
-export interface BreadcrumbRouteRule {
+export interface BreadcrumbRouteRule<T extends Record<string, unknown> = Record<string, unknown>> {
   regex: string;
-  // Need to keep this as permissable as possible
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve: (captured: Record<string, any>) => Promisable<string>;
+  resolve: (captured: T) => Promisable<string>;
   searchParmExclusions?: string[];
 }
 
