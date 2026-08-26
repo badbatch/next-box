@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2 (2026-08-26)
+
+### Bug Fixes
+
+* **breadcrumb:**
+  * add CreateRouteRules generic ([e53ec85c](https://github.com/badbatch/next-box/commit/e53ec85cb7c25827b7ce6e84f091b6e661a1ef10))
+  * make resolve type generic ([9f37c3d6](https://github.com/badbatch/next-box/commit/9f37c3d64542ce0c768f515a667d1c4b775a160e))
+
 ## 0.2.1 (2026-08-24)
 
 ### Chores
