@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.4 (2026-08-26)
+
+### Bug Fixes
+
+* **breadcrumb:**  update resolve arg type ([15642126](https://github.com/badbatch/next-box/commit/15642126efb9bfdf600639a163c28932ceb983cd))
+
 ## 0.2.3 (2026-08-26)
 
 ### Bug Fixes
