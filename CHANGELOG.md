@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.7 (2026-08-29)
+
+### Refactors
+
+* **breadcrumb:**  change how rules are configured and applied ([8e1d493f](https://github.com/badbatch/next-box/commit/8e1d493f04b33ed35c79e83fdef51284d6ac2d6e))
+
 ## 0.2.6 (2026-08-29)
 
 ### Bug Fixes
