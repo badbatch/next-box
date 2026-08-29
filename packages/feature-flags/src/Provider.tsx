@@ -1,11 +1,8 @@
 import { type FC, type ReactNode } from 'react';
 import { createContext } from 'react';
-import { getFeatureFlagsInBrowser } from '#helpers/getFeatureFlagsInBrowser.ts';
-import { type FeatureFlags } from '#types.ts';
-
-export type FeatureFlagContext = {
-  flags: FeatureFlags;
-};
+import { type ClientFilter } from '#ClientFilter.ts';
+import { getFeatureFlagStateInBrowser } from '#helpers/getFeatureFlagStateInBrowser.ts';
+import { type FeatureFlagContext, type FeatureFlags } from '#types.ts';
 
 // Context requires an initial value, but this is set in the provider so casting
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -13,10 +10,19 @@ export const Context = createContext<FeatureFlagContext>({} as FeatureFlagContex
 
 export type FeatureFlagProviderProps = {
   children: ReactNode;
+  // This needs to be kept as permissive as possible.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  clientFilters?: ClientFilter<any>[];
   envs: Record<string, string | undefined>;
+  featureFlags: FeatureFlags;
 };
 
-export const FeatureFlagProvider: FC<FeatureFlagProviderProps> = ({ children, envs }) => {
-  const flags = getFeatureFlagsInBrowser(envs);
-  return <Context value={{ flags }}>{children}</Context>;
+export const FeatureFlagProvider: FC<FeatureFlagProviderProps> = ({
+  children,
+  clientFilters = [],
+  envs,
+  featureFlags,
+}) => {
+  const flags = getFeatureFlagStateInBrowser(featureFlags, envs);
+  return <Context value={{ clientFilters, flags }}>{children}</Context>;
 };
