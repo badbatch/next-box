@@ -42,6 +42,7 @@ export const collateHistory = (
       newHistory.splice(activeBreadcrumbItem.index + 1);
     } else if (!isEntryWithPathnameLastInHistory(indexOfEntryWithCurrentPathname)) {
       newHistory.push(href);
+      newHistory.splice(indexOfEntryWithCurrentPathname, 1);
     }
   } else {
     newHistory.push(href);
