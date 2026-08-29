@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.11 (2026-08-29)
+
+### New Features
+
+* **breadcrumb:**  add onHistoryChange callback ([2cb3ba9c](https://github.com/badbatch/next-box/commit/2cb3ba9cd8928939e3c0ce1ed6a1f93c63beb727))
+
 ## 0.2.10 (2026-08-29)
 
 ### Bug Fixes
