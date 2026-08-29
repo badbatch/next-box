@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.12 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  change splice index in breadcrumb history ([1609ef88](https://github.com/badbatch/next-box/commit/1609ef88b8d8b5cc951dd37b412092c073766641))
+
 ## 0.2.11 (2026-08-29)
 
 ### New Features
