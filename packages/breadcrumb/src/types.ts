@@ -12,6 +12,8 @@ export interface BreadcrumbRouteRule<T extends object = object> {
   resolve: (captured: T, existing: BreadcrumbItem) => Promisable<BreadcrumbItem>;
 }
 
-export type CreateRouteRules<T extends object = object> = (options: T) => BreadcrumbRouteRule[];
+// Needs to be as generic as possible
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CreateRouteRules<T extends object = object> = (options: T) => BreadcrumbRouteRule<any>[];
 
 export type OnBreadcrumbLinkClick = (breadcrumbEntry: BreadcrumbItem, event: MouseEvent<HTMLAnchorElement>) => void;
