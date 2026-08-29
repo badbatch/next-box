@@ -11,6 +11,7 @@ export type BreadcrumbProviderProps = {
   currentPathname: string;
   initialHistory?: string[];
   maxHistory?: number;
+  onHistoryChange?: (history: string[]) => void;
   rootPath?: string;
   routeRules: BreadcrumbRouteRule[];
   search?: string;
@@ -21,6 +22,7 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
   currentPathname,
   initialHistory,
   maxHistory = 10,
+  onHistoryChange,
   rootPath = '/',
   routeRules,
   search,
@@ -46,11 +48,12 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
 
     const breadcrumbEntries = await buildBreadcrumb(routeRules, history);
     historyRef.current = history;
+    onHistoryChange?.(history);
     // Adding defensive coding, but setBreadcrumbAndHistory is called below
     // after checking whether cachemapRef.current is defined.
     await cachemapRef.current?.set('history', history);
     setBreadcrumb(breadcrumbEntries);
-  }, [activeBreadcrumbItem, currentPathname, maxHistory, rootPath, routeRules, search]);
+  }, [activeBreadcrumbItem, currentPathname, maxHistory, onHistoryChange, rootPath, routeRules, search]);
 
   const setCachemapAndInitialHistory = useCallback(async (): Promise<void> => {
     try {
