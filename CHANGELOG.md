@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.6 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  update BreadcrumbRouteRule generics ([f1649b57](https://github.com/badbatch/next-box/commit/f1649b57e5f115a05ae88467413fd8af06052171))
+
 ## 0.2.5 (2026-08-26)
 
 ### Bug Fixes
