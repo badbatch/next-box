@@ -8,12 +8,32 @@ import { type BreadcrumbItem, type BreadcrumbRouteRule, type OnBreadcrumbLinkCli
 
 export type BreadcrumbProviderProps = {
   children: ReactNode;
+  /**
+   * The pathname of the current browser URL.
+   */
   currentPathname: string;
+  /**
+   * Use this to import history.
+   */
   initialHistory?: string[];
+  /**
+   * Maximum number of entries in history before it starts
+   * dropping entries.
+   */
   maxHistory?: number;
+  /**
+   * If you plan to export the history and re-import it,
+   * use `onHistoryChange` to keep track of the history.
+   */
   onHistoryChange?: (history: string[]) => void;
   rootPath?: string;
+  /**
+   * The rules to be run on each entry in the history.
+   */
   routeRules: BreadcrumbRouteRule[];
+  /**
+   * The query string.
+   */
   search?: string;
 };
 
