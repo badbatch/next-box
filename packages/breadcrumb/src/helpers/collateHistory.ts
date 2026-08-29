@@ -39,7 +39,7 @@ export const collateHistory = (
     if (didBreadcrumbClickTriggerPathnameChange(currentPathname, activeBreadcrumbItem)) {
       // If user has selected breadcrumb link, this node should become
       // the new breadcrumb leaf node.
-      newHistory.splice(activeBreadcrumbItem.index);
+      newHistory.splice(activeBreadcrumbItem.index + 1);
     } else if (!isEntryWithPathnameLastInHistory(indexOfEntryWithCurrentPathname)) {
       newHistory.push(href);
     }
