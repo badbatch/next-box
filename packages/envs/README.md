@@ -9,7 +9,7 @@ Accessing environment variables on the client in Next.js is not as straight forw
 
 This library tries to make the process as frictionless as possible and give you a consistent way of accessing environment variables anywhere in your "frontend" code.
 
-> It is important to understand when deploying your application with Docker that the Next.js/Webpack mechanism of inlining env vars at build time doesn't work. This is because you typically build a Docker image once and promote it through your environments and in each environment you will likely want different values for the same env vars.
+> When deploying a Next.js application with Docker, it’s important to distinguish between build-time and runtime environment variables. Variables prefixed with NEXT_PUBLIC_ are inlined into the client-side JavaScript bundle during `next build`, so their values are frozen into the Docker image and cannot vary between environments when the same image is promoted.
 
 ## Installation
 
@@ -128,7 +128,7 @@ const worker = new Worker(new URL('worker.ts', import.meta.url));
 sendEnvsToWorker(worker);
 ```
 
-In your worker file, you can then use `setWorkerEnvs` to listen for the message from the main thread and set the received environment variables onto the workers `globalThis.env`. The function accepts a callback it will execute once the environment variables are set. This is useful to run defer running code that depends the environment variables.
+In your worker file, you can then use `setWorkerEnvs` to listen for the message from the main thread and set the received environment variables onto the workers `globalThis.env`. The function accepts a callback it will execute once the environment variables are set. This is useful to defer running code that depends on the environment variables.
 
 ```ts
 import { setWorkerEnvs } from '@next-box/envs';
