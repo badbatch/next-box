@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.13 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  more changes to collage history logic ([7b996d96](https://github.com/badbatch/next-box/commit/7b996d969902f05e6b728a159bbf24adf42589b9))
+
 ## 0.2.12 (2026-08-29)
 
 ### Bug Fixes
