@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.9 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  change how effects are triggered ([05310567](https://github.com/badbatch/next-box/commit/053105679ca79dcebeda321f0cc5336e5c5fcbee))
+
 ## 0.2.8 (2026-08-29)
 
 ### Bug Fixes
