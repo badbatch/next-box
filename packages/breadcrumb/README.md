@@ -187,7 +187,7 @@ You can call the `useBreadcrumb` hook in your breadcrumb component and use the `
 
 Remember to pass down the `onBreadcrumbLinkClick` callback to your breadcrumb item links.
 
-Below is a basic example of how you could use the `breadcrumb` config to generate a basic breadcrumb. 
+Below is a basic example of how you could use the `breadcrumb` config to generate a basic breadcrumb.
 
 ```tsx
 import { useBreadcrumb } from '@next-box/breadcrumb';
