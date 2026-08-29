@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.10 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  href not pushed to history in certain scenarios ([ce64042d](https://github.com/badbatch/next-box/commit/ce64042d22d64c4b9c5be5245c53f2a9ff2509b9))
+
 ## 0.2.9 (2026-08-29)
 
 ### Bug Fixes
