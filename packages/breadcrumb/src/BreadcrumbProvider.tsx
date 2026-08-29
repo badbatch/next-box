@@ -35,21 +35,6 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
     throw error;
   }
 
-  const setCachemapAndInitialHistory = useCallback(async (): Promise<void> => {
-    try {
-      const [cachemap, history] = await loadStorageAndRetrieveHistory(currentPathname, initialHistory);
-      cachemapRef.current = cachemap;
-      historyRef.current = history;
-    } catch (error_: unknown) {
-      setError(
-        new Error('There was a problem loading breadcrumb storage and/or retrieving history', { cause: error_ }),
-      );
-    }
-
-    // We only want to memorize on initial render
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
-  }, []);
-
   const setBreadcrumbAndHistory = useCallback(async (): Promise<void> => {
     const history = collateHistory(historyRef.current, {
       activeBreadcrumbItem,
@@ -61,12 +46,28 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
 
     const breadcrumbEntries = await buildBreadcrumb(routeRules, history);
     historyRef.current = history;
-    // setBreadcrumbAndHistory is called below after checking whether
-    // cachemapRef.current is defined.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    void cachemapRef.current!.set('history', history);
+    // Adding defensive coding, but setBreadcrumbAndHistory is called below
+    // after checking whether cachemapRef.current is defined.
+    await cachemapRef.current?.set('history', history);
     setBreadcrumb(breadcrumbEntries);
   }, [activeBreadcrumbItem, currentPathname, maxHistory, rootPath, routeRules, search]);
+
+  const setCachemapAndInitialHistory = useCallback(async (): Promise<void> => {
+    try {
+      const [cachemap, history] = await loadStorageAndRetrieveHistory(currentPathname, initialHistory);
+      cachemapRef.current = cachemap;
+      historyRef.current = history;
+
+      await setBreadcrumbAndHistory();
+    } catch (error_: unknown) {
+      setError(
+        new Error('There was a problem loading breadcrumb storage and/or retrieving history', { cause: error_ }),
+      );
+    }
+
+    // We only want to memorize on initial render
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
+  }, []);
 
   const onBreadcrumbLinkClick = useCallback<OnBreadcrumbLinkClick>(
     breadcrumbItem => {
@@ -83,6 +84,10 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
   }, [setCachemapAndInitialHistory]);
 
   useEffect(() => {
+    if (!cachemapRef.current) {
+      return;
+    }
+
     void setBreadcrumbAndHistory();
   }, [setBreadcrumbAndHistory]);
 
