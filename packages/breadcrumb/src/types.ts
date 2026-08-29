@@ -9,8 +9,7 @@ export type BreadcrumbItem = {
 
 export interface BreadcrumbRouteRule<T extends object = object> {
   regex: string;
-  resolve: (captured: T) => Promisable<string>;
-  searchParmExclusions?: string[];
+  resolve: (captured: T, existing: BreadcrumbItem) => Promisable<BreadcrumbItem>;
 }
 
 export type CreateRouteRules<T extends object = object> = (options: T) => BreadcrumbRouteRule[];

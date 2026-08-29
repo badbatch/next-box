@@ -1,5 +1,4 @@
 import { type BreadcrumbItem, type BreadcrumbRouteRule } from '../types.ts';
-import { removeExcludedQueryParams } from './removeExcludedQueryParams.ts';
 
 export const buildBreadcrumb = async (
   routeRules: BreadcrumbRouteRule[],
@@ -9,21 +8,24 @@ export const buildBreadcrumb = async (
 
   for (const [index, entry] of history.entries()) {
     // We only apply the first matching rule
-    const matchingRule = routeRules.find(rule => new RegExp(rule.regex).test(entry));
+    const matchingRules = routeRules.filter(rule => new RegExp(rule.regex).test(entry));
 
-    if (!matchingRule) {
+    if (matchingRules.length === 0) {
       continue;
     }
 
-    const { regex, resolve, searchParmExclusions = [] } = matchingRule;
-    const items: BreadcrumbItem[] = [];
-    const result = new RegExp(regex).exec(entry);
-
-    items.push({
-      href: removeExcludedQueryParams(entry, [...searchParmExclusions]),
+    let item: BreadcrumbItem = {
+      href: entry,
       index,
-      label: await Promise.resolve(resolve(result?.groups ?? {})),
-    });
+      label: '',
+    };
+
+    for (const rule of matchingRules) {
+      const result = new RegExp(rule.regex).exec(entry);
+      item = await Promise.resolve(rule.resolve(result?.groups ?? {}, item));
+    }
+
+    breadcrumbItems.push(item);
   }
 
   return breadcrumbItems;
