@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.8 (2026-08-29)
+
+### Bug Fixes
+
+* **breadcrumb:**  make CreateRouteRules return type super generic ([78b00965](https://github.com/badbatch/next-box/commit/78b009652439955fed7dce6adb036ed9d2282cdc))
+
 ## 0.2.7 (2026-08-29)
 
 ### Refactors
