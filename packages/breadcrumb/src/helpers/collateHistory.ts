@@ -43,6 +43,8 @@ export const collateHistory = (
     } else if (!isEntryWithPathnameLastInHistory(indexOfEntryWithCurrentPathname)) {
       newHistory.push(href);
     }
+  } else {
+    newHistory.push(href);
   }
 
   // This check is to cater for scenario where a user has gone directly to a page,
