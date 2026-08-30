@@ -1,9 +1,9 @@
-import { type FeatureFlagClientFilter, type FeatureFlagContext } from '#types.ts';
+import { type ClientFilterConfig, type FeatureFlagContext } from '#types.ts';
 
 export const createIsFeatureOn =
-  ({ clientFilters, flags }: FeatureFlagContext) =>
+  ({ clientFilters, featureFlags }: FeatureFlagContext) =>
   (feature: string): boolean => {
-    const flag = flags[feature];
+    const flag = featureFlags[feature];
 
     if (!flag) {
       return false;
@@ -20,7 +20,7 @@ export const createIsFeatureOn =
 
       // This needs to be kept as permissive as possible.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const areConditionsMet = (filterConfig: FeatureFlagClientFilter<any>): boolean => {
+      const areConditionsMet = (filterConfig: ClientFilterConfig<any>): boolean => {
         const clientFilter = clientFilters.find(f => f.name === filterConfig.name);
         return clientFilter?.resolve(filterConfig.parameters) ?? false;
       };

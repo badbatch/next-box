@@ -2,14 +2,14 @@
 
 A library for implementing a breadcrumb in React applications.
 
-[![npm version](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb.svg)](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb)
+[![npm version](https://badge.fury.io/js/%40next-box%2Fbreadcrumb.svg)](https://badge.fury.io/js/%40next-box%2Fbreadcrumb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Implementing and managing a breadcrumb for an application can be time-consuming and complicated. This library tries to simplify the implementation and management through a set of configurable rules that run against a browser route. Rules support regular expression named capture groups, dynamic data fetching, and more.
+Implementing and managing a breadcrumb for an application can be time-consuming and complicated. This library simplifies breadcrumb implementation and management through a set of configurable rules that run against route paths and query strings. Rules support regular expression named capture groups, dynamic data fetching, and more.
 
-Rules can be structured per browser route or across browser routes via each rule's regex pattern, whatever makes sense for an application. All rules will be run against each browser route and each matching rule will be applied to a route in the order they are defined.
+Rules can be structured per route or across multiple routes via each rule's regex pattern, whatever makes sense for an application. All rules are run against each history entry, and each matching rule is applied to that entry in the order the rules are defined.
 
-The library tracks a user's journey through an application and saves the data to session storage. It exposes the data via a React hook, which a consumer can pass to their own breadcrumb component to render. To track the user's journey between sessions, the library supports exporting and importing the breadcrumb history via a React context.
+The library maintains a user's breadcrumb history and saves it to `sessionStorage`. It exposes the generated breadcrumb via a React hook, which consumers can use to render their own breadcrumb component. To persist breadcrumb history beyond the current browser session, the library supports exporting and importing the history via the provider.
 
 ## Installation
 
@@ -24,16 +24,58 @@ npm add @next-box/breadcrumb
 
 To use the breadcrumb, start by wrapping your React application, or the relevant part of it, in the `BreadcrumbProvider`. You must supply `currentPathname` and `routeRules`.
 
-```tsx
-import { BreadcrumbProvider } from '@next-box/breadcrumb';
+You need to create a client wrapper for `BreadcrumbProvider` or nest it within a client component because it uses React context and is exported as part of a Rollup bundle. The published bundle does not preserve the `'use client'` directive in a way that allows Next.js to treat `BreadcrumbProvider` itself as a Client Component.
 
-<BreadcrumbProvider
-  currentPathname={pathname}
-  routeRules={createRouteRules({ client })}
-  search={searchParams.toString()}
->
-  <App />
-</BreadcrumbProvider>
+```tsx
+// ./BreadcrumbProviderWrapper.tsx
+'use client';
+
+import { BreadcrumbProvider, type BreadcrumbRouteRule } from '@next-box/breadcrumb';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { type ReactNode } from 'react';
+
+export const BreadcrumbProviderWrapper = ({
+  children,
+  routeRules,
+}: {
+  children: ReactNode;
+  routeRules: BreadcrumbRouteRule[];
+}) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  return (
+    <BreadcrumbProvider
+      currentPathname={pathname}
+      routeRules={routeRules}
+      search={searchParams.toString()}
+    >
+      {children}
+    </BreadcrumbProvider>
+  );
+};
+```
+
+```tsx
+// ./layout.tsx
+import { BreadcrumbProviderWrapper } from '#BreadcrumbProviderWrapper.tsx';
+import { createRouteRules } from '#createRouteRules.ts';
+
+const RootLayout = ({ children }: RootLayoutProps) => {
+  return (
+    <html lang="en">
+      <body>
+        <BreadcrumbProviderWrapper
+          routeRules={createRouteRules({ client })}
+        >
+          {children}
+        </BreadcrumbProviderWrapper>
+      </body>
+    </html>
+  );
+};
+
+export default RootLayout;
 ```
 
 ```ts
@@ -44,7 +86,8 @@ type BreadcrumbProviderProps = {
    */
   currentPathname: string;
   /**
-   * Use this to import history.
+   * Initial breadcrumb history, for example history
+   * previously exported by the provider.
    */
   initialHistory?: string[];
   /**
@@ -53,17 +96,18 @@ type BreadcrumbProviderProps = {
    */
   maxHistory?: number;
   /**
-   * If you plan to export the history and re-import it,
-   * use `onHistoryChange` to keep track of the history.
+   * Called whenever the history changes. Use this to keep
+   * track of the history if you plan to export and
+   * re-import it.
    */
   onHistoryChange?: (history: string[]) => void;
   rootPath?: string;
   /**
-   * The rules to be run on each entry in the history.
+   * The rules to run against each entry in the history.
    */
   routeRules: BreadcrumbRouteRule[];
   /**
-   * The query string.
+   * The query string of the current URL.
    */
   search?: string;
 };
@@ -71,13 +115,13 @@ type BreadcrumbProviderProps = {
 
 ### `routeRules`
 
-Route rules are core to how the breadcrumb works. You supply a list of rules that run against each entry in the history and have the ability to generate/enrich the text for the breadcrumb label and modify the href.
+Route rules are core to how the breadcrumb works. You supply a list of rules that run against each entry in the history and have the ability to generate or enrich the text for the breadcrumb label and modify the href.
 
-The rule matching is done with a regular expression run against each url in the history. We make use of named capture groups and these then become the properties for the `captured` object passed to the `resolve` function.
+Rule matching is performed using a regular expression against each history entry. Named capture groups from the regular expression become the properties of the `captured` object passed to the `resolve` function.
 
-The `resolve` function also gets the existing breadcrumb item, if one exists, because the rules are additive. All matching rules run against a history entry get run in the order they were defined and each one must return a `BreadcrumbItem`.
+The `resolve` function also receives the existing `BreadcrumbItem`, if one exists, because rules are additive. All rules that match a history entry are run in the order they were defined, and each resolver must return the resulting `BreadcrumbItem`.
 
-A rule has the ability to update or overwrite a `BreadcrumbItem` property, and you have control over what rules are configured and in what order.
+A rule can update or overwrite any `BreadcrumbItem` property, and you have control over which rules are configured and the order in which they are applied.
 
 ```ts
 interface BreadcrumbRouteRule<T extends object = object> {
@@ -92,9 +136,9 @@ type BreadcrumbItem = {
 };
 ```
 
-We provide a `CreateRouteRules` type for the pattern of defining your route rules in a function so you can provide your resolvers scope of things such as fetch clients, loggers, etc.
+We provide a `CreateRouteRules` type for the pattern of defining your route rules in a function so you can provide your resolvers with access to things such as fetch clients and loggers.
 
-The `resolve` function supports sync and async so it is possible to fetch data using the URL parts captured by the regex.
+The `resolve` function supports both synchronous and asynchronous implementations, so it is possible to fetch data using the URL parts captured by the regex.
 
 ```ts
 import { type BreadcrumbRouteRule, type CreateRouteRules } from '@next-box/breadcrumb';
@@ -121,12 +165,12 @@ export const createRouteRules: CreateRouteRules<CreateRouteRulesOptions> = ({ cl
   };
 
   const searchBreadcrumbRule: BreadcrumbRouteRule<{ keyphrase?: string }> = {
-    regex: String.raw`/search-results\?\S*keyphrase=(?<keyphrase>[^&]+)`,
+    regex: String.raw`/search-results\?(?:[^&]*&)*keyphrase=(?<keyphrase>[^&]+)(?:&[^&]*)*`,
     resolve: ({ keyphrase }, existingItem) => {
       let label = 'Search results';
 
       if (keyphrase) {
-        label += ` for "${startCase(keyphrase.replace('+', ' '))}"`;
+        label += ` for "${startCase(keyphrase.replaceAll('+', ' '))}"`;
       }
 
       return {
@@ -139,13 +183,19 @@ export const createRouteRules: CreateRouteRules<CreateRouteRulesOptions> = ({ cl
   const discoverBreadcrumbRule: BreadcrumbRouteRule<{ type?: string }> = {
     regex: String.raw`/discover/(?<type>[^?]*)`,
     resolve: ({ type = DiscoverTypeRoute.Movies }, existingItem) => {
-      return { ...existingItem, label: `Discover ${mapDiscoverTypeRouteToDiscoverTypeLabel(type)}` };
+      return {
+        ...existingItem,
+        label: `Discover ${mapDiscoverTypeRouteToDiscoverTypeLabel(type)}`,
+      };
     },
   };
 
   const homeBreadcrumbRule: BreadcrumbRouteRule = {
     regex: String.raw`^/(?:\?.*)?$`,
-    resolve: (_capture, existingItem) => ({ ...existingItem, label: 'Home' }),
+    resolve: (_capture, existingItem) => ({
+      ...existingItem,
+      label: 'Home',
+    }),
   };
 
   const excludeSearchParamsRule: BreadcrumbRouteRule = {
@@ -164,20 +214,19 @@ export const createRouteRules: CreateRouteRules<CreateRouteRulesOptions> = ({ cl
     excludeSearchParamsRule,
   ];
 };
-
 ```
 
 ### `useBreadcrumb`
 
-The `BreadcrumbProvider` owns the history tracking and breadcrumb generation and makes that available to consumers via the `useBreadcrumb` hook. It returns the `BreadcrumbConfig` that includes the breadcrumb items and a callback to pass down to each breadcrumb link's onclick.
+The `BreadcrumbProvider` owns the history tracking and breadcrumb generation and makes the resulting configuration available to consumers via the `useBreadcrumb` hook. It returns a `BreadcrumbConfig` containing the breadcrumb items and a callback that can be passed to breadcrumb links.
 
 ```ts
 type BreadcrumbConfig = {
   breadcrumb: BreadcrumbItem[];
   /**
-   * Allows the `BreadcrumbProvider` to know if the
-   * change in history was triggered by clicking on
-   * one of its own links.
+   * Allows the BreadcrumbProvider to know when a history
+   * change was triggered by clicking one of its breadcrumb
+   * links.
    */
   onBreadcrumbLinkClick?: OnBreadcrumbLinkClick;
 };
@@ -185,17 +234,15 @@ type BreadcrumbConfig = {
 
 You can call the `useBreadcrumb` hook in your breadcrumb component and use the `breadcrumb` config to generate the components that make up your breadcrumb.
 
-Remember to pass down the `onBreadcrumbLinkClick` callback to your breadcrumb item links.
+Remember to pass the `onBreadcrumbLinkClick` callback to your breadcrumb item links so the provider can distinguish breadcrumb navigation from other history changes.
 
-Below is a basic example of how you could use the `breadcrumb` config to generate a basic breadcrumb.
+Below is a basic example of how you could use the `breadcrumb` config to generate a breadcrumb.
 
 ```tsx
 import { useBreadcrumb } from '@next-box/breadcrumb';
 
 export const Breadcrumb = () => {
   const { breadcrumb, onBreadcrumbLinkClick } = useBreadcrumb();
-  const pathname = usePathname();
-  const theme = useTheme();
 
   return (
     <Breadcrumbs
@@ -205,7 +252,7 @@ export const Breadcrumb = () => {
       {breadcrumb.map((item, index) =>
         index < breadcrumb.length - 1 ? (
           <TextLink
-            key={kebabCase(item.label)}
+            key={`${item.index}-${item.href}`}
             onClick={e => {
               onBreadcrumbLinkClick?.(item, e);
             }}
@@ -214,7 +261,9 @@ export const Breadcrumb = () => {
             {item.label}
           </TextLink>
         ) : (
-          <Typography key={kebabCase(item.label)}>{item.label}</Typography>
+          <Typography key={`${item.index}-${item.href}`}>
+            {item.label}
+          </Typography>
         ),
       )}
     </Breadcrumbs>

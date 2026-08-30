@@ -5,13 +5,19 @@ export const getFeatureFlagStateFromEnvs = (
   env: Record<string, string | undefined>,
   featureFlags: FeatureFlags,
 ): FeatureFlags => {
+  const clone = structuredClone(featureFlags);
+
   for (const [name, value] of Object.entries(env)) {
-    // Am okay with this.
-    // eslint-disable-next-line unicorn/no-computed-property-existence-check
-    if (name.startsWith(NEXT_PUBLIC_FF) && featureFlags[name]) {
-      featureFlags[name].enabled = value === 'true';
+    if (!name.startsWith(NEXT_PUBLIC_FF)) {
+      continue;
+    }
+
+    const featureFlagName = name.slice(NEXT_PUBLIC_FF.length);
+
+    if (Object.hasOwn(clone, featureFlagName) && clone[featureFlagName] !== undefined) {
+      clone[featureFlagName].enabled = value === 'true';
     }
   }
 
-  return featureFlags;
+  return clone;
 };

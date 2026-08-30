@@ -1,15 +1,15 @@
 # @next-box/envs
 
-A library for accessing environment variables in Next.js.
+A library for accessing public environment variables in Next.js.
 
-[![npm version](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb.svg)](https://badge.fury.io/js/%40dollygrip%2Fbreadcrumb)
+[![npm version](https://badge.fury.io/js/%40next-box%2Fenvs.svg)](https://badge.fury.io/js/%40next-box%2Fenvs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Accessing environment variables on the client in Next.js is not as straight forward as you might expect, especially if you deploy your application with Docker, use server components, need to access environment variables inside and outside React, etc, etc.
+Accessing environment variables on the client in Next.js is not as straightforward as you might expect, especially if you deploy your application with Docker, use server components, need to access environment variables inside and outside React, etc, etc.
 
-This library tries to make the process as frictionless as possible and give you a consistent way of accessing environment variables anywhere in your "frontend" code.
+This library tries to make the process as frictionless as possible and give you a consistent way of accessing **public** environment variables throughout your frontend code.
 
-> When deploying a Next.js application with Docker, it’s important to distinguish between build-time and runtime environment variables. Variables prefixed with NEXT_PUBLIC_ are inlined into the client-side JavaScript bundle during `next build`, so their values are frozen into the Docker image and cannot vary between environments when the same image is promoted.
+> When deploying a Next.js application with Docker, it’s important to distinguish between build-time and runtime environment variables. Variables prefixed with `NEXT_PUBLIC_` that are referenced directly by Next.js are inlined into the client-side JavaScript bundle during `next build`. Their values are therefore fixed at build time for that bundle, rather than being read from the environment when the application starts. This can be problematic when promoting the same Docker image between environments.
 
 ## Installation
 
@@ -26,7 +26,7 @@ There are two ways you can go about this with the library. The first is the more
 
 We recommend doing this in the root `layout.tsx` and passing the env vars down into our `EnvsProvider` context provider, from which you can then access the environment variables in any client React component with the `useEnvs` hook. Below is a basic example of what this might look like.
 
-You need to create a client wrapper for `EnvsProvider` or nest it with a client component because it uses React context and is exported as part of a Rollup bundle so cannot declare its down `'use client'` directive.
+You need to create a client wrapper for `EnvsProvider` or nest it within a client component because it uses React context and is exported as part of a Rollup bundle. The bundle does not preserve the `'use client'` directive in a way that allows Next.js to treat `EnvsProvider` itself as a Client Component.
 
 ```tsx
 // ./EnvsProviderWrapper.tsx
@@ -44,7 +44,7 @@ export const EnvsProviderWrapper = (props: EnvsProviderProps) => {
 import { getPublicEnvs } from '@next-box/envs/server';
 import { EnvsProviderWrapper } from './EnvsProviderWrapper.tsx';
 
-const RootLayout = async ({ children }: RootLayoutProps) => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   const envs = getPublicEnvs(process.env);
 
   return (
@@ -74,9 +74,11 @@ export const RandomComponent = () => {
 
 ### Outside React
 
-The other way of getting public env vars to the client is to use our `PublicEnvVarsScript` component. As it is a script, the component must be used within your root `layout.tsx`. With this approach, you pass public env vars into the component in a similar way to the previous example, however, you are able to access env vars outside React using the `getEnv` function.
+Another way to make public environment variables available to client-side code is to use the `PublicEnvVarsScript` component. Because the script needs to be rendered as part of the document, we recommend using the component in your root `layout.tsx`.
 
-The `PublicEnvVarsScript` component renders a script that runs before Next.js is initialised and adds the public env vars to `globalThis.env`.
+With this approach, you pass public env vars into the component in a similar way to the previous example. However, you are also able to access env vars outside React using the `getEnv` function.
+
+The `PublicEnvVarsScript` component renders a script that makes the public env vars available on `globalThis.env` before application code that depends on those values runs.
 
 ```tsx
 // ./layout.tsx
@@ -113,13 +115,15 @@ const languageCode = getEnv<'en' | 'fr'>('NEXT_PUBLIC_LANGUAGE_CODE');
 export const content = languages[languageCode];
 ```
 
-The other thing to note about `getEnv` is it works across Next.js environments. If `window` is defined, the function will get the env var from `globalThis.env`, but if `window` is not defined the function will get the env var from `process.env`.
+The other thing to note about `getEnv` is that it works across the environments supported by the library. In a browser environment where `window` is defined, the function gets the env var from `globalThis.env`. When `window` is not defined, the function gets the env var from `process.env`.
 
-> If you need to access env vars outside React, you can use both approaches in parallel or just use `PublicEnvVarsScript` and instead of passing the public env vars down into the `EnvsProviderWrapper`, just get the env vars from `globalThis.env` within the wrapper component and pass them down into `EnvsProvider`.
+> If you need to access env vars outside React, you can use both approaches in parallel. Alternatively, you can use `PublicEnvVarsScript` and, instead of passing the public env vars directly into the `EnvsProviderWrapper`, read them from `globalThis.env` within the wrapper component and pass them into `EnvsProvider`.
 
 ### In Web Workers
 
-You can also access environment variables in web workers through a couple of utility functions. In your main thread, pass the worker into `sendEnvsToWorker` as soon as it is initialised. The function takes the environment variables already assigned to `globalThis.env` and sends them to the worker thread.
+You can also access environment variables in web workers through a couple of utility functions. In your main thread, pass the worker into `sendEnvsToWorker` after the worker has been initialised. The function takes the public environment variables assigned to `globalThis.env` and sends them to the worker thread.
+
+This requires `globalThis.env` to have already been populated, for example by using `PublicEnvVarsScript`.
 
 ```ts
 import { sendEnvsToWorker } from '@next-box/envs';
@@ -128,7 +132,7 @@ const worker = new Worker(new URL('worker.ts', import.meta.url));
 sendEnvsToWorker(worker);
 ```
 
-In your worker file, you can then use `setWorkerEnvs` to listen for the message from the main thread and set the received environment variables onto the workers `globalThis.env`. The function accepts a callback it will execute once the environment variables are set. This is useful to defer running code that depends on the environment variables.
+In your worker file, you can then use `setWorkerEnvs` to listen for the message from the main thread and set the received environment variables onto the worker's `globalThis.env`. The function accepts a callback that it will execute once the environment variables are set. This is useful for deferring code that depends on the environment variables.
 
 ```ts
 import { setWorkerEnvs } from '@next-box/envs';

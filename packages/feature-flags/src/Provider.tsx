@@ -1,8 +1,9 @@
 import { type FC, type ReactNode } from 'react';
 import { createContext } from 'react';
 import { type ClientFilter } from '#ClientFilter.ts';
+import { featureFlagListToMap } from '#helpers/featureFlagListToMap.ts';
 import { getFeatureFlagStateInBrowser } from '#helpers/getFeatureFlagStateInBrowser.ts';
-import { type FeatureFlagContext, type FeatureFlags } from '#types.ts';
+import { type FeatureFlag, type FeatureFlagContext } from '#types.ts';
 
 // Context requires an initial value, but this is set in the provider so casting
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -14,15 +15,15 @@ export type FeatureFlagProviderProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   clientFilters?: ClientFilter<any>[];
   envs: Record<string, string | undefined>;
-  featureFlags: FeatureFlags;
+  featureFlags: FeatureFlag[];
 };
 
 export const FeatureFlagProvider: FC<FeatureFlagProviderProps> = ({
   children,
   clientFilters = [],
   envs,
-  featureFlags,
+  featureFlags: featureFlagList,
 }) => {
-  const flags = getFeatureFlagStateInBrowser(featureFlags, envs);
-  return <Context value={{ clientFilters, flags }}>{children}</Context>;
+  const featureFlags = getFeatureFlagStateInBrowser(featureFlagListToMap(featureFlagList), envs);
+  return <Context value={{ clientFilters, featureFlags }}>{children}</Context>;
 };
