@@ -208,11 +208,15 @@ Use the `requirementType` property on `FeatureFlagConditions` to control how mul
 
 This allows multiple conditions to be combined when determining whether a feature should be enabled.
 
+The `enabled` property controls whether the feature is enabled by default, while client filters provide additional conditions that must be satisfied. The feature is enabled only when its configured state and client filters evaluate to `true`.
+
 ### Enabling feature flags
 
 Feature flags are enabled through environment variables.
 
 For Next.js applications, the library uses public environment variables prefixed with `NEXT_PUBLIC_FF_`.
+
+> **Important:** Feature flags are exposed to client-side code and should not be used as a security or authorization boundary. Always enforce permissions and other security-sensitive behaviour on the server.
 
 The feature flag name is derived from the environment variable name. For example:
 

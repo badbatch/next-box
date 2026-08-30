@@ -5,9 +5,11 @@ A library for accessing public environment variables in Next.js.
 [![npm version](https://badge.fury.io/js/%40next-box%2Fenvs.svg)](https://badge.fury.io/js/%40next-box%2Fenvs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Accessing environment variables on the client in Next.js is not as straightforward as you might expect, especially if you deploy your application with Docker, use server components, need to access environment variables inside and outside React, etc, etc.
+Accessing environment variables on the client in Next.js is not as straightforward as you might expect, especially if you deploy your application with Docker, use server components, or need to access environment variables inside and outside React.
 
 This library tries to make the process as frictionless as possible and give you a consistent way of accessing **public** environment variables throughout your frontend code.
+
+> **Important:** Only expose environment variables that are safe to make available to client-side code. Never use this library to expose secrets or other sensitive server-side environment variables.
 
 > When deploying a Next.js application with Docker, it’s important to distinguish between build-time and runtime environment variables. Variables prefixed with `NEXT_PUBLIC_` that are referenced directly by Next.js are inlined into the client-side JavaScript bundle during `next build`. Their values are therefore fixed at build time for that bundle, rather than being read from the environment when the application starts. This can be problematic when promoting the same Docker image between environments.
 
@@ -76,9 +78,9 @@ export const RandomComponent = () => {
 
 Another way to make public environment variables available to client-side code is to use the `PublicEnvVarsScript` component. Because the script needs to be rendered as part of the document, we recommend using the component in your root `layout.tsx`.
 
-With this approach, you pass public env vars into the component in a similar way to the previous example. However, you are also able to access env vars outside React using the `getEnv` function.
+The component makes the public environment variables available on `globalThis.env` in the browser, allowing them to be accessed by code outside React components.
 
-The `PublicEnvVarsScript` component renders a script that makes the public env vars available on `globalThis.env` before application code that depends on those values runs.
+With this approach, you pass public env vars into the component in a similar way to the previous example. However, you are also able to access env vars outside React using the `getEnv` function.
 
 ```tsx
 // ./layout.tsx
