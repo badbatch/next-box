@@ -9,7 +9,7 @@ Accessing environment variables on the client in Next.js is not as straightforwa
 
 This library tries to make the process as frictionless as possible and give you a consistent way of accessing **public** environment variables throughout your frontend code.
 
-> **Important:** Only expose environment variables that are safe to make available to client-side code. Never use this library to expose secrets or other sensitive server-side environment variables.
+**Important: Only expose environment variables that are safe to make available to client-side code. Never use this library to expose secrets or other sensitive server-side environment variables.**
 
 > When deploying a Next.js application with Docker, it’s important to distinguish between build-time and runtime environment variables. Variables prefixed with `NEXT_PUBLIC_` that are referenced directly by Next.js are inlined into the client-side JavaScript bundle during `next build`. Their values are therefore fixed at build time for that bundle, rather than being read from the environment when the application starts. This can be problematic when promoting the same Docker image between environments.
 

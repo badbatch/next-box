@@ -216,7 +216,7 @@ Feature flags are enabled through environment variables.
 
 For Next.js applications, the library uses public environment variables prefixed with `NEXT_PUBLIC_FF_`.
 
-> **Important:** Feature flags are exposed to client-side code and should not be used as a security or authorization boundary. Always enforce permissions and other security-sensitive behaviour on the server.
+**Important: Feature flags are exposed to client-side code and should not be used as a security or authorization boundary. Always enforce permissions and other security-sensitive behaviour on the server.**
 
 The feature flag name is derived from the environment variable name. For example:
 
