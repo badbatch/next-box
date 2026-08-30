@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.18 (2026-08-30)
+
+### Bug Fixes
+
+* **root:**  vulnerability ([9e34710e](https://github.com/badbatch/next-box/commit/9e34710eba820fb4275e4258a6e92c67bf89dd1c))
+
 ## 0.2.17 (2026-08-30)
 
 ### Documentation Changes
