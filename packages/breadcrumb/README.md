@@ -59,14 +59,17 @@ export const BreadcrumbProviderWrapper = ({
 ```tsx
 // ./layout.tsx
 import { BreadcrumbProviderWrapper } from '#BreadcrumbProviderWrapper.tsx';
+import { createFetchClient } from '#createFetchClient.ts';
 import { createRouteRules } from '#createRouteRules.ts';
 
 const RootLayout = ({ children }: RootLayoutProps) => {
+  const fetchClient = createFetchClient();
+  
   return (
     <html lang="en">
       <body>
         <BreadcrumbProviderWrapper
-          routeRules={createRouteRules({ client })}
+          routeRules={createRouteRules({ client: fetchClient })}
         >
           {children}
         </BreadcrumbProviderWrapper>
