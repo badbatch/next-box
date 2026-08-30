@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.15 (2026-08-30)
+
+### Documentation Changes
+
+* **breadcrumb:**  update readme ([a590925a](https://github.com/badbatch/next-box/commit/a590925affe3de077145d618c41f29e54e4486d7))
+
 ## 0.2.14 (2026-08-30)
 
 ### Documentation Changes
