@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.16 (2026-08-30)
+
+### Refactors
+
+* **breadcrumb:**  move to use layout effect ([5d713a6b](https://github.com/badbatch/next-box/commit/5d713a6b83f73c2afb4007855ffb3e2fd2f47b6a))
+
 ## 0.2.15 (2026-08-30)
 
 ### Documentation Changes
