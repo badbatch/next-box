@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.14 (2026-08-30)
+
+### Documentation Changes
+
+* **feature-flags:**  update readme ([3c3b0f7f](https://github.com/badbatch/next-box/commit/3c3b0f7fa5a1910b0f5bd751460385adc28b4d03))
+* **envs:**  update readme ([b7647fdb](https://github.com/badbatch/next-box/commit/b7647fdb529d3c408854c32d9488d1462b399ec2))
+* **breadcrumb:**  update readme and code comments ([83759239](https://github.com/badbatch/next-box/commit/83759239024552f9a1920b5fc1963df6683c8754))
+
+### Bug Fixes
+
+* **root:**  update badge link ([81674f04](https://github.com/badbatch/next-box/commit/81674f04042f41390d46876b16fc7b06f24d32a5))
+* **breadcrumb:**  linting ([d8c66277](https://github.com/badbatch/next-box/commit/d8c6627792d54ebe635e10fdfd1fbcd569b48642))
+
+### Refactors
+
+* **feature-flags:**
+  * update to use .NET config pattern ([900b6e79](https://github.com/badbatch/next-box/commit/900b6e790256cce93b2e2ef794dd8a659266bbc7))
+  * align config with .NET feature management ([8843a077](https://github.com/badbatch/next-box/commit/8843a0772986127b644af1db7fa99511811a7feb))
+
 ## 0.2.13 (2026-08-29)
 
 ### Bug Fixes
