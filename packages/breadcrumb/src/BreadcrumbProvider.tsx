@@ -1,5 +1,5 @@
 import { type Core as Cachemap } from '@cachemap/core';
-import { type FC, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { type FC, type ReactNode, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { loadStorageAndRetrieveHistory } from '#helpers/loadStorageAndRetrieveHistory.ts';
 import { BreadcrumbContext } from './BreadcrumbContext.ts';
 import { buildBreadcrumb } from './helpers/buildBreadcrumb.ts';
@@ -99,14 +99,14 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
     [setActiveBreadcrumbItem],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // This refers to setting the error into state, which we need to do in
     // order for the error to bubble up to the closest error boundary.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void setCachemapAndInitialHistory();
   }, [setCachemapAndInitialHistory]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!cachemapRef.current) {
       return;
     }
