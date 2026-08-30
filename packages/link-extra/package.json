@@ -1,7 +1,7 @@
 {
   "name": "@next-box/link-extra",
   "description": "A collection of link components for use primarily with Next.js.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "miami-man",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",

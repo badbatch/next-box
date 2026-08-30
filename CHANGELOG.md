@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.17 (2026-08-30)
+
+### Documentation Changes
+
+* **link-extra:**
+  * update readme ([31ffb083](https://github.com/badbatch/next-box/commit/31ffb083292a8446ccc8fd9c77d1b6a1306b87d3))
+  * update readme ([f2c23641](https://github.com/badbatch/next-box/commit/f2c2364177fd0513ffd4a0806de4c989d509e2c5))
+* **root:**  update readmes ([cc2ce718](https://github.com/badbatch/next-box/commit/cc2ce718826751f2a19a0ce4adc2cc15533932aa))
+
+### Bug Fixes
+
+* **root:**  linting ([312433b3](https://github.com/badbatch/next-box/commit/312433b3ddf29705a7583dbc82595ba1dff645fe))
+
 ## 0.2.16 (2026-08-30)
 
 ### Refactors
