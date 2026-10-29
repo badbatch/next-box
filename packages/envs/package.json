@@ -51,20 +51,21 @@
     "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
   },
   "dependencies": {
-    "core-js": "^3.50.0",
-    "type-fest": "^5.8.0"
+    "core-js": "^3.51.0",
+    "type-fest": "^5.10.0"
   },
   "peerDependencies": {
     "react": "<20",
     "react-dom": "<20"
   },
   "devDependencies": {
-    "@jest/globals": "^30.4.1",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "cts-types": "^0.0.15",
-    "del-cli": "^7.0.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@jest/globals": "^30.5.2",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "cts-types": "^0.0.17",
+    "del-cli": "^8.0.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   }
 }

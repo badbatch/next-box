@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { createI18n } from './main.ts';
 
 const content = {
@@ -21,9 +22,8 @@ const content = {
 describe('createI18n', () => {
   it('should return an instance of the i18n reader', () => {
     expect(createI18n(content)).toEqual({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       t: expect.any(Function),
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       tt: expect.any(Function),
     });
   });

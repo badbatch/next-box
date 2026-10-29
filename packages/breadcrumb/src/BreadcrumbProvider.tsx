@@ -30,7 +30,9 @@ export type BreadcrumbProviderProps = {
   /**
    * The rules to be run on each entry in the history.
    */
-  routeRules: BreadcrumbRouteRule[];
+  // Cannot use never because I need to pass arg into resolve below
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  routeRules: BreadcrumbRouteRule<any>[];
   /**
    * The query string.
    */

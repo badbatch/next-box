@@ -1,7 +1,9 @@
 import { type BreadcrumbItem, type BreadcrumbRouteRule } from '../types.ts';
 
 export const buildBreadcrumb = async (
-  routeRules: BreadcrumbRouteRule[],
+  // Cannot use never because I need to pass arg into resolve below
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  routeRules: BreadcrumbRouteRule<any>[],
   history: string[],
 ): Promise<BreadcrumbItem[]> => {
   const breadcrumbItems: BreadcrumbItem[] = [];

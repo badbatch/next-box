@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 
 jest.unstable_mockModule('#helpers/loadConfig.ts', () => ({
   loadConfig: jest.fn().mockReturnValue({ markdownDir: './packages/i18n/src' }),

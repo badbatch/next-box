@@ -12,8 +12,6 @@ export const createI18n = <U extends object>(i18n: U): CreateI18nResult<U> => {
     tt: <P extends Path<U>>(path: P, variables?: AnyRecord): Get<U, P> => {
       const result = reader.read(path, variables);
 
-      // This can resolve to a falsy value at runtime
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (result === undefined) {
         throw new Error(`Path "${String(path)}" did not resolve to a value`);
       }

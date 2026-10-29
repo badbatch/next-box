@@ -10,5 +10,6 @@ const config = jestConfig({ compilerOptions: swcConfig });
 export default {
   ...config,
   collectCoverageFrom: ['packages/**/*.ts', ...config.collectCoverageFrom.slice(1)],
+  setupFilesAfterEnv: [...config.setupFilesAfterEnv, '<rootDir>/jest.setup.ts'],
   ...(!isDebug && { testMatch: ['**/src/**/*.test.{ts,tsx}'] }),
 };

@@ -2,7 +2,7 @@ import { type FC, type ReactNode } from 'react';
 import { createContext } from 'react';
 import { type ClientFilter } from '#ClientFilter.ts';
 import { featureFlagListToMap } from '#helpers/featureFlagListToMap.ts';
-import { getFeatureFlagStateInBrowser } from '#helpers/getFeatureFlagStateInBrowser.ts';
+import { getFeatureFlagStateFromEnvs } from '#helpers/getFeatureFlagStateFromEnvs.ts';
 import { type FeatureFlag, type FeatureFlagContext } from '#types.ts';
 
 // Context requires an initial value, but this is set in the provider so casting
@@ -24,6 +24,6 @@ export const FeatureFlagProvider: FC<FeatureFlagProviderProps> = ({
   envs,
   featureFlags: featureFlagList,
 }) => {
-  const featureFlags = getFeatureFlagStateInBrowser(featureFlagListToMap(featureFlagList), envs);
+  const featureFlags = getFeatureFlagStateFromEnvs(envs, featureFlagListToMap(featureFlagList));
   return <Context value={{ clientFilters, featureFlags }}>{children}</Context>;
 };

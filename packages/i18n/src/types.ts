@@ -8,7 +8,7 @@ export type CreateI18nResult<U extends object> = {
   // A typed content lookup. Function takes a string that is type-checked
   // against all the possible paths in the i18n object passed into
   // createI18n. The value that path resolves to can be previewed through
-  // IDE's inbuilt Typescript type preview. If the function resolves no
+  // IDE's inbuilt TypeScript type preview. If the function resolves no
   // value, then it throws an error.
   tt: ConfigReader<U>['read'];
 };

@@ -61,22 +61,23 @@
   },
   "dependencies": {
     "callsites": "^4.2.0",
-    "markdown-to-jsx": "^9.10.2",
-    "type-fest": "^5.8.0",
-    "zcb": "^0.3.9"
+    "markdown-to-jsx": "^9.10.4",
+    "type-fest": "^5.10.0",
+    "zcb": "^0.3.10"
   },
   "peerDependencies": {
     "react": "<20",
     "react-dom": "<20"
   },
   "devDependencies": {
-    "@jest/globals": "^30.4.1",
-    "@testing-library/react": "^16.3.2",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "cts-types": "^0.0.15",
-    "del-cli": "^7.0.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@jest/globals": "^30.5.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "cts-types": "^0.0.17",
+    "del-cli": "^8.0.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   }
 }
