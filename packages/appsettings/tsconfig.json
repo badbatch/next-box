@@ -1,0 +1,10 @@
+{
+  "extends": ["@repodog/ts-config/index.json", "@repodog/ts-config/build.json"],
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "references": []
+}
