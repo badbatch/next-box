@@ -1,3 +1,5 @@
+'use client';
+
 import { type ReactNode } from 'react';
 import { type Get } from 'type-fest';
 import { useAppSettingsContext } from '#hooks/useAppSettingsContext.ts';

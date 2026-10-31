@@ -25,13 +25,13 @@ assertType<number | undefined>(useAppSetting('Api.Timeout'));
 assertType<boolean | undefined>(useAppSetting('Features.DarkMode'));
 assertType<number | undefined>(useAppSettings('Api')?.Timeout);
 
-createElement(AppSettingsProvider, { settings: settingsData, children: null });
+createElement(AppSettingsProvider, { children: undefined, settings: settingsData });
 createElement(Setting, { children: 'Enabled', path: 'Features.DarkMode', value: true });
 
 // @ts-expect-error The selected path determines the expected value type.
 createElement(Setting, { children: 'Enabled', path: 'Features.DarkMode', value: 'yes' });
 
-void createAppSettings({ schema, defaults: settingsData }).then(settings => {
+void createAppSettings({ defaults: settingsData, schema }).then(settings => {
   assertType<number>(settings.Api.Timeout);
   assertType<boolean>(settings.Features.DarkMode);
 });

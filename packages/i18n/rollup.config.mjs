@@ -11,7 +11,7 @@ export default [
     input: input.replace('index', 'client'),
     output: {
       ...output,
-      file: output.file.replace('index', 'client'),
+      dir: `${output.dir}/client`,
     },
   },
   {
@@ -19,7 +19,7 @@ export default [
     input: input.replace('index', 'macros'),
     output: {
       ...output,
-      file: output.file.replace('index', 'macros'),
+      dir: `${output.dir}/macros`,
     },
   },
 ];

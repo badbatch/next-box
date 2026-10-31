@@ -1,3 +1,5 @@
+'use client';
+
 import { type ReactElement, type ReactNode, useMemo } from 'react';
 import { AppSettingsImplementation } from '#config/AppSettingsImplementation.ts';
 import { AppSettingsContext } from '../hooks/useAppSettingsContext.ts';

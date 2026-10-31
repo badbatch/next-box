@@ -11,7 +11,7 @@ export default [
     input: input.replace('index', 'cli/index'),
     output: {
       ...output,
-      file: output.file.replace('index', 'cli'),
+      dir: `${output.dir}/cli`,
     },
   },
   {
@@ -19,7 +19,7 @@ export default [
     input: input.replace('index', 'server'),
     output: {
       ...output,
-      file: output.file.replace('index', 'server'),
+      dir: `${output.dir}/server`,
     },
   },
 ];

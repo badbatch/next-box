@@ -11,7 +11,7 @@ export default [
     input: input.replace('index', 'server'),
     output: {
       ...output,
-      file: output.file.replace('index', 'server'),
+      dir: `${output.dir}/server`,
     },
   },
 ];
