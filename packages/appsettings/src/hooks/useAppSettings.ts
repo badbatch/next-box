@@ -1,5 +1,6 @@
 import { type Get } from 'type-fest';
-import { type AppSettingsSchema, type SettingSectionPath } from '#types/Config.types.ts';
+import { type SettingSectionPath } from '#types/Config.types.ts';
+import { type AppSettingsSchema } from '../index.ts';
 import { useAppSettingsContext } from './useAppSettingsContext.ts';
 
 export function useAppSettings<P extends SettingSectionPath<AppSettingsSchema>>(

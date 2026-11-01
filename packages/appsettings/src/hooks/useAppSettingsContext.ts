@@ -1,6 +1,6 @@
 import { createContext, use } from 'react';
 import { type InternalAppSettings } from '#types/AppSettings.types.ts';
-import { type AppSettingsSchema } from '#types/Config.types.ts';
+import { type AppSettingsSchema } from '../index.ts';
 
 export const AppSettingsContext = createContext<unknown>(undefined);
 

@@ -3,7 +3,8 @@
 import { type ReactNode } from 'react';
 import { type Get } from 'type-fest';
 import { useAppSettingsContext } from '#hooks/useAppSettingsContext.ts';
-import { type AppSettingsSchema, type SettingPath } from '../types/Config.types.ts';
+import { type AppSettingsSchema } from '../index.ts';
+import { type SettingPath } from '../types/Config.types.ts';
 
 export interface SettingProps<T extends object, P extends SettingPath<T>> {
   children: ReactNode;

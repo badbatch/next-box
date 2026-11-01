@@ -4,11 +4,6 @@ type Primitive = string | number | boolean | bigint | symbol | null | undefined;
 
 type PreviousDepth = [never, 0, 1, 2, 3, 4, 5];
 
-// Application-wide schema type for consumers who prefer module augmentation in React hooks.
-export interface AppSettingsSchema {
-  readonly __appSettingsSchema?: never;
-}
-
 export type SettingPath<T extends object, Depth extends number = 5> = Depth extends 0
   ? never
   : {
