@@ -1,3 +1,5 @@
+'use client';
+
 import { type MarkdownToJSX } from 'markdown-to-jsx';
 import { type FC, type ReactNode, createContext } from 'react';
 

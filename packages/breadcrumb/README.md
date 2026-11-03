@@ -24,22 +24,25 @@ npm add @next-box/breadcrumb
 
 To use the breadcrumb, start by wrapping your React application, or the relevant part of it, in the `BreadcrumbProvider`. You must supply `currentPathname` and `routeRules`.
 
-You need to create a client wrapper for `BreadcrumbProvider` or nest it within a client component because it uses React context and is exported as part of a Rollup bundle. The published bundle does not preserve the `'use client'` directive in a way that allows Next.js to treat `BreadcrumbProvider` itself as a Client Component.
+`BreadcrumbProvider` is a Client Component and can be imported directly. In the App Router example below, a small client component supplies the current pathname and creates route rules locally. The rules contain resolver functions, which cannot be passed as props from a Server Component. Keep their dependencies safe for the client bundle; if resolving a breadcrumb requires secret credentials or server-only data, have the resolver call an application API route.
 
 ```tsx
 // ./BreadcrumbProviderWrapper.tsx
 'use client';
 
-import { BreadcrumbProvider, type BreadcrumbRouteRule } from '@next-box/breadcrumb';
+import { BreadcrumbProvider } from '@next-box/breadcrumb';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { type ReactNode } from 'react';
+import { createFetchClient } from '#createFetchClient.ts';
+import { createRouteRules } from '#createRouteRules.ts';
+
+const fetchClient = createFetchClient();
+const routeRules = createRouteRules({ client: fetchClient });
 
 export const BreadcrumbProviderWrapper = ({
   children,
-  routeRules,
 }: {
   children: ReactNode;
-  routeRules: BreadcrumbRouteRule[];
 }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -59,20 +62,12 @@ export const BreadcrumbProviderWrapper = ({
 ```tsx
 // ./layout.tsx
 import { BreadcrumbProviderWrapper } from '#BreadcrumbProviderWrapper.tsx';
-import { createFetchClient } from '#createFetchClient.ts';
-import { createRouteRules } from '#createRouteRules.ts';
 
 const RootLayout = ({ children }: RootLayoutProps) => {
-  const fetchClient = createFetchClient();
-  
   return (
     <html lang="en">
       <body>
-        <BreadcrumbProviderWrapper
-          routeRules={createRouteRules({ client: fetchClient })}
-        >
-          {children}
-        </BreadcrumbProviderWrapper>
+        <BreadcrumbProviderWrapper>{children}</BreadcrumbProviderWrapper>
       </body>
     </html>
   );

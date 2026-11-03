@@ -8,11 +8,13 @@ A collection of libraries for use primarily with Next.js.
 [![Build and deploy](https://github.com/badbatch/next-box/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/badbatch/next-box/actions/workflows/build-and-publish.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+- [@next-box/appsettings](./packages/appsettings/README.md)
 - [@next-box/breadcrumb](./packages/breadcrumb/README.md)
 - [@next-box/envs](./packages/envs/README.md)
 - [@next-box/feature-flags](./packages/feature-flags/README.md)
 - [@next-box/i18n](./packages/i18n/README.md)
 - [@next-box/link-extra](./packages/link-extra/README.md)
+- [@next-box/route-handler](./packages/route-handler/README.md)
 
 ## Changelog
 

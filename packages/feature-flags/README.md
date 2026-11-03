@@ -244,54 +244,17 @@ To use feature flags in your React application, wrap the application—or the re
 The provider receives:
 
 - `featureFlags` — your feature flag configuration.
-- `clientFilters` — the client filter implementations referenced by your configuration.
+- `clientFilters` — optional client filter implementations referenced by your configuration.
 - `envs` — the public environment variables used to determine the runtime state of the feature flags.
 
-#### Create a client wrapper
-
-Because `FeatureFlagProvider` uses React context, it must run as a client component.
-
-The package is distributed as a Rollup bundle and therefore cannot declare its own `'use client'` directive. For Next.js applications, create a small client wrapper around the provider:
-
-```tsx
-// ./FeatureFlagProviderWrapper.tsx
-
-'use client';
-
-import {
-  FeatureFlagProvider,
-} from '@next-box/feature-flags';
-import type { ReactNode } from 'react';
-
-import { clientFilters } from '#clientFilters.ts';
-import featureFlags from '#featureFlags.json' with { type: 'json' };
-
-export const FeatureFlagProviderWrapper = ({
-  children,
-  envs,
-}: {
-  children: ReactNode;
-  envs: Record<string, string | undefined>;
-}) => {
-  return (
-    <FeatureFlagProvider
-      clientFilters={clientFilters}
-      envs={envs}
-      featureFlags={featureFlags}
-    >
-      {children}
-    </FeatureFlagProvider>
-  );
-};
-```
-
-You can then use the wrapper from your Next.js root layout:
+`FeatureFlagProvider` is a Client Component and can be rendered directly from a Server Component when its props are serializable. For example, feature flag definitions and environment variables can be passed from the root layout:
 
 ```tsx
 // ./layout.tsx
 
+import { FeatureFlagProvider } from '@next-box/feature-flags';
 import { getPublicEnvs } from '@next-box/envs/server';
-import { FeatureFlagProviderWrapper } from '#FeatureFlagProviderWrapper.tsx';
+import featureFlags from '#featureFlags.json' with { type: 'json' };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   const envs = getPublicEnvs(process.env);
@@ -299,9 +262,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body>
-        <FeatureFlagProviderWrapper envs={envs}>
+        <FeatureFlagProvider envs={envs} featureFlags={featureFlags}>
           {children}
-        </FeatureFlagProviderWrapper>
+        </FeatureFlagProvider>
       </body>
     </html>
   );
@@ -312,6 +275,8 @@ export default RootLayout;
 
 Once the provider has been added, feature flags can be consumed by React components within its tree.
 
+Custom `clientFilters` are functions and cannot be passed as props from a Server Component. If you use them, import and provide them from a client module.
+
 ### Consuming feature flags
 
 #### Inside React
@@ -321,6 +286,8 @@ There are two ways to access feature flags within React: the `useFeature` hook a
 `useFeature` takes the name of a feature and returns a boolean indicating whether the feature is enabled. Use it when the feature state needs to control application logic or when you need to render different content.
 
 ```tsx
+'use client';
+
 import { useFeature } from '@next-box/feature-flags';
 
 const Dashboard = () => {
@@ -337,6 +304,8 @@ const Dashboard = () => {
 The `Feature` component provides a declarative alternative for conditional rendering. It uses `useFeature` under the hood and renders its children only when the specified feature is enabled.
 
 ```tsx
+'use client';
+
 import { Feature } from '@next-box/feature-flags';
 
 const Navigation = () => {

@@ -26,25 +26,12 @@ npm add @next-box/envs
 
 There are two ways you can go about this with the library. The first is the more standard approach, which is to retrieve the public env vars in a server component and pass them down into your client components.
 
-We recommend doing this in the root `layout.tsx` and passing the env vars down into our `EnvsProvider` context provider, from which you can then access the environment variables in any client React component with the `useEnvs` hook. Below is a basic example of what this might look like.
-
-You need to create a client wrapper for `EnvsProvider` or nest it within a client component because it uses React context and is exported as part of a Rollup bundle. The bundle does not preserve the `'use client'` directive in a way that allows Next.js to treat `EnvsProvider` itself as a Client Component.
-
-```tsx
-// ./EnvsProviderWrapper.tsx
-'use client';
-
-import { EnvsProvider, type EnvsProviderProps } from '@next-box/envs';
-
-export const EnvsProviderWrapper = (props: EnvsProviderProps) => {
-  return <EnvsProvider {...props} />;
-};
-```
+We recommend doing this in the root `layout.tsx` and passing the env vars directly to `EnvsProvider`. The provider is a Client Component, so it can be rendered from the Server Component layout without a separate wrapper. Its `envs` prop is serializable. Client components can then access the values with the `useEnvs` hook.
 
 ```tsx
 // ./layout.tsx
 import { getPublicEnvs } from '@next-box/envs/server';
-import { EnvsProviderWrapper } from './EnvsProviderWrapper.tsx';
+import { EnvsProvider } from '@next-box/envs';
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   const envs = getPublicEnvs(process.env);
@@ -52,9 +39,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body>
-        <EnvsProviderWrapper envs={envs}>
+        <EnvsProvider envs={envs}>
           {children}
-        </EnvsProviderWrapper>
+        </EnvsProvider>
       </body>
     </html>
   );
@@ -65,6 +52,8 @@ export default RootLayout;
 
 ```tsx
 // ./RandomComponent.tsx
+'use client';
+
 import { useEnvs } from '@next-box/envs';
 
 export const RandomComponent = () => {
@@ -119,7 +108,7 @@ export const content = languages[languageCode];
 
 The other thing to note about `getEnv` is that it works across the environments supported by the library. In a browser environment where `window` is defined, the function gets the env var from `globalThis.env`. When `window` is not defined, the function gets the env var from `process.env`.
 
-> If you need to access env vars outside React, you can use both approaches in parallel. Alternatively, you can use `PublicEnvVarsScript` and, instead of passing the public env vars directly into the `EnvsProviderWrapper`, read them from `globalThis.env` within the wrapper component and pass them into `EnvsProvider`.
+> If you need to access env vars outside React, you can use both approaches in parallel. Alternatively, use `PublicEnvVarsScript` and read the public values from `globalThis.env` in a client component before passing them to `EnvsProvider`.
 
 ### In Web Workers
 

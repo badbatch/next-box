@@ -1,3 +1,5 @@
+'use client';
+
 import MarkdownToJsx, { type MarkdownToJSX } from 'markdown-to-jsx';
 import { type FC, use } from 'react';
 import { I18nContext } from '#components/I18nProvider.tsx';

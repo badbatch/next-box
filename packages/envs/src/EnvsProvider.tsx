@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC, type ReactNode, createContext } from 'react';
 
 export type EnvsContextData = {

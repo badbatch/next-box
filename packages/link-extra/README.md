@@ -50,6 +50,8 @@ npm add @next-box/link-extra
 It also receives the current pathname so that it can detect when a navigation has completed.
 
 ```tsx
+'use client';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -76,7 +78,7 @@ const LinkProviderWrapper = ({
 };
 ```
 
-For Next.js applications using the App Router, the provider should be placed in a client component because it uses React context and client-side navigation state.
+`LinkProvider` is a Client Component. The wrapper above supplies the current pathname and the link component implementations from client code; these component functions cannot be passed as props from a Server Component.
 
 ### Render a link
 

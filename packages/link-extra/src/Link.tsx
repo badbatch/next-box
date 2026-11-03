@@ -1,3 +1,5 @@
+'use client';
+
 import { type AnchorHTMLAttributes, type JSX, type ReactNode } from 'react';
 import { addCacheBusterQueryParam, shouldUrlAndLocationMatch } from '#helpers.ts';
 import { useLinkExtra } from './useLinkExtra.ts';

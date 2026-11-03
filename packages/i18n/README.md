@@ -197,8 +197,10 @@ The `md` macro is designed to be used with the `Md` markdown render component an
 The example below illustrates how to use the `md` macro, `I18nProvider`, and `Md` component together.
 
 ```tsx
+'use client';
+
 import { md } from '@next-box/i18n/macros' with { type: 'macro' };
-import { I18nProvider, Md } from '@next-box/i18n';
+import { I18nProvider, Md } from '@next-box/i18n/client';
 import { componentMapper } from './componentMapper.ts';
 
 export const Component = () => {

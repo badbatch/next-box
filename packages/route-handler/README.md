@@ -55,6 +55,7 @@ import { defineHandler } from '@next-box/route-handler';
 import { withUser } from './withUser.ts';
 
 export const GET = defineHandler({
+  context: { requestId: 'example-request-id' },
   middleware: [withUser],
   handler: async (_request, _routeContext, { user }) => {
     return Response.json(user);
@@ -73,7 +74,7 @@ import { createHandlerFactory } from '@next-box/route-handler';
 import { withUser } from './withUser.ts';
 
 const createApiHandler = createHandlerFactory({
-  context: { requestId: 'generated-per-request' },
+  context: { requestId: 'example-request-id' },
   middleware: [withUser],
 });
 

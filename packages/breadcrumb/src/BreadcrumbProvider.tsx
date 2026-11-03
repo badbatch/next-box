@@ -1,3 +1,5 @@
+'use client';
+
 import { type Core as Cachemap } from '@cachemap/core';
 import { type FC, type ReactNode, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { loadStorageAndRetrieveHistory } from '#helpers/loadStorageAndRetrieveHistory.ts';

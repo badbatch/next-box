@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC, type ReactNode } from 'react';
 import { createContext } from 'react';
 import { type ClientFilter } from '#ClientFilter.ts';
