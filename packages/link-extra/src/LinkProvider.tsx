@@ -1,4 +1,3 @@
-import type Link from 'next/link.js';
 import {
   type ComponentType,
   type FC,
@@ -17,7 +16,7 @@ export const LinkContext = createContext<LinkContextData>({} as LinkContextData)
 
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
-  NextLink: typeof Link;
+  NextLink: NextLinkComponent;
   OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
   loadingTimeout?: number;
@@ -36,32 +35,49 @@ export const LinkProvider: FC<LinkProviderProps> = ({
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const onLinkClicked = useCallback(() => {
-    if (timeoutRef.current) {
+    if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
     }
 
     timeoutRef.current = setTimeout(() => {
+      // Required by timeout
+      // eslint-disable-next-line unicorn/no-null
+      timeoutRef.current = null;
       setShowLoading(true);
     }, loadingTimeout);
   }, [loadingTimeout]);
 
   useEffect(() => {
-    if (timeoutRef.current) {
+    if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
+      // Required by timeout
+      // eslint-disable-next-line unicorn/no-null
+      timeoutRef.current = null;
     }
 
     // This is setting state based on pathname change
     // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
     setShowLoading(false);
     scroll(0, 0);
+
+    return (): void => {
+      if (timeoutRef.current === null) {
+        return;
+      }
+
+      clearTimeout(timeoutRef.current);
+      // Required by timeout
+      // eslint-disable-next-line unicorn/no-null
+      timeoutRef.current = null;
+    };
   }, [pathname]);
 
   return (
     <LinkContext
       value={{
         // Casting due to issues marrying up prop type and context type
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        NextLink: NextLink as unknown as NextLinkComponent,
+
+        NextLink,
         OwnLink,
         onLinkClicked: () => {
           onLinkClicked();

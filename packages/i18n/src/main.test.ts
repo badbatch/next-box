@@ -20,92 +20,128 @@ const content = {
 } as const;
 
 describe('createI18n', () => {
-  it('should return an instance of the i18n reader', () => {
-    expect(createI18n(content)).toEqual({
-      t: expect.any(Function),
+  it('When content is provided, then it returns typed and untyped resolver functions', () => {
+    // Arrange
 
-      tt: expect.any(Function),
-    });
+    // Act
+    const result = createI18n(content);
+
+    // Assert
+    expect(result).toEqual({ t: expect.any(Function), tt: expect.any(Function) });
   });
 });
 
 describe('tt', () => {
-  describe('when a key path does not resolves to a value', () => {
-    it('should throw the expected error', () => {
-      const { tt } = createI18n(content);
-      // @ts-expect-error intentional to test runtime behaviour
-      expect(() => tt('zebra')).toThrow('Path "zebra" did not resolve to a value');
-    });
+  it('When a path does not resolve to a value, then it throws an error containing the path', () => {
+    // Arrange
+    const { tt } = createI18n(content);
+
+    // Act
+    // @ts-expect-error Intentionally pass an invalid path to test runtime behavior.
+    const resolveInvalidPath = () => tt('zebra');
+
+    // Assert
+    expect(resolveInvalidPath).toThrow('Path "zebra" did not resolve to a value');
   });
 
-  describe('when a key path resolves to a value', () => {
-    it('should return the value', () => {
-      const { tt } = createI18n(content);
-      expect(tt('alpha')).toBe('alpha');
-    });
+  it('When a path resolves to a top-level value, then it returns that value', () => {
+    // Arrange
+    const { tt } = createI18n(content);
+
+    // Act
+    const result = tt('alpha');
+
+    // Assert
+    expect(result).toBe('alpha');
   });
 
-  describe('when a nested key path resolves to a value', () => {
-    it('should return the value', () => {
-      const { tt } = createI18n(content);
-      expect(tt('echo.golf.0.hotel.india')).toBe('india');
-    });
+  it('When a path resolves through nested objects and arrays, then it returns the nested value', () => {
+    // Arrange
+    const { tt } = createI18n(content);
+
+    // Act
+    const result = tt('echo.golf.0.hotel.india');
+
+    // Assert
+    expect(result).toBe('india');
   });
 
-  describe('when the value has a template variable and variables are passed in', () => {
-    it('should return the value with the variable injected into the value', () => {
-      const { tt } = createI18n(content);
-      expect(tt('charlie', { adjective: 'good' })).toBe('charlie is a good boy');
-    });
+  it('When variables are provided for a template, then it returns the interpolated value', () => {
+    // Arrange
+    const { tt } = createI18n(content);
+
+    // Act
+    const result = tt('charlie', { adjective: 'good' });
+
+    // Assert
+    expect(result).toBe('charlie is a good boy');
   });
 
-  describe('when the value has multiple template variable and variables are passed in', () => {
-    it('should return the value with the variable injected into the value', () => {
-      const { tt } = createI18n(content);
+  it('When multiple variables are provided, then it interpolates each variable', () => {
+    // Arrange
+    const { tt } = createI18n(content);
 
-      expect(tt('echo.golf.0.hotel.julia', { activity: 'gymnast', adjective: 'great' })).toBe(
-        'julia is a great gymnast',
-      );
-    });
+    // Act
+    const result = tt('echo.golf.0.hotel.julia', { activity: 'gymnast', adjective: 'great' });
+
+    // Assert
+    expect(result).toBe('julia is a great gymnast');
   });
 });
 
 describe('t', () => {
-  describe('when a key path does not resolves to a value', () => {
-    it('should return undefined', () => {
-      const { t } = createI18n(content);
-      expect(t('zebra')).toBeUndefined();
-    });
+  it('When a path does not resolve to a value, then it returns undefined', () => {
+    // Arrange
+    const { t } = createI18n(content);
+
+    // Act
+    const result = t('zebra');
+
+    // Assert
+    expect(result).toBeUndefined();
   });
 
-  describe('when a key path resolves to a value', () => {
-    it('should return the value', () => {
-      const { t } = createI18n(content);
-      expect(t('alpha')).toBe('alpha');
-    });
+  it('When a path resolves to a top-level value, then it returns that value', () => {
+    // Arrange
+    const { t } = createI18n(content);
+
+    // Act
+    const result = t('alpha');
+
+    // Assert
+    expect(result).toBe('alpha');
   });
 
-  describe('when a nested key path resolves to a value', () => {
-    it('should return the value', () => {
-      const { t } = createI18n(content);
-      expect(t('echo.golf.0.hotel.india')).toBe('india');
-    });
+  it('When a path resolves through nested objects and arrays, then it returns the nested value', () => {
+    // Arrange
+    const { t } = createI18n(content);
+
+    // Act
+    const result = t('echo.golf.0.hotel.india');
+
+    // Assert
+    expect(result).toBe('india');
   });
 
-  describe('when the value has a template variable and variables are passed in', () => {
-    it('should return the value with the variable injected into the value', () => {
-      const { t } = createI18n(content);
-      expect(t('charlie', { adjective: 'good' })).toBe('charlie is a good boy');
-    });
+  it('When variables are provided for a template, then it returns the interpolated value', () => {
+    // Arrange
+    const { t } = createI18n(content);
+
+    // Act
+    const result = t('charlie', { adjective: 'good' });
+
+    // Assert
+    expect(result).toBe('charlie is a good boy');
   });
 
-  describe('when the value has multiple template variable and variables are passed in', () => {
-    it('should return the value with the variable injected into the value', () => {
-      const { t } = createI18n(content);
+  it('When multiple variables are provided, then it interpolates each variable', () => {
+    // Arrange
+    const { t } = createI18n(content);
 
-      expect(t('echo.golf.0.hotel.julia', { activity: 'gymnast', adjective: 'great' })).toBe(
-        'julia is a great gymnast',
-      );
-    });
+    // Act
+    const result = t('echo.golf.0.hotel.julia', { activity: 'gymnast', adjective: 'great' });
+
+    // Assert
+    expect(result).toBe('julia is a great gymnast');
   });
 });

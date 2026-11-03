@@ -18,14 +18,17 @@ const componentMapper: MarkdownToJSX.Overrides = {
   p: ({ children }: ComponentProps) => <p data-disaplay-name="p">{children}</p>,
 };
 
-describe('MarkdownToJsx', () => {
-  it('should render the expected components', () => {
-    const Wrapper = ({ children }: ComponentProps) => (
+describe('Md', () => {
+  it('When markdown contains mapped components, then it renders the mapped React components', () => {
+    // Arrange
+    const wrapper = ({ children }: ComponentProps) => (
       <I18nProvider componentMapper={componentMapper}>{children}</I18nProvider>
     );
 
-    const { container } = render(<Md>{'<CustomComponent><p>content</p></CustomComponent>'}</Md>, { wrapper: Wrapper });
+    // Act
+    const { container } = render(<Md>{'<CustomComponent><p>content</p></CustomComponent>'}</Md>, { wrapper });
 
+    // Assert
     expect(container).toMatchInlineSnapshot(`
       <div>
         <div
@@ -41,34 +44,33 @@ describe('MarkdownToJsx', () => {
     `);
   });
 
-  describe('when the markdown as template variables', () => {
-    it('should render the expected components with template variables injected', () => {
-      const Wrapper = ({ children }: ComponentProps) => (
-        <I18nProvider componentMapper={componentMapper}>{children}</I18nProvider>
-      );
+  it('When markdown contains template variables, then it injects them before rendering mapped components', () => {
+    // Arrange
+    const wrapper = ({ children }: ComponentProps) => (
+      <I18nProvider componentMapper={componentMapper}>{children}</I18nProvider>
+    );
 
-      const { container } = render(
-        <Md variables={{ adjective: 'great' }}>
-          {"<CustomComponent><p>{'Have a {{adjective}} day'}</p></CustomComponent>"}
-        </Md>,
-        {
-          wrapper: Wrapper,
-        },
-      );
+    // Act
+    const { container } = render(
+      <Md variables={{ adjective: 'great' }}>
+        {"<CustomComponent><p>{'Have a {{adjective}} day'}</p></CustomComponent>"}
+      </Md>,
+      { wrapper },
+    );
 
-      expect(container).toMatchInlineSnapshot(`
-        <div>
-          <div
-            data-display-name="CustomComponent"
+    // Assert
+    expect(container).toMatchInlineSnapshot(`
+      <div>
+        <div
+          data-display-name="CustomComponent"
+        >
+          <p
+            data-disaplay-name="p"
           >
-            <p
-              data-disaplay-name="p"
-            >
-              {'Have a great day'}
-            </p>
-          </div>
+            {'Have a great day'}
+          </p>
         </div>
-      `);
-    });
+      </div>
+    `);
   });
 });
