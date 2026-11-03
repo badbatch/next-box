@@ -64,7 +64,7 @@
     "type-check": "tsc --project ./tsconfig.json --noEmit --composite false --declaration false --declarationMap false --emitDeclarationOnly false"
   },
   "dependencies": {
-    "remeda": "^2.57.0",
+    "remeda": "^2.58.0",
     "yargs": "^18.2.0",
     "zcb": "^0.3.10",
     "zod": "^4.6.7"
