@@ -50,7 +50,7 @@
     "@repodog/prettier-config": "^3.0.7",
     "@repodog/rollup-config": "^4.0.20",
     "@repodog/swc-config": "^1.0.17",
-    "@repodog/syncpack-config": "^15.0.6",
+    "@repodog/syncpack-config": "^15.0.7",
     "@repodog/ts-config": "^6.0.5",
     "@rollup/plugin-swc": "^0.4.1",
     "@swc/core": "^1.16.21",

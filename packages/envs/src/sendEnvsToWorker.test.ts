@@ -13,6 +13,8 @@ describe('sendEnvsToWorker', () => {
     sendEnvsToWorker(worker);
 
     // Assert
+    // This is a false positive
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(worker.postMessage).toHaveBeenCalledWith({ payload: env, type: 'envs' });
 
     if (originalEnvDescriptor) {

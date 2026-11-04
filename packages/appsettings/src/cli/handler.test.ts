@@ -1,7 +1,7 @@
+import { afterEach, describe, expect, it } from '@jest/globals';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it } from '@jest/globals';
 import { handler } from './handler.ts';
 
 describe('generate-types handler', () => {
@@ -25,15 +25,16 @@ describe('generate-types handler', () => {
     directory = await mkdtemp(join(tmpdir(), 'appsettings-cli-'));
     originalWorkingDirectory = process.cwd();
     process.chdir(directory);
-    const arguments_ = {
+
+    const args = {
       output: 'src/types/appsettings.generated.d.ts',
       schema: 'src/appSettings.schema.ts',
       type: 'AppSettingsConfig',
     };
 
     // Act
-    await handler(arguments_);
-    const contents = await readFile(arguments_.output, 'utf8');
+    await handler(args);
+    const contents = await readFile(args.output, 'utf8');
 
     // Assert
     expect(contents).toContain("import type { AppSettingsConfig } from '../appSettings.schema';");
@@ -46,13 +47,13 @@ describe('generate-types handler', () => {
     directory = await mkdtemp(join(tmpdir(), 'appsettings-cli-'));
     originalWorkingDirectory = process.cwd();
     process.chdir(directory);
-    const arguments_ = { output: 'generated.d.ts', schema: 'schema.ts', type: 'Settings' };
-    await handler(arguments_);
-    const firstContents = await readFile(arguments_.output, 'utf8');
+    const args = { output: 'generated.d.ts', schema: 'schema.ts', type: 'Settings' };
+    await handler(args);
+    const firstContents = await readFile(args.output, 'utf8');
 
     // Act
-    await handler(arguments_);
-    const secondContents = await readFile(arguments_.output, 'utf8');
+    await handler(args);
+    const secondContents = await readFile(args.output, 'utf8');
 
     // Assert
     expect(secondContents).toBe(firstContents);

@@ -15,6 +15,7 @@ describe('getEnv', () => {
     expect(result).toBe('server-value');
 
     if (originalValue === undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete process.env[key];
     } else {
       process.env[key] = originalValue;
@@ -27,11 +28,13 @@ describe('getEnv', () => {
     const originalProcessDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'process');
     const originalEnvDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'env');
 
-    Object.defineProperty(globalThis, 'process', { configurable: true, value: {} });
-    Object.defineProperty(globalThis, 'env', {
-      configurable: true,
-      value: { [key]: 'browser-value' },
-      writable: true,
+    Object.defineProperties(globalThis, {
+      env: {
+        configurable: true,
+        value: { [key]: 'browser-value' },
+        writable: true,
+      },
+      process: { configurable: true, value: {} },
     });
 
     // Act

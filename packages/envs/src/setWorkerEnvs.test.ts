@@ -10,12 +10,14 @@ describe('setWorkerEnvs', () => {
     Reflect.deleteProperty(globalThis, 'env');
     const envs = { NEXT_PUBLIC_LANGUAGE_CODE: 'en' };
     const callback = jest.fn();
+    // ESLint is not inferring this correctly
+    // eslint-disable-next-line unicorn/no-non-function-verb-prefix
     const addEventListenerSpy = jest.spyOn(globalThis, 'addEventListener');
     setWorkerEnvs(callback);
     const listener = addEventListenerSpy.mock.calls.at(-1)?.[1];
 
     // Act
-    globalThis.dispatchEvent(new MessageEvent('message', { data: { payload: envs, type: 'envs' } }));
+    dispatchEvent(new MessageEvent('message', { data: { payload: envs, type: 'envs' } }));
 
     // Assert
     expect(globalThis.env).toEqual(envs);
@@ -39,12 +41,14 @@ describe('setWorkerEnvs', () => {
     const originalEnvDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'env');
     Reflect.deleteProperty(globalThis, 'env');
     const callback = jest.fn();
+    // ESLint is not inferring this correctly
+    // eslint-disable-next-line unicorn/no-non-function-verb-prefix
     const addEventListenerSpy = jest.spyOn(globalThis, 'addEventListener');
     setWorkerEnvs(callback);
     const listener = addEventListenerSpy.mock.calls.at(-1)?.[1];
 
     // Act
-    globalThis.dispatchEvent(new MessageEvent('message', { data: { payload: {}, type: 'other' } }));
+    dispatchEvent(new MessageEvent('message', { data: { payload: {}, type: 'other' } }));
 
     // Assert
     expect(globalThis.env).toBeUndefined();
@@ -69,12 +73,14 @@ describe('setWorkerEnvs', () => {
     const currentEnvs = { NEXT_PUBLIC_LANGUAGE_CODE: 'en' };
     Object.defineProperty(globalThis, 'env', { configurable: true, value: currentEnvs, writable: true });
     const callback = jest.fn();
+    // ESLint is not inferring this correctly
+    // eslint-disable-next-line unicorn/no-non-function-verb-prefix
     const addEventListenerSpy = jest.spyOn(globalThis, 'addEventListener');
     setWorkerEnvs(callback);
     const listener = addEventListenerSpy.mock.calls.at(-1)?.[1];
 
     // Act
-    globalThis.dispatchEvent(
+    dispatchEvent(
       new MessageEvent('message', { data: { payload: { NEXT_PUBLIC_LANGUAGE_CODE: 'fr' }, type: 'envs' } }),
     );
 

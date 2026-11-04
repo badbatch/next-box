@@ -71,7 +71,10 @@ describe('BreadcrumbProvider', () => {
     const routeRules: BreadcrumbRouteRule[] = [];
     const initialHistory = ['/users'];
     const expectedErrorMessage = 'There was a problem loading breadcrumb storage and/or retrieving history';
-    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {
+      /* empty */
+    });
 
     mockLoadStorageAndRetrieveHistory.mockRejectedValue(new Error('Storage failed'));
 

@@ -23,13 +23,14 @@ describe('EnvironmentSource', () => {
       Api: { BaseUrl: 'https://api.example.com', Timeout: 5000 },
       Features: { DarkMode: true, NewDashboard: false },
     });
+
     expect(source.name).toBe('environment:APP_');
   });
 
   it('When a custom prefix and name are provided, then it uses them and preserves non-numeric values', async () => {
     // Arrange
     const source = new EnvironmentSource({
-      envs: { SERVICE_PORT: 'not-a-number', SERVICE_MODE: 'Development' },
+      envs: { SERVICE_MODE: 'Development', SERVICE_PORT: 'not-a-number' },
       name: 'service-env',
       prefix: 'SERVICE_',
     });
@@ -38,7 +39,7 @@ describe('EnvironmentSource', () => {
     const result = await source.load();
 
     // Assert
-    expect(result).toEqual({ Port: 'not-a-number', Mode: 'Development' });
+    expect(result).toEqual({ Mode: 'Development', Port: 'not-a-number' });
     expect(source.name).toBe('service-env');
   });
 });

@@ -23,7 +23,7 @@ export interface GenerateTypesArguments {
   type: string;
 }
 
-export const handler = async ({ output, schema, type }: GenerateTypesArguments) => {
+export const handler = async ({ output, schema, type }: GenerateTypesArguments): Promise<void> => {
   const schemaPath = resolve(process.cwd(), schema);
   const outputPath = resolve(process.cwd(), output);
   const schemaImportPath = createModuleSpecifier(relative(dirname(outputPath), schemaPath));

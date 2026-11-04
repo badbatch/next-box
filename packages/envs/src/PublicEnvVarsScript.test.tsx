@@ -17,15 +17,15 @@ describe('PublicEnvVarsScript', () => {
     process.env[whitelistedKey] = 'whitelisted-value';
 
     // Act
-    const markup = renderToStaticMarkup(
-      <PublicEnvVarsScript id="public-envs" whitelist={[whitelistedKey]} />,
-    );
+    const markup = renderToStaticMarkup(<PublicEnvVarsScript id="public-envs" whitelist={[whitelistedKey]} />);
 
     // Assert
     expect(markup).toContain('id="public-envs"');
     expect(markup).toContain(`"${publicKey}":"public-value"`);
     expect(markup).toContain(`"${whitelistedKey}":"whitelisted-value"`);
     expect(markup).not.toContain(privateKey);
+
+    /* eslint-disable @typescript-eslint/no-dynamic-delete */
 
     if (originalPublicValue === undefined) {
       delete process.env[publicKey];

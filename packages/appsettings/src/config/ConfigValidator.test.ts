@@ -18,7 +18,8 @@ describe('ConfigValidator', () => {
 
   it('When a value does not match the schema, then it throws the schema validation error', () => {
     // Arrange
-    const validator = new ConfigValidator(z.object({ Api: z.object({ Timeout: z.number() }) }));
+    const schema = z.object({ Api: z.object({ Timeout: z.number() }) });
+    const validator = new ConfigValidator(schema);
 
     // Act
     const validateInvalidValue = () => validator.validate({ Api: { Timeout: 'slow' } });

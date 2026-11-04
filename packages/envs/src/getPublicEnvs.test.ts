@@ -11,6 +11,7 @@ describe('getPublicEnvs', () => {
       SECRET: 'private-value',
       WHITELISTED: 'allowed-value',
     };
+
     const whitelist = ['WHITELISTED'];
 
     // Act

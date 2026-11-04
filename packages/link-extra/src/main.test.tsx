@@ -151,9 +151,9 @@ describe('Link integration', () => {
     history.replaceState(undefined, '', '/current?alpha=one&bravo=two&y=cache');
 
     // Act
-    const result = shouldUrlAndLocationMatch('/current?bravo=two&alpha=one&y=other');
+    const isMatch = shouldUrlAndLocationMatch('/current?bravo=two&alpha=one&y=other');
 
     // Assert
-    expect(result).toBe(true);
+    expect(isMatch).toBe(true);
   });
 });

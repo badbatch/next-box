@@ -1,19 +1,21 @@
 /** @jest-environment node */
 
+import { afterEach, describe, expect, it } from '@jest/globals';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it } from '@jest/globals';
 import { loadJson } from './loadJson.ts';
 
 describe('loadJson', () => {
   let directory: string | undefined;
 
   afterEach(async () => {
-    if (directory) {
-      await rm(directory, { force: true, recursive: true });
-      directory = undefined;
+    if (!directory) {
+      return;
     }
+
+    await rm(directory, { force: true, recursive: true });
+    directory = undefined;
   });
 
   it('When the file contains a JSON object, then it returns the parsed object', async () => {

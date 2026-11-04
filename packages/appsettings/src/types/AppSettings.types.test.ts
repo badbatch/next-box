@@ -1,34 +1,61 @@
 import { describe, expect, it } from '@jest/globals';
 import { z } from 'zod';
+import { AppSettingsImplementation } from '../config/AppSettingsImplementation.ts';
+import { createAppSettings } from '../config/createAppSettings.ts';
 import { type AppSettings, type CreateAppSettingsOptions, type ScopedSettings } from './AppSettings.types.ts';
 import { type SettingsSource } from './Source.types.ts';
 
-type ExampleSettings = { Api: { Timeout: number } };
-const source: SettingsSource = { load: async () => ({ Api: { Timeout: 5000 } }), name: 'example' };
-const options: CreateAppSettingsOptions<ExampleSettings> = {
-  defaults: { Api: { Timeout: 1000 } },
-  schema: z.object({ Api: z.object({ Timeout: z.number() }) }),
-  sources: [source],
-};
+type ExampleSettings = { Api: { Retry?: number; Timeout: number } };
 
-const assertAppSettingsTypes = (settings: AppSettings<ExampleSettings>, scoped: ScopedSettings<ExampleSettings>): void => {
-  const timeout: number | undefined = settings.get('Api.Timeout');
-  const requiredTimeout: number = settings.getOrThrow('Api.Timeout');
-  const all: Readonly<ExampleSettings> = settings.getAll();
-  const scopedTimeout: number | undefined = scoped.get('Api.Timeout');
+const assertType = <Expected>(_value: Expected): void => undefined;
 
-  void [timeout, requiredTimeout, all, scopedTimeout, options];
-};
-
-describe('settings API types', () => {
-  it('When compiled, then the public settings and source types preserve their declared contracts', () => {
+describe('AppSettings types', () => {
+  it('When configuration is loaded, then settings and scoped readers expose correctly typed values', async () => {
     // Arrange
-    const assertions = assertAppSettingsTypes;
+    const source: SettingsSource = {
+      load: () => Promise.resolve({ Api: { Timeout: 5000 } }),
+      name: 'example',
+    };
+
+    const options: CreateAppSettingsOptions<ExampleSettings> = {
+      defaults: { Api: { Timeout: 1000 } },
+      schema: z.object({ Api: z.object({ Retry: z.number().optional(), Timeout: z.number() }) }),
+      sources: [source],
+    };
 
     // Act
-    const isFunction = typeof assertions === 'function';
+    const config = await createAppSettings(options);
+    const settings: AppSettings<ExampleSettings> = new AppSettingsImplementation(config);
+    const scoped: ScopedSettings<{ Retry?: number; Timeout: number }> = settings.scope('Api');
+    const timeout = settings.get('Api.Timeout');
+    const retry = settings.get('Api.Retry');
+    const requiredTimeout = settings.getOrThrow('Api.Timeout');
+    const all = settings.getAll();
+    const section = settings.getSection('Api');
+    const hasTimeout = settings.has('Api.Timeout');
+    const scopedTimeout = scoped.get('Timeout');
+    const scopedRequiredTimeout = scoped.getOrThrow('Timeout');
+    const scopedAll = scoped.getAll();
+
+    assertType<number | undefined>(timeout);
+    assertType<number | undefined>(retry);
+    assertType<number>(requiredTimeout);
+    assertType<Readonly<ExampleSettings>>(all);
+    assertType<ExampleSettings['Api'] | undefined>(section);
+    assertType<boolean>(hasTimeout);
+    assertType<number | undefined>(scopedTimeout);
+    assertType<number>(scopedRequiredTimeout);
+    assertType<Readonly<ExampleSettings['Api']>>(scopedAll);
 
     // Assert
-    expect(isFunction).toBe(true);
+    expect(timeout).toBe(5000);
+    expect(retry).toBeUndefined();
+    expect(requiredTimeout).toBe(5000);
+    expect(all).toEqual({ Api: { Timeout: 5000 } });
+    expect(section).toEqual({ Timeout: 5000 });
+    expect(hasTimeout).toBe(true);
+    expect(scopedTimeout).toBe(5000);
+    expect(scopedRequiredTimeout).toBe(5000);
+    expect(scopedAll).toEqual({ Timeout: 5000 });
   });
 });

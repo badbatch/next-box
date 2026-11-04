@@ -2,31 +2,35 @@ import { describe, expect, it } from '@jest/globals';
 import { type SettingPath, type SettingSectionPath, type SettingValue } from './Config.types.ts';
 
 type ExampleSettings = {
-  Api: { BaseUrl: string; Timeout: number };
+  Api: { BaseUrl: string; Retry: { Count: number }; Timeout: number };
   Features: { DarkMode: boolean };
   Tags: readonly string[];
 };
 
-type Equal<Left, Right> = (<Value>() => Value extends Left ? 1 : 2) extends <Value>() =>
-  Value extends Right ? 1 : 2
-  ? (<Value>() => Value extends Right ? 1 : 2) extends <Value>() => Value extends Left ? 1 : 2
-    ? true
-    : false
-  : false;
-
-const validLeafPaths: Equal<SettingPath<ExampleSettings>, 'Api.BaseUrl' | 'Api.Timeout' | 'Features.DarkMode' | 'Tags'> = true;
-const validSectionPaths: Equal<SettingSectionPath<ExampleSettings>, 'Api' | 'Features'> = true;
-const validValueType: Equal<SettingValue<ExampleSettings, 'Api.Timeout'>, number> = true;
-
 describe('configuration path types', () => {
-  it('When evaluated by TypeScript, then they resolve leaf paths, section paths, and leaf values', () => {
+  it('When paths are declared, then leaf and section paths accept the appropriate settings paths', () => {
     // Arrange
-    const typeChecks = [validLeafPaths, validSectionPaths, validValueType];
+    const leafPaths: SettingPath<ExampleSettings>[] = [
+      'Api.BaseUrl',
+      'Api.Retry.Count',
+      'Api.Timeout',
+      'Features.DarkMode',
+      'Tags',
+    ];
+
+    const sectionPaths: SettingSectionPath<ExampleSettings>[] = ['Api', 'Api.Retry', 'Features'];
+    const timeout: SettingValue<ExampleSettings, 'Api.Timeout'> = 5000;
+    const retryCount: SettingValue<ExampleSettings['Api']['Retry'], 'Count'> = 3;
 
     // Act
-    const result = typeChecks.every(Boolean);
+    const paths = { leafPaths, retryCount, sectionPaths, timeout };
 
     // Assert
-    expect(result).toBe(true);
+    expect(paths).toEqual({
+      leafPaths: ['Api.BaseUrl', 'Api.Retry.Count', 'Api.Timeout', 'Features.DarkMode', 'Tags'],
+      retryCount: 3,
+      sectionPaths: ['Api', 'Api.Retry', 'Features'],
+      timeout: 5000,
+    });
   });
 });

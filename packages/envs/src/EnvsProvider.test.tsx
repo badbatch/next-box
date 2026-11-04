@@ -35,7 +35,7 @@ describe('EnvsProvider', () => {
         {context => {
           providedEnvs = context.envs;
 
-          return null;
+          return;
         }}
       </EnvsProvider>,
     );

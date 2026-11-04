@@ -1,43 +1,37 @@
+/** @jest-environment @repodog/jest-config/FailOnJsdomConsoleEnvironment.mjs */
+
 import { describe, expect, it } from '@jest/globals';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderHook } from '@testing-library/react';
+import { type ReactNode } from 'react';
 import { AppSettingsProvider } from '../components/AppSettingsProvider.tsx';
 import { useAppSettings } from './useAppSettings.ts';
 
-const SectionOutput = () => {
-  const api = useAppSettings('Api');
-  return <span>{String(api?.Timeout)}</span>;
-};
+const settings = { Api: { Timeout: 5000 } };
 
-const MissingSectionOutput = () => {
-  const missing = useAppSettings('Missing');
-  return <span>{String(missing)}</span>;
-};
+const createWrapper = ({ children }: { children: ReactNode }) => (
+  <AppSettingsProvider settings={settings}>{children}</AppSettingsProvider>
+);
 
 describe('useAppSettings', () => {
   it('When used within a provider, then it returns the requested object section', () => {
     // Arrange
-    const settings = { Api: { Timeout: 5000 } };
-    const component = createElement(AppSettingsProvider, { children: createElement(SectionOutput), settings });
+    const path = 'Api';
 
     // Act
-    const markup = renderToStaticMarkup(component);
+    const { result } = renderHook(() => useAppSettings(path), { wrapper: createWrapper });
 
     // Assert
-    expect(markup).toBe('<span>5000</span>');
+    expect(result.current).toEqual({ Timeout: 5000 });
   });
 
   it('When the requested section is missing, then it returns undefined', () => {
     // Arrange
-    const component = createElement(AppSettingsProvider, {
-      children: <MissingSectionOutput />,
-      settings: { Api: { Timeout: 5000 } },
-    });
+    const path = 'Missing';
 
     // Act
-    const markup = renderToStaticMarkup(component);
+    const { result } = renderHook(() => useAppSettings(path), { wrapper: createWrapper });
 
     // Assert
-    expect(markup).toBe('<span>undefined</span>');
+    expect(result.current).toBeUndefined();
   });
 });

@@ -20,5 +20,8 @@ export default [
   ...jestConfig.map(entry => ({
     ...entry,
     files: ['**/*.{spec,test}.*'],
+    rules: {
+      'jest/no-conditional-in-test': 0,
+    },
   })),
 ];

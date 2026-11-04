@@ -1,25 +1,27 @@
 /** @jest-environment node */
 
+import { afterEach, describe, expect, it } from '@jest/globals';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterEach, describe, expect, it } from '@jest/globals';
 import { AppSettingsSource } from './AppSettingsSource.ts';
 
 describe('AppSettingsSource', () => {
   let directory: string | undefined;
 
   afterEach(async () => {
-    if (directory) {
-      await rm(directory, { force: true, recursive: true });
-      directory = undefined;
+    if (!directory) {
+      return;
     }
+
+    await rm(directory, { force: true, recursive: true });
+    directory = undefined;
   });
 
   it('When base and environment files exist, then the environment file overrides the base recursively', async () => {
     // Arrange
     directory = await mkdtemp(join(tmpdir(), 'appsettings-source-'));
-    await writeFile(join(directory, 'appsettings.json'), JSON.stringify({ Api: { Timeout: 1000, Retry: 3 } }));
+    await writeFile(join(directory, 'appsettings.json'), JSON.stringify({ Api: { Retry: 3, Timeout: 1000 } }));
     await writeFile(join(directory, 'appsettings.test.json'), JSON.stringify({ Api: { Timeout: 5000 } }));
     const source = new AppSettingsSource({ directory, environment: 'test' });
 
@@ -27,7 +29,7 @@ describe('AppSettingsSource', () => {
     const result = await source.load();
 
     // Assert
-    expect(result).toEqual({ Api: { Timeout: 5000, Retry: 3 } });
+    expect(result).toEqual({ Api: { Retry: 3, Timeout: 5000 } });
     expect(source.name).toBe('appsettings:test');
   });
 

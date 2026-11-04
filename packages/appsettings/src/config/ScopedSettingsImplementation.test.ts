@@ -21,7 +21,9 @@ describe('ScopedSettingsImplementation', () => {
     const settings = new ScopedSettingsImplementation({ Retry: undefined }, 'Platform.Api');
 
     // Act
-    const getMissingValue = () => settings.getOrThrow('Retry');
+    const getMissingValue = () => {
+      settings.getOrThrow('Retry');
+    };
 
     // Assert
     expect(getMissingValue).toThrow('Required app setting "Platform.Api.Retry" is missing.');

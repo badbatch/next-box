@@ -12,7 +12,7 @@ export async function loadJson(path: string, isOptional: boolean): Promise<Recor
   try {
     contents = await readFile(path, 'utf8');
   } catch (error) {
-    if (isOptional && error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+    if (isOptional && typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT') {
       return undefined;
     }
 
