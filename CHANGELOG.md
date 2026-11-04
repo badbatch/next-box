@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.2.19 (2026-11-04)
+
+### Chores
+
+* **root:**  pipeline and range changes ([4addccb5](https://github.com/badbatch/next-box/commit/4addccb51e6e2a40f3c2c5b2373c7a20511265d9))
+* **appsettings:**  save initial files ([cadc168e](https://github.com/badbatch/next-box/commit/cadc168e7d169453dda388c44cd43b6b50b4a84a))
+
+### New Features
+
+* **route-handler:**  add package ([9e1cbd0c](https://github.com/badbatch/next-box/commit/9e1cbd0cf7136397ea91ce3c6cf6f7a27ecac5ea))
+
+### Bug Fixes
+
+* **root:**
+  * linting, type and test fixes ([dab3c3ed](https://github.com/badbatch/next-box/commit/dab3c3ed79765a30680718caabda5074398b0f03))
+  * minor updates ([9b78614e](https://github.com/badbatch/next-box/commit/9b78614e6619517fb845505eb73a9b7451746404))
+* **appsettings:**  upgrade rollup to support file directives ([c692d0b0](https://github.com/badbatch/next-box/commit/c692d0b0f45fc33d82072706b403664f8ff6d06c))
+
+### Refactors
+
+* **root:**  add tests and minor updates ([a4b3d547](https://github.com/badbatch/next-box/commit/a4b3d547105b7bf4a0a3284e3d37f81ae70b87b4))
+* **appsettings:**  update the way interface is defined ([25bb71a0](https://github.com/badbatch/next-box/commit/25bb71a0dbea17a53861dd457c86aa2879fddeda))
+
+### Tests
+
+* **breadcrumb:**  add unit tests ([64554851](https://github.com/badbatch/next-box/commit/64554851622e805eb7d96becf18609bb3edf685d))
+
 ## 0.2.18 (2026-08-30)
 
 ### Bug Fixes

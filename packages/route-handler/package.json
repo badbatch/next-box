@@ -1,7 +1,7 @@
 {
   "name": "@next-box/route-handler",
   "description": "A library to aid in defining and configuring Next.js route handlers. ",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "miami-man",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",
