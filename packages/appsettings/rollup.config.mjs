@@ -8,7 +8,7 @@ export default [
   config,
   {
     ...rest,
-    input: input.replace('index', 'cli/index'),
+    input: input.replace('index', 'cli'),
   },
   {
     ...rest,

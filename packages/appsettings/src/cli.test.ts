@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from '@jest/globals';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { runAppsettingsCli } from './index.ts';
+import { runAppsettingsCli } from './cli.ts';
 
 describe('runAppsettingsCli', () => {
   let directory: string | undefined;

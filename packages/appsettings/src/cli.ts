@@ -1,6 +1,6 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import * as generateTypesCommand from './command.ts';
+import * as generateTypesCommand from './cli/command.ts';
 
 export const runAppsettingsCli = async (): Promise<void> => {
   await yargs(hideBin(process.argv))
