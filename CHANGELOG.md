@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.22 (2026-11-05)
+
+### Bug Fixes
+
+* **link-extra:**  update next link typing ([574543a2](https://github.com/badbatch/next-box/commit/574543a2ff80578e38f071e2300b79e2b4892607))
+
 ## 0.2.21 (2026-11-05)
 
 ### Bug Fixes
