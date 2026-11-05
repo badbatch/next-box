@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.21 (2026-11-05)
+
+### Bug Fixes
+
+* **appsettings:**  fix export path ([e3536f9f](https://github.com/badbatch/next-box/commit/e3536f9f0ef0ba3db8638f1791a98c1018666dc3))
+
 ## 0.2.20 (2026-11-05)
 
 ### Bug Fixes
