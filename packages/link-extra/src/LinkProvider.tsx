@@ -1,5 +1,6 @@
 'use client';
 
+import type NextLink from 'next/link.js';
 import {
   type ComponentType,
   type FC,
@@ -10,7 +11,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { type LinkContextData, type NextLinkComponent, type OwnLinkProps } from '#types.js';
+import { type LinkContextData, type OwnLinkProps } from '#types.js';
 
 // Context requires an initial value, but this is set in the provider so casting
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -18,7 +19,7 @@ export const LinkContext = createContext<LinkContextData>({} as LinkContextData)
 
 export type LinkProviderProps = {
   LoadingComponent: ComponentType;
-  NextLink: NextLinkComponent;
+  NextLink: (typeof NextLink)['default'];
   OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
   loadingTimeout?: number;

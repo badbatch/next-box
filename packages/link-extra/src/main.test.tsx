@@ -1,16 +1,17 @@
 /** @jest-environment @repodog/jest-config/FailOnJsdomConsoleEnvironment.mjs */
 
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
+import type NextLink from 'next/link.js';
 import { type ComponentProps, type ComponentType, type ReactElement, act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Link } from './Link.tsx';
 import { LinkProvider } from './LinkProvider.tsx';
 import { shouldUrlAndLocationMatch } from './helpers.ts';
-import { type NextLinkComponent, type OwnLinkProps } from './types.ts';
+import { type OwnLinkProps } from './types.ts';
 
-const NextLinkMock: NextLinkComponent = ({ children, href }) => {
+// @ts-expect-error Okay for test file
+const NextLinkMock: (typeof NextLink)['default'] = ({ children, href }) => {
   const nextHref = typeof href === 'string' ? href : (href.pathname ?? '');
-
   return <div data-next-href={nextHref}>{children}</div>;
 };
 
