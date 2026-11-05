@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.20 (2026-11-05)
+
+### Bug Fixes
+
+* **root:**  update build output config ([a434d673](https://github.com/badbatch/next-box/commit/a434d6733e5de9759ae5dfedf6b9b9271261dca0))
+
 ## 0.2.19 (2026-11-04)
 
 ### Chores
