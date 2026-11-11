@@ -17,11 +17,11 @@ export type SettingPath<T extends object, Depth extends number = 5> = Depth exte
 export type SettingSectionPath<T extends object, Depth extends number = 5> = Depth extends 0
   ? never
   : {
-      [K in Extract<keyof T, string>]: T[K] extends Primitive | readonly Primitive[]
+      [K in Exclude<Extract<keyof T, string>, '__appSettingsSchema'>]: T[K] extends Primitive | readonly Primitive[]
         ? never
         : T[K] extends object
           ? K | `${K}.${SettingSectionPath<T[K], PreviousDepth[Depth]>}`
           : never;
-    }[Extract<keyof T, string>];
+    }[Exclude<Extract<keyof T, string>, '__appSettingsSchema'>];
 
 export type SettingValue<T extends object, P extends SettingPath<T>> = Get<T, P>;
