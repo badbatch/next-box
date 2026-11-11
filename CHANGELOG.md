@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.24 (2026-11-11)
+
+### Bug Fixes
+
+* **appsettings:**  change how useAppSettings arg is typed ([345986e2](https://github.com/badbatch/next-box/commit/345986e260ab1070e786f8f54b4a2831eaef5024))
+
 ## 0.2.23 (2026-11-11)
 
 ### Bug Fixes
