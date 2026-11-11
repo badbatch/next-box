@@ -3,9 +3,6 @@ import { type SettingSectionPath } from '#types/Config.types.ts';
 import { type AppSettingsSchema } from '../index.ts';
 import { useAppSettingsContext } from './useAppSettingsContext.ts';
 
-// Import the augmented AppSettingsSchema to ensure TypeScript is aware of the augmentation
-import './appSettings/schema';
-
 export function useAppSettings<P extends SettingSectionPath<AppSettingsSchema>>(
   path: P,
 ): Get<AppSettingsSchema, P> | undefined;
