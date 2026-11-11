@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.23 (2026-11-11)
+
+### Bug Fixes
+
+* **appsettings:**  sort typing problem ([61161f5d](https://github.com/badbatch/next-box/commit/61161f5db50b7d24045b377441c5a160e0cc11f7))
+
+### Other Changes
+
+* **appsettings:**  ensure TypeScript recognizes augmented AppSettingsSchema" ([73ee12f4](https://github.com/badbatch/next-box/commit/73ee12f42f608a73b412de791e5394628ca5583b))
+* correct relative path import in useAppSettings.ts" ([4c9c52cb](https://github.com/badbatch/next-box/commit/4c9c52cb5491be39fd4e6aa8886e48bde39c61d2))
+
+### Refactors
+
+* correct relative path import in useAppSettings.ts ([1435061c](https://github.com/badbatch/next-box/commit/1435061c049182cace0c7464c1e8e624b6e22587))
+* **appsettings:**  ensure TypeScript recognizes augmented AppSettingsSchema ([f70d64a7](https://github.com/badbatch/next-box/commit/f70d64a7351bf9ce49bd01d266c453e8b677682d))
+
 ## 0.2.22 (2026-11-05)
 
 ### Bug Fixes
