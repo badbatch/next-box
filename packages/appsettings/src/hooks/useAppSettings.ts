@@ -3,11 +3,9 @@ import { type SettingSectionPath } from '#types/Config.types.ts';
 import { type AppSettingsSchema } from '../index.ts';
 import { useAppSettingsContext } from './useAppSettingsContext.ts';
 
-export function useAppSettings<
-  P extends SettingSectionPath<{
-    [K in keyof AppSettingsSchema]: AppSettingsSchema[K];
-  }>,
->(path: P): Get<AppSettingsSchema, P> | undefined;
+export function useAppSettings<P extends SettingSectionPath<AppSettingsSchema>>(
+  path: P,
+): Get<AppSettingsSchema, P> | undefined;
 
 export function useAppSettings<T extends object, P extends SettingSectionPath<T>>(path: P): Get<T, P> | undefined;
 
