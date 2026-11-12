@@ -132,12 +132,14 @@ Each later source overrides earlier values according to the merge rules describe
 
 ### Read settings
 
-Paths use dot notation. The library provides two hook factories:
+Paths use dot notation. The library provides four hook factories:
 
 - `createUseSetting` creates a hook for reading individual setting values.
 - `createUseAppSettings` creates a hook for reading object sections.
+- `createUseSettingOrThrow` creates a hook for reading individual setting values, throwing an error if the requested setting is `undefined`.
+- `createUseAppSettingsOrThrow` creates a hook for reading object sections, throwing an error if the requested section is `undefined`.
 
-Both factories accept your application's settings type and return a fully typed React hook.
+Both optional and throwing variants accept your application's settings type and return a fully typed React hook.
 
 #### Create typed hooks
 
@@ -149,32 +151,49 @@ Create the hooks once, outside your React components:
 
 import {
   createUseAppSettings,
+  createUseAppSettingsOrThrow,
   createUseSetting,
+  createUseSettingOrThrow,
 } from '@next-box/appsettings';
 
 import type { AppSettingsConfig } from '../appSettings.schema';
 
 export const useSetting = createUseSetting<AppSettingsConfig>();
-
 export const useAppSettings = createUseAppSettings<AppSettingsConfig>();
+
+export const useSettingOrThrow = createUseSettingOrThrow<AppSettingsConfig>();
+export const useAppSettingsOrThrow = createUseAppSettingsOrThrow<AppSettingsConfig>();
 ```
 
 #### Use the hooks in components
+
+Use the optional variants when a setting might not exist and your component can handle that case. Use the throwing variants when a setting is required and its absence should be treated as an error.
 
 ```tsx
 // ./src/ApiTimeout.tsx
 'use client';
 
-import { useAppSettings, useSetting } from './hooks/appSettings';
+import {
+  useAppSettings,
+  useAppSettingsOrThrow,
+  useSetting,
+  useSettingOrThrow,
+} from './hooks/appSettings';
 
 export const ApiTimeout = () => {
+  // Optional reads
   const timeout = useSetting('Api.Timeout');
-  const api = useAppSettings('Api');
   const features = useAppSettings('Features');
+
+  // Required reads
+  const api = useAppSettingsOrThrow('Api');
+  const baseUrl = useSettingOrThrow('Api.BaseUrl');
 
   return (
     <span>
-      {features?.DarkMode ? `${api?.BaseUrl} (${timeout}ms)` : 'Disabled'}
+      {features?.DarkMode
+        ? `${api.BaseUrl} (${timeout ?? 'default'}ms)`
+        : `${baseUrl} is disabled`}
     </span>
   );
 };
@@ -183,6 +202,8 @@ export const ApiTimeout = () => {
 #### Type inference
 
 Given the `AppSettingsConfig` schema defined above:
+
+##### Optional hooks**
 
 ```ts
 const timeout = useSetting('Api.Timeout');
@@ -196,28 +217,49 @@ const api = useAppSettings('Api');
 
 const features = useAppSettings('Features');
 // { DarkMode: boolean; NewDashboard: boolean } | undefined
+```
 
+##### Throwing hooks
+
+```ts
+const timeout = useSettingOrThrow('Api.Timeout');
+// number
+
+const baseUrl = useSettingOrThrow('Api.BaseUrl');
+// string
+
+const api = useAppSettingsOrThrow('Api');
+// { BaseUrl: string; Timeout: number }
+
+const features = useAppSettingsOrThrow('Features');
+// { DarkMode: boolean; NewDashboard: boolean }
+```
+
+All four hooks provide compile-time path validation:
+
+```ts
 useSetting('Api.InvalidProperty');
+// TypeScript error
+
+useSettingOrThrow('Api.InvalidProperty');
+// TypeScript error
+
+useAppSettings('InvalidSection');
+// TypeScript error
+
+useAppSettingsOrThrow('InvalidSection');
 // TypeScript error
 ```
 
-Both hooks return `undefined` when the requested path does not exist.
+The optional hooks return `undefined` when the requested path does not exist.
+
+The throwing hooks throw an `Error` when the requested path resolves to `undefined`. They are useful when a setting is required and the application should fail rather than continue with a missing value.
+
+Note that the throwing hooks only check for `undefined`; values such as `null`, `false`, `0`, and empty strings are returned normally.
 
 The settings snapshot is read-only. Configuration is loaded and validated before it reaches the provider; there are no client-side mutation or reload methods.
 
 No module augmentation or generated declaration files are required. Each application supplies its settings type explicitly when creating its hooks.
-
-### Conditionally render with `Setting`
-
-`Setting` renders its children when the current value at `path` strictly equals `value`. Pass an array of expected values to match any one of them. It renders `fallback` when there is no match; `negate` inverts the match.
-
-```tsx
-import { Setting } from '@next-box/appsettings';
-
-<Setting path="Features.DarkMode" value={true} fallback={<p>Dark mode is off</p>}>
-  <p>Dark mode is on</p>
-</Setting>
-```
 
 ## Changelog
 
