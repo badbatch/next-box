@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.27 (2026-11-12)
+
+### New Features
+
+* **appsettings:**  expose orThrow factories ([cc61f82d](https://github.com/badbatch/next-box/commit/cc61f82d7f80e731daed9acab9508eb2ba4306bb))
+
 ## 0.2.26 (2026-11-12)
 
 ### Refactors
