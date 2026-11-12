@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.25 (2026-11-12)
+
+### Bug Fixes
+
+* **appsettings:**  try empty interface to extend ([ddab8b2d](https://github.com/badbatch/next-box/commit/ddab8b2d80908d2cec804f0b9adf28fd28f69751))
+
 ## 0.2.24 (2026-11-11)
 
 ### Bug Fixes
