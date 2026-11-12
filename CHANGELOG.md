@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.26 (2026-11-12)
+
+### Refactors
+
+* **appsettings:**  move to curried functions to generate hooks ([4034ba7e](https://github.com/badbatch/next-box/commit/4034ba7e70b53d493ccd82fd7d11e0fae4eb16d2))
+
 ## 0.2.25 (2026-11-12)
 
 ### Bug Fixes
