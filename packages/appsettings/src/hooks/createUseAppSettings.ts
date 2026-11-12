@@ -10,3 +10,18 @@ export const createUseAppSettings = <T extends object>() => {
     return settings.read(path) as Get<T, P> | undefined;
   };
 };
+
+export const createUseAppSettingsOrThrow = <T extends object>() => {
+  return <P extends SettingSectionPath<T>>(path: P): Get<T, P> => {
+    const settings = useAppSettingsContext();
+    // Assert the resolved settings type based on the caller-provided schema and path.
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const result = settings.read(path) as Get<T, P> | undefined;
+
+    if (result === undefined) {
+      throw new Error(`Setting "${path}" is undefined`);
+    }
+
+    return result;
+  };
+};
