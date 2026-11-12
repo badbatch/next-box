@@ -2,9 +2,12 @@
 
 import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
-import { useAppSetting } from '../hooks/useAppSetting.ts';
+import { createUseSetting } from '../hooks/createUseSetting.ts';
 import { AppSettingsProvider } from './AppSettingsProvider.tsx';
 
+type Settings = { Api: { Timeout: number } };
+
+const useAppSetting = createUseSetting<Settings>();
 const SettingsOutput = () => <span>{String(useAppSetting('Api.Timeout'))}</span>;
 
 describe('AppSettingsProvider', () => {

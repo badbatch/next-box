@@ -80,9 +80,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <body>
-        <AppSettingsProvider settings={settings}>{children}</AppSettingsProvider>
-      </body>
+    <body>
+    <AppSettingsProvider settings={settings}>{children}</AppSettingsProvider>
+    </body>
     </html>
   );
 }
@@ -132,35 +132,80 @@ Each later source overrides earlier values according to the merge rules describe
 
 ### Read settings
 
-Paths use dot notation. `useAppSetting` reads a leaf value and `useAppSettings` reads an object section:
+Paths use dot notation. The library provides two hook factories:
+
+- `createUseSetting` creates a hook for reading individual setting values.
+- `createUseAppSettings` creates a hook for reading object sections.
+
+Both factories accept your application's settings type and return a fully typed React hook.
+
+#### Create typed hooks
+
+Create the hooks once, outside your React components:
+
+```ts
+// ./src/hooks/appSettings.ts
+'use client';
+
+import {
+  createUseAppSettings,
+  createUseSetting,
+} from '@next-box/appsettings';
+
+import type { AppSettingsConfig } from '../appSettings.schema';
+
+export const useSetting = createUseSetting<AppSettingsConfig>();
+
+export const useAppSettings = createUseAppSettings<AppSettingsConfig>();
+```
+
+#### Use the hooks in components
 
 ```tsx
 // ./src/ApiTimeout.tsx
 'use client';
 
-import { useAppSetting, useAppSettings } from '@next-box/appsettings';
+import { useAppSettings, useSetting } from './hooks/appSettings';
 
 export const ApiTimeout = () => {
-  const timeout = useAppSetting('Api.Timeout');
+  const timeout = useSetting('Api.Timeout');
+  const api = useAppSettings('Api');
   const features = useAppSettings('Features');
 
-  return <span>{features?.DarkMode ? timeout : 'Disabled'}</span>;
+  return (
+    <span>
+      {features?.DarkMode ? `${api?.BaseUrl} (${timeout}ms)` : 'Disabled'}
+    </span>
+  );
 };
 ```
 
-The settings snapshot is read-only. Configuration is loaded and validated before it reaches the provider; there are no client-side mutation or reload methods.
+#### Type inference
 
-Leaf paths and their values are checked against the inferred schema. The reader uses bounded nested path types and `type-fest`'s `Get<T, P>` for path value types.
+Given the `AppSettingsConfig` schema defined above:
 
-React context cannot infer the settings type from a provider at a separate hook call site. Generate a module augmentation from the exported schema type:
+```ts
+const timeout = useSetting('Api.Timeout');
+// number | undefined
 
-```shell
-pnpm exec appsettings generate-types ./src/appSettings.schema.ts ./src/appSettings.generated.d.ts --type AppSettingsConfig
+const baseUrl = useSetting('Api.BaseUrl');
+// string | undefined
+
+const api = useAppSettings('Api');
+// { BaseUrl: string; Timeout: number } | undefined
+
+const features = useAppSettings('Features');
+// { DarkMode: boolean; NewDashboard: boolean } | undefined
+
+useSetting('Api.InvalidProperty');
+// TypeScript error
 ```
 
-The command writes a declaration that imports `AppSettingsConfig` and augments the package's `AppSettingsSchema`. TypeScript then infers each hook result from the value type at the end of its path. Zod enums and literals stay precise, while `z.string()` and `z.number()` remain broad types. The declaration only provides types; configuration still loads and validates on the server.
+Both hooks return `undefined` when the requested path does not exist.
 
-Run the command after changing the schema, or add it to the consuming application's `predev`, `prebuild`, and type-check scripts so the declaration stays current. The generated file must be included by the application's `tsconfig.json`.
+The settings snapshot is read-only. Configuration is loaded and validated before it reaches the provider; there are no client-side mutation or reload methods.
+
+No module augmentation or generated declaration files are required. Each application supplies its settings type explicitly when creating its hooks.
 
 ### Conditionally render with `Setting`
 
