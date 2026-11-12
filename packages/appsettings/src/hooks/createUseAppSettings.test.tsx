@@ -2,13 +2,14 @@
 
 import { describe, expect, it } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
-import { type ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 import { AppSettingsProvider } from '../components/AppSettingsProvider.tsx';
-import { useAppSettings } from './useAppSettings.ts';
+import { createUseAppSettings } from './createUseAppSettings.ts';
 
 const settings = { Api: { Timeout: 5000 } };
+const useAppSettings = createUseAppSettings<typeof settings>();
 
-const createWrapper = ({ children }: { children: ReactNode }) => (
+const createWrapper = ({ children }: PropsWithChildren) => (
   <AppSettingsProvider settings={settings}>{children}</AppSettingsProvider>
 );
 
@@ -29,6 +30,7 @@ describe('useAppSettings', () => {
     const path = 'Missing';
 
     // Act
+    // @ts-expect-error Intended for test
     const { result } = renderHook(() => useAppSettings(path), { wrapper: createWrapper });
 
     // Assert

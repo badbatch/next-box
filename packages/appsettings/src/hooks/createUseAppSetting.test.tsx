@@ -2,23 +2,24 @@
 
 import { describe, expect, it } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
-import { type ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 import { AppSettingsProvider } from '../components/AppSettingsProvider.tsx';
-import { useAppSetting } from './useAppSetting.ts';
+import { createUseSetting } from './createUseSetting.ts';
 
 const settings = { Api: { Missing: undefined, Timeout: 5000 } };
+const useSetting = createUseSetting<typeof settings>();
 
-const createWrapper = ({ children }: { children: ReactNode }) => (
+const createWrapper = ({ children }: PropsWithChildren) => (
   <AppSettingsProvider settings={settings}>{children}</AppSettingsProvider>
 );
 
-describe('useAppSetting', () => {
+describe('useSetting', () => {
   it('When used within a provider, then it returns the value at the requested leaf path', () => {
     // Arrange
     const path = 'Api.Timeout';
 
     // Act
-    const { result } = renderHook(() => useAppSetting(path), { wrapper: createWrapper });
+    const { result } = renderHook(() => useSetting(path), { wrapper: createWrapper });
 
     // Assert
     expect(result.current).toBe(5000);
@@ -29,7 +30,12 @@ describe('useAppSetting', () => {
     const path = 'Api.Missing';
 
     // Act
-    const { result } = renderHook(() => useAppSetting(path), { wrapper: createWrapper });
+    const { result } = renderHook(
+      () => {
+        useSetting(path);
+      },
+      { wrapper: createWrapper },
+    );
 
     // Assert
     expect(result.current).toBeUndefined();
