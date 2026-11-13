@@ -44,7 +44,7 @@ export type AppSettingsConfig = z.infer<typeof appSettingsSchema>;
 
 ### Load configuration on the server
 
-`createAppSettings` is exported from `@next-box/appsettings/server`. It merges defaults and sources in order, validates the complete result with the schema, and returns plain configuration data suitable for passing to a Client Component.
+`createAppSettings` is exported from `@next-box/appsettings/server`. It merges defaults and sources in order, validates the complete result with the schema, and returns the full validated configuration, including the reserved root `Server` section. Project it with `getClientAppSettings` before passing it to any Client Component.
 
 ```ts
 // ./src/appSettings.ts
@@ -73,10 +73,11 @@ In Next.js, call the loader from a Server Component and pass the result to the p
 ```tsx
 // ./app/layout.tsx
 import { AppSettingsProvider } from '@next-box/appsettings';
+import { getClientAppSettings } from '@next-box/appsettings/server';
 import { loadAppSettings } from '../src/appSettings';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const settings = await loadAppSettings();
+  const settings = getClientAppSettings(await loadAppSettings());
 
   return (
     <html lang="en">
@@ -89,6 +90,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 ```
 
 The provider creates a read-only in-memory settings instance from the supplied data. Client components do not load files, validate configuration, or reload settings.
+
+### Server-only configuration
+
+The root `Server` section is reserved for server-only values. `createAppSettings` keeps it available to server code. `getClientAppSettings(settings)`, exported from `@next-box/appsettings/server`, returns a read-only snapshot with that section removed and preserves all other root sections such as `Bff` and `Application`.
+
+Call the projection on the server **before** passing settings to any Client Component, including your own provider wrappers. Filtering inside a Client Component is too late: its props have already been serialized to the browser. `AppSettingsProvider` rejects snapshots containing `Server` at runtime and in its prop types; it cannot undo an earlier serialization.
+
+```ts
+const settings = await loadAppSettings();
+// Server code can use settings.Server.Api.BaseUrl.
+const clientSettings = getClientAppSettings(settings);
+// Only clientSettings may be passed to Client Components.
+```
+
+`ClientAppSettings<T>` omits the root `Server` key. Hook factories, `useAppSettingsContext`, and `Setting` use this client type even when supplied the complete application schema, so `Server` paths cannot be requested through browser bindings. Server-side readers retain the complete schema. Only the exact root `Server` key is private; keep secrets inside that section.
 
 ### Configure server sources
 
@@ -128,7 +144,7 @@ const settings = await createAppSettings({
 });
 ```
 
-Each later source overrides earlier values according to the merge rules described above. The resulting settings object can be passed to `AppSettingsProvider`.
+Each later source overrides earlier values according to the merge rules described above. Pass `getClientAppSettings(settings)` to `AppSettingsProvider` from a Server Component.
 
 ### Read settings
 

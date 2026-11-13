@@ -1,13 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 import { z } from 'zod';
+import { assertType } from '../__testUtils__/types.ts';
 import { AppSettingsImplementation } from '../config/AppSettingsImplementation.ts';
 import { createAppSettings } from '../config/createAppSettings.ts';
 import { type AppSettings, type CreateAppSettingsOptions, type ScopedSettings } from './AppSettings.types.ts';
 import { type SettingsSource } from './Source.types.ts';
 
 type ExampleSettings = { Api: { Retry?: number; Timeout: number } };
-
-const assertType = <Expected>(_value: Expected): void => undefined;
 
 describe('AppSettings types', () => {
   it('When configuration is loaded, then settings and scoped readers expose correctly typed values', async () => {
