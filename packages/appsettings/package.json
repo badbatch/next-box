@@ -1,7 +1,7 @@
 {
   "name": "@next-box/appsettings",
   "description": "A configuration management library for TypeScript applications, inspired by .NET’s appsettings.json.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "miami-man",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",
