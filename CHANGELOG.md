@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.28 (2026-11-13)
+
+### Bug Fixes
+
+* **appsettings:**  add client config and filter out server ([82babe0d](https://github.com/badbatch/next-box/commit/82babe0da12d5f4c891bd659b8c26891e99237ab))
+
 ## 0.2.27 (2026-11-12)
 
 ### New Features
