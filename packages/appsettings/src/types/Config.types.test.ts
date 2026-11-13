@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
+import { assertType } from '../__testUtils__/types.ts';
 import { type SettingPath, type SettingSectionPath, type SettingValue } from './Config.types.ts';
 
 type ExampleSettings = {
@@ -26,6 +27,10 @@ describe('configuration path types', () => {
     const paths = { leafPaths, retryCount, sectionPaths, timeout };
 
     // Assert
+    assertType<SettingPath<ExampleSettings>[]>(paths.leafPaths);
+    assertType<SettingSectionPath<ExampleSettings>[]>(paths.sectionPaths);
+    assertType<number>(paths.timeout);
+
     expect(paths).toEqual({
       leafPaths: ['Api.BaseUrl', 'Api.Retry.Count', 'Api.Timeout', 'Features.DarkMode', 'Tags'],
       retryCount: 3,
