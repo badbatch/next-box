@@ -1,6 +1,5 @@
-<div align="center">
-  <img alt="NextBox logo" src="./assets/next-box-logo.png" width="200">
-  <h1>NextBox</h1>
+<div>
+  <img alt="NextBox logo" src="./assets/NextBox-logo.svg" width="800">
 </div>
 
 A collection of libraries for use primarily with Next.js.
