@@ -109,11 +109,95 @@ const handler = defineHandler({
 
 Validation errors are collected across the configured request parts before the handler runs. `ValidationError` is exported for custom schema integrations. Other thrown errors are also converted into validation errors, preserving compatible `issues` arrays when available.
 
+### Define a server operation
+
+Use `defineOperation` for work that should be called directly from Server Components or other server code. An operation validates its input, receives explicit context, and returns a tagged result. It does not construct a request or response.
+
+```ts
+import { defineOperation, ResultType } from '@next-box/route-handler';
+import { z } from 'zod';
+
+type Session = { userId: string };
+type User = { id: string; name: string };
+
+export const getUser = defineOperation({
+  validation: z.object({ id: z.string() }),
+  context: { session: null as Session | null },
+  handler: async ({ input, context }) => {
+    if (!context.session) {
+      return { type: ResultType.Unauthorized };
+    }
+
+    const user = await findUser(input.id, context.session);
+
+    if (!user) {
+      return { type: ResultType.NotFound };
+    }
+
+    return { type: ResultType.Success, data: user };
+  },
+});
+```
+
+The schema's parsed output is the handler's `input` type. The configured context provides its type and defaults; call-time context values override those defaults.
+
+```tsx
+import { notFound, redirect } from 'next/navigation';
+import { ResultType } from '@next-box/route-handler';
+import { getUser } from '@/lib/operations/getUser';
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const session = await getSession();
+  
+  const result = await getUser({
+    input: await params,
+    context: { session },
+  });
+
+  switch (result.type) {
+    case ResultType.Success:
+      return <UserDetails user={result.data} />;
+
+    case ResultType.Unauthorized:
+      redirect('/login');
+
+    case ResultType.NotFound:
+    case ResultType.ValidationError:
+      notFound();
+  }
+}
+```
+
+Validation failures return `ResultType.ValidationError` with the collected validation errors. Unexpected exceptions from the operation handler propagate to the caller.
+
+If a route should call the same operation, `mapOperationResultToResponse` maps its result to the agreed HTTP status and JSON body. The existing `defineHandler` pipeline remains independent; the route opts into the operation explicitly.
+
+```ts
+import { defineHandler, mapOperationResultToResponse } from '@next-box/route-handler';
+import { getUser } from '@/lib/operations/getUser';
+
+export const GET = defineHandler({
+  handler: async (request, { params }) =>
+    mapOperationResultToResponse(
+      await getUser({
+        input: await params!,
+        context: { session: await getSession(request.headers) },
+      }),
+    ),
+});
+```
+
 ## API
 
 - `createMiddleware` preserves the middleware's parameter, input-context, and added-context types.
 - `defineHandler` creates a route handler from an optional context, middleware list, request validation, and handler function.
 - `createHandlerFactory` creates a reusable handler configuration with default context and middleware.
+- `defineOperation` creates a request-free, validated operation for direct server-side calls.
+- `mapOperationResultToResponse` optionally maps an operation result to an HTTP response.
 - `Handler`, `Middleware`, `RouteContext`, `Validation`, and related types are exported from the package entry point.
 
 ## Changelog
