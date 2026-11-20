@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.29 (2026-11-20)
+
+### New Features
+
+* **route-handler:**  define operation functionality ([d03bf426](https://github.com/badbatch/next-box/commit/d03bf4261ce5280ddd2c54b9bbd3a3cf6e790081))
+
 ## 0.2.28 (2026-11-13)
 
 ### Bug Fixes
