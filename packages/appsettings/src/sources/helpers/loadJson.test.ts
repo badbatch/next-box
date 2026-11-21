@@ -68,7 +68,9 @@ describe('loadJson', () => {
     const array = loadJson(arrayPath, false);
 
     // Assert
-    await expect(malformed).rejects.toBeInstanceOf(SyntaxError);
-    await expect(array).rejects.toThrow('must contain an object at the root');
+    await Promise.all([
+      expect(malformed).rejects.toBeInstanceOf(SyntaxError),
+      expect(array).rejects.toThrow('must contain an object at the root'),
+    ]);
   });
 });

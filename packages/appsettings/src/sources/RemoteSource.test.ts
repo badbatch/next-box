@@ -62,8 +62,10 @@ describe('RemoteSource', () => {
     const nested = nestedSource.load();
 
     // Assert
-    await expect(root).rejects.toThrow('must contain an object at the root');
-    await expect(nested).rejects.toThrow('must contain an object at the root');
+    await Promise.all([
+      expect(root).rejects.toThrow('must contain an object at the root'),
+      expect(nested).rejects.toThrow('must contain an object at the root'),
+    ]);
   });
 
   it('When a response path is used on a primitive JSON value, then it rejects before selecting the path', async () => {
