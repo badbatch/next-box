@@ -63,7 +63,7 @@
     "callsites": "^4.2.0",
     "markdown-to-jsx": "^9.10.4",
     "type-fest": "^5.10.0",
-    "zcb": "^0.3.10"
+    "zcb": "^0.3.11"
   },
   "peerDependencies": {
     "react": "<20",
