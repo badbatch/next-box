@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.31 (2026-11-21)
+
+### New Features
+
+* **link-extra:**  add disable cache buster config to root ([97af4098](https://github.com/badbatch/next-box/commit/97af4098b203bec3ed5d8c3fdf4df08b82632a05))
+
 ## 0.2.30 (2026-11-21)
 
 ### Chores
