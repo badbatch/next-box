@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.30 (2026-11-21)
+
+### Chores
+
+* **root:**  reduce logo size ([1ef19a52](https://github.com/badbatch/next-box/commit/1ef19a528a3dc25a678916c8daa57298c9fed8cb))
+
+### New Features
+
+* **root:**  update logo ([ad42425d](https://github.com/badbatch/next-box/commit/ad42425ddda383adb237d34f93c7559f32f604a5))
+
+### Bug Fixes
+
+* **appsettings:**  flakey test ([5af76d16](https://github.com/badbatch/next-box/commit/5af76d16dce9198ccd9ce9e905a2791131e9f46b))
+* **i18n:**  update zcb to fix placeholder typing ([810b672e](https://github.com/badbatch/next-box/commit/810b672e9f6a2e734b2bfd30e875be3b9082c835))
+
 ## 0.2.29 (2026-11-20)
 
 ### New Features
