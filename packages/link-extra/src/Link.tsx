@@ -15,7 +15,7 @@ export type LinkProps<T extends object> = {
 
 export const Link = <T extends object>({
   children,
-  disableRouterCache = true,
+  disableRouterCache,
   href = '#',
   onClick,
   prefetch = false,
@@ -24,9 +24,10 @@ export const Link = <T extends object>({
 }: LinkProps<T>): JSX.Element => {
   // This and the two other disables below are false positives
   // eslint-disable-next-line @eslint-react/static-components
-  const { NextLink, OwnLink, onLinkClicked } = useLinkExtra();
+  const { NextLink, OwnLink, disableRouterCache: providerDisableRouterCache, onLinkClicked } = useLinkExtra();
+  const shouldDisableRouterCache = disableRouterCache ?? providerDisableRouterCache;
 
-  if (disableRouterCache) {
+  if (shouldDisableRouterCache) {
     href = addCacheBusterQueryParam(href);
   }
 

@@ -27,7 +27,7 @@ If the route transition completes before the timeout, no loading indicator is di
 
 `@next-box/link-extra` provides the `disableRouterCache` prop for cases where an application needs to bypass the Next.js client-side Router Cache.
 
-When enabled, the link adds a cache-busting query parameter to the destination URL. This is enabled by default.
+When enabled, the link adds a cache-busting query parameter to the destination URL. It is disabled by default so server-rendered links have the same URL during hydration. Set the default on `LinkProvider`, then override it on an individual `Link` when needed.
 
 ### Custom link components
 
@@ -96,17 +96,26 @@ const Component = () => {
 };
 ```
 
-### Disable Router Cache
+### Configure Router Cache Bypass
 
-Router cache busting is enabled by default.
-
-To allow Next.js to use its normal Router Cache behaviour for an individual link, set `disableRouterCache` to `false`:
+Router cache busting is disabled by default. Set `disableRouterCache` on `LinkProvider` to configure the default for all links beneath it. A value on an individual `Link` overrides the provider setting. Avoid enabling it for links included in server-rendered HTML because the generated query parameter can differ during hydration:
 
 ```tsx
-<Link
-  href="/dashboard"
-  disableRouterCache={false}
+<LinkProvider
+  LoadingComponent={Loading}
+  NextLink={NextLink}
+  OwnLink={OwnLink}
+  pathname={pathname}
+  disableRouterCache
 >
+  {children}
+</LinkProvider>
+```
+
+An individual link can override the provider setting:
+
+```tsx
+<Link disableRouterCache={false} href="/dashboard">
   Dashboard
 </Link>
 ```

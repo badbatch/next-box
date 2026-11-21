@@ -8,5 +8,6 @@ export type OwnLinkProps = Record<string, any> & AnchorHTMLAttributes<HTMLAnchor
 export type LinkContextData = {
   NextLink: (typeof NextLink)['default'];
   OwnLink: ComponentType<AnchorHTMLAttributes<HTMLAnchorElement>>;
+  disableRouterCache: boolean;
   onLinkClicked: () => void;
 };

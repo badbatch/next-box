@@ -74,7 +74,7 @@ describe('Link integration', () => {
 
     // Assert
     expect(container.querySelector('[data-testid="loading"]')?.textContent).toBe('Loading');
-    expect(container.querySelector<HTMLElement>('[data-next-href]')?.dataset.nextHref).toMatch(/^\/next\?y=/);
+    expect(container.querySelector<HTMLElement>('[data-next-href]')?.dataset.nextHref).toBe('/next');
 
     unmount();
   });

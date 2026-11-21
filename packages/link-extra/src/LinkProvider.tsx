@@ -22,6 +22,7 @@ export type LinkProviderProps = {
   NextLink: (typeof NextLink)['default'];
   OwnLink: ComponentType<OwnLinkProps>;
   children: ReactNode | ReactNode[];
+  disableRouterCache?: boolean;
   loadingTimeout?: number;
   pathname: string;
 };
@@ -31,6 +32,7 @@ export const LinkProvider: FC<LinkProviderProps> = ({
   NextLink,
   OwnLink,
   children,
+  disableRouterCache = false,
   loadingTimeout = 500,
   pathname,
 }) => {
@@ -79,9 +81,9 @@ export const LinkProvider: FC<LinkProviderProps> = ({
     <LinkContext
       value={{
         // Casting due to issues marrying up prop type and context type
-
         NextLink,
         OwnLink,
+        disableRouterCache,
         onLinkClicked: () => {
           onLinkClicked();
         },
