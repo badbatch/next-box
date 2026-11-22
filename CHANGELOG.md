@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.32 (2026-11-22)
+
+### New Features
+
+* **logging:**  add logging package ([f6704f2d](https://github.com/badbatch/next-box/commit/f6704f2de18ef64d3be9f391acbf0fb13e3f27bb))
+
 ## 0.2.31 (2026-11-21)
 
 ### New Features
