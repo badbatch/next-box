@@ -13,6 +13,7 @@ A collection of libraries for use primarily with Next.js.
 - [@next-box/feature-flags](./packages/feature-flags/README.md)
 - [@next-box/i18n](./packages/i18n/README.md)
 - [@next-box/link-extra](./packages/link-extra/README.md)
+- [@next-box/logging](./packages/logging/README.md)
 - [@next-box/route-handler](./packages/route-handler/README.md)
 
 ## Changelog

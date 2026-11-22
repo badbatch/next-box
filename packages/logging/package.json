@@ -1,0 +1,80 @@
+{
+  "name": "@next-box/logging",
+  "description": "Structured server and browser logging for Next.js applications.",
+  "version": "0.0.1",
+  "author": "miami-man",
+  "license": "MIT",
+  "homepage": "https://github.com/badbatch/next-box",
+  "repository": {
+    "directory": "packages/logging",
+    "type": "git",
+    "url": "https://github.com/badbatch/next-box.git"
+  },
+  "bugs": "https://github.com/badbatch/next-box/issues",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/cjs/index.d.cts",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": {
+        "import": "./dist/types/esm/index.d.ts",
+        "require": "./dist/types/cjs/index.d.cts"
+      },
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./server": {
+      "source": "./src/server.ts",
+      "types": {
+        "import": "./dist/types/esm/server.d.ts",
+        "require": "./dist/types/cjs/server.d.cts"
+      },
+      "import": "./dist/esm/server.mjs",
+      "require": "./dist/cjs/server.cjs"
+    },
+    "./browser": {
+      "source": "./src/browser.ts",
+      "types": {
+        "import": "./dist/types/esm/browser.d.ts",
+        "require": "./dist/types/cjs/browser.d.cts"
+      },
+      "import": "./dist/esm/browser.mjs",
+      "require": "./dist/cjs/browser.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "pnpm run clean:dist && pnpm run compile",
+    "clean:deps": "del-cli ./node_modules",
+    "clean:dist": "del-cli ./dist",
+    "compile": "pnpm run /^compile:.*/",
+    "compile:cjs": "MODULE_SYSTEM=cjs rollup -c ./rollup.config.mjs",
+    "compile:esm": "rollup -c ./rollup.config.mjs",
+    "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
+  },
+  "dependencies": {
+    "@logtape/logtape": "^2.4.2",
+    "@logtape/otel": "^2.4.2",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.208.0",
+    "@opentelemetry/resources": "^2.12.1",
+    "@opentelemetry/sdk-logs": "^0.208.0",
+    "zod": "^4.6.7"
+  },
+  "peerDependencies": {
+    "@next-box/route-handler": "^0.0.3"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.5.2",
+    "@next-box/route-handler": "workspace:*",
+    "cts-types": "^0.0.17",
+    "del-cli": "^8.0.1",
+    "next": "^16.4.5"
+  }
+}
