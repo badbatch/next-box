@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.34 (2026-11-23)
+
+### Bug Fixes
+
+* **logging:**  add stack to server payload ([88eb558e](https://github.com/badbatch/next-box/commit/88eb558ebbaee24c0f7e1ff0d557599dd9d4791b))
+
 ## 0.2.33 (2026-11-23)
 
 ### Bug Fixes
