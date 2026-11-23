@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.35 (2026-11-23)
+
+### New Features
+
+* **logging:**  add browser error capture ([ab73aa3a](https://github.com/badbatch/next-box/commit/ab73aa3abda6672d27a15d90ae8fd261ed50fb6d))
+
 ## 0.2.34 (2026-11-23)
 
 ### Bug Fixes
