@@ -1,14 +1,16 @@
 import { isPlainObject } from 'remeda';
 import { type Get } from 'type-fest';
-import { type Path, type Scope, type ConfigReader as ZcbConfigReader, createConfigReader } from 'zcb';
+import { type Scope, type ConfigReader as ZcbConfigReader, createConfigReader } from 'zcb';
 
 export class ConfigReader<T extends object> {
-  private reader: ZcbConfigReader<T>;
+  private readonly reader: ZcbConfigReader<T>;
   private readonly config: T;
+  public readonly get: ZcbConfigReader<T>['read'];
 
   constructor(config: T) {
     this.config = config;
     this.reader = createConfigReader(config);
+    this.get = this.reader.read;
   }
 
   private getAt(path: string): unknown {
@@ -19,10 +21,6 @@ export class ConfigReader<T extends object> {
 
       return current[key];
     }, this.config);
-  }
-
-  public get<P extends Path<T>>(path: P): Get<T, P> {
-    return this.reader.read(path);
   }
 
   public getSection<P extends Scope<T>>(path: P): Get<T, P> {

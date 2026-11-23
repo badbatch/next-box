@@ -42,6 +42,17 @@ describe('ConfigReader', () => {
     expect(reader.has('Empty')).toBe(false);
   });
 
+  it('When a setting contains a template placeholder, then get passes its variables to ZCB', () => {
+    // Arrange
+    const reader = new ConfigReader({ Title: 'Hello, {{name}}!' } as const);
+
+    // Act
+    const value = reader.get('Title', { name: 'Ada' });
+
+    // Assert
+    expect(value).toBe('Hello, Ada!');
+  });
+
   it('When a section is scoped, then the returned reader reads paths relative to that section', () => {
     // Arrange
     const reader = new ConfigReader({ Api: { Timeout: 5000 } });
