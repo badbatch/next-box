@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.33 (2026-11-23)
+
+### Bug Fixes
+
+* **appsettings:**  bump version of zcb and update its usage ([007a9df4](https://github.com/badbatch/next-box/commit/007a9df4a351bd0091a31aa39952454b373ab99e))
+
 ## 0.2.32 (2026-11-22)
 
 ### New Features
