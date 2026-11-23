@@ -71,13 +71,15 @@ import { createApiHandler } from './createApiHandler.ts';
 export const POST = createApiHandler({ handler: handleBrowserTelemetry });
 ```
 
-Browser warnings and higher from the `application.browser` category go to the console. The browser sink also forwards the rendered message and an optional UUID `requestId` on a best-effort basis. It records that ID as `browserRequestId`, alongside the telemetry request's own IDs.
+Browser warnings and higher from the `application.browser` category go to the console. The browser sink also forwards the rendered message, an optional UUID `requestId`, and an optional string `stack` on a best-effort basis. The handler records the reported ID as `browserRequestId`, alongside the telemetry request's own IDs, and keeps `stack` as a separate log attribute.
 
 ```ts
 import { getLogger } from '@next-box/logging';
 
 const logger = getLogger(['application', 'browser']);
-logger.warn('Records could not be loaded');
+const reportError = (error: Error): void => {
+  logger.error('{message}', { message: error.message, stack: error.stack });
+};
 ```
 
 ## Changelog

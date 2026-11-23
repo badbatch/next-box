@@ -4,6 +4,7 @@ import { z } from 'zod';
 const payloadSchema = z.strictObject({
   message: z.string(),
   requestId: z.uuid().optional(),
+  stack: z.string().optional(),
 });
 
 export const handleBrowserTelemetry = async (
@@ -30,12 +31,13 @@ export const handleBrowserTelemetry = async (
   }
 
   // The browser may be reporting a different request from this telemetry POST.
-  const { message, requestId: browserRequestId } = payload.data;
+  const { message, requestId: browserRequestId, stack } = payload.data;
 
   logger.getChild('browser').warn('{message}', {
     browserRequestId,
     message,
     source: 'browser',
+    stack,
   });
 
   return new Response(undefined, { status: 204 });

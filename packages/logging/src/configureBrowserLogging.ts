@@ -18,11 +18,11 @@ export const configureBrowserLogging = ({
     sinks: {
       console: getConsoleSink(),
       telemetry: (record): void => {
-        const { requestId } = record.properties;
+        const { requestId, stack } = record.properties;
         const message = formatMessage(record).trimEnd();
 
         void fetch(telemetryEndpoint, {
-          body: JSON.stringify({ message, requestId }),
+          body: JSON.stringify({ message, requestId, stack: typeof stack === 'string' ? stack : undefined }),
           headers: { 'content-type': 'application/json' },
           keepalive: true,
           method: 'POST',
