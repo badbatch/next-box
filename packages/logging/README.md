@@ -82,6 +82,21 @@ const reportError = (error: Error): void => {
 };
 ```
 
+### Capture uncaught browser exceptions
+
+Opt in from `instrumentation-client.ts` after configuring browser logging. Capture listens for uncaught JavaScript errors and unhandled promise rejections. It returns a function that removes both listeners.
+
+```ts
+import { configureBrowserLogging, installBrowserExceptionCapture } from '@next-box/logging/browser';
+
+configureBrowserLogging();
+installBrowserExceptionCapture();
+```
+
+Next.js error boundaries can call `reportBrowserException(error)` in an effect. Use the same function in `error.tsx` and `global-error.tsx` and render the fallback UI in the app. If a boundary and a window listener see the same error object, the reporter logs it once at error level. It sends the exception message and stack through the configured browser sink.
+
+Apps can skip server errors surfaced by Next.js by checking the error digest before calling the reporter and applying the same predicate through the optional `shouldReport` capture setting. Reports are still subject to the authentication policy on the app's telemetry route.
+
 ## Changelog
 
 See the [changelog](../../CHANGELOG.md) for features, fixes, and other changes included in each major, minor, and patch release.
