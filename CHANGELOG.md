@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.36 (2026-11-25)
+
+### New Features
+
+* **auth:**  add auth package ([eb4d9257](https://github.com/badbatch/next-box/commit/eb4d92575c39a30f94fb401d338e7ac4d9f22009))
+
 ## 0.2.35 (2026-11-23)
 
 ### New Features

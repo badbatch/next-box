@@ -1,7 +1,7 @@
 {
   "name": "@next-box/auth",
   "description": "API-backed credentials authentication for Next.js applications.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "miami-man",
   "license": "MIT",
   "homepage": "https://github.com/badbatch/next-box",
