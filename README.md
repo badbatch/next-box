@@ -8,6 +8,7 @@ A collection of libraries for use primarily with Next.js.
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 - [@next-box/appsettings](./packages/appsettings/README.md)
+- [@next-box/auth](./packages/auth/README.md)
 - [@next-box/breadcrumb](./packages/breadcrumb/README.md)
 - [@next-box/envs](./packages/envs/README.md)
 - [@next-box/feature-flags](./packages/feature-flags/README.md)

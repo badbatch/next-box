@@ -16,7 +16,7 @@ export class AppSettingsSource implements SettingsSource {
 
   public constructor(options: AppSettingsSourceOptions) {
     this.directory = options.directory ?? process.cwd();
-    this.environment = options.environment ?? process.env.NODE_ENV ?? 'development';
+    this.environment = options.environment ?? 'development';
     this.name = options.name ?? `appsettings:${this.environment}`;
   }
 

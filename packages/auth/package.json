@@ -1,0 +1,58 @@
+{
+  "name": "@next-box/auth",
+  "description": "API-backed credentials authentication for Next.js applications.",
+  "version": "0.0.1",
+  "author": "miami-man",
+  "license": "MIT",
+  "homepage": "https://github.com/badbatch/next-box",
+  "repository": {
+    "directory": "packages/auth",
+    "type": "git",
+    "url": "https://github.com/badbatch/next-box.git"
+  },
+  "bugs": "https://github.com/badbatch/next-box/issues",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/cjs/index.d.cts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": {
+        "import": "./dist/types/esm/index.d.ts",
+        "require": "./dist/types/cjs/index.d.cts"
+      },
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "pnpm run clean:dist && pnpm run compile",
+    "clean:deps": "del-cli ./node_modules",
+    "clean:dist": "del-cli ./dist",
+    "compile": "pnpm run /^compile:.*/",
+    "compile:cjs": "MODULE_SYSTEM=cjs rollup -c ../../rollup.config.mjs",
+    "compile:esm": "rollup -c ../../rollup.config.mjs",
+    "compile:types": "tsc --project ./tsconfig.build.json && cts-types build dist/types/esm dist/types/cjs"
+  },
+  "dependencies": {
+    "server-only": "^0.0.1"
+  },
+  "peerDependencies": {
+    "next": ">=16",
+    "next-auth": "^5.0.0-beta.32",
+    "react": ">=19"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.5.2",
+    "@types/react": "^19.3.0",
+    "cts-types": "^0.0.17",
+    "del-cli": "^8.0.1",
+    "next": "^16.4.5",
+    "next-auth": "^5.0.0-beta.32",
+    "react": "^19.3.1"
+  }
+}
