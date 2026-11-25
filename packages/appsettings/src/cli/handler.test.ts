@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -9,6 +9,8 @@ describe('generate-types handler', () => {
   let originalWorkingDirectory: string | undefined;
 
   afterEach(async () => {
+    jest.restoreAllMocks();
+
     if (originalWorkingDirectory) {
       process.chdir(originalWorkingDirectory);
       originalWorkingDirectory = undefined;
@@ -32,6 +34,8 @@ describe('generate-types handler', () => {
       type: 'AppSettingsConfig',
     };
 
+    const stdoutWrite = jest.spyOn(process.stdout, 'write').mockReturnValue(true);
+
     // Act
     await handler(args);
     const contents = await readFile(args.output, 'utf8');
@@ -40,6 +44,7 @@ describe('generate-types handler', () => {
     expect(contents).toContain("import type { AppSettingsConfig } from '../appSettings.schema';");
     expect(contents).toContain("declare module '@next-box/appsettings'");
     expect(contents).toContain('interface AppSettingsSchema extends AppSettingsConfig {}');
+    expect(stdoutWrite).toHaveBeenCalledWith('Generated src/types/appsettings.generated.d.ts\n');
   });
 
   it('When called again without changing its arguments, then it keeps the generated file contents unchanged', async () => {
@@ -48,6 +53,7 @@ describe('generate-types handler', () => {
     originalWorkingDirectory = process.cwd();
     process.chdir(directory);
     const args = { output: 'generated.d.ts', schema: 'schema.ts', type: 'Settings' };
+    const stdoutWrite = jest.spyOn(process.stdout, 'write').mockReturnValue(true);
     await handler(args);
     const firstContents = await readFile(args.output, 'utf8');
 
@@ -57,5 +63,6 @@ describe('generate-types handler', () => {
 
     // Assert
     expect(secondContents).toBe(firstContents);
+    expect(stdoutWrite).toHaveBeenCalledTimes(2);
   });
 });

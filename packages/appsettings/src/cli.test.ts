@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -10,6 +10,8 @@ describe('runAppsettingsCli', () => {
   let originalArguments: string[] | undefined;
 
   afterEach(async () => {
+    jest.restoreAllMocks();
+
     if (originalArguments) {
       process.argv = originalArguments;
       originalArguments = undefined;
@@ -33,6 +35,7 @@ describe('runAppsettingsCli', () => {
     originalArguments = process.argv;
     process.chdir(directory);
     process.argv = ['node', 'appsettings', 'generate-types', 'schema.ts', 'generated.d.ts', '--type', 'Settings'];
+    const stdoutWrite = jest.spyOn(process.stdout, 'write').mockReturnValue(true);
 
     // Act
     await runAppsettingsCli();
@@ -41,5 +44,6 @@ describe('runAppsettingsCli', () => {
     // Assert
     expect(contents).toContain("import type { Settings } from './schema';");
     expect(contents).toContain('interface AppSettingsSchema extends Settings {}');
+    expect(stdoutWrite).toHaveBeenCalledWith('Generated generated.d.ts\n');
   });
 });
