@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.37 (2026-11-27)
+
+### New Features
+
+* **breadcrumb:**  expose destinations ([d00a1a16](https://github.com/badbatch/next-box/commit/d00a1a161590a26a32d8886296ad1203f2aff0c8))
+
+### Bug Fixes
+
+* **appsettings:**  bump jest config and update tests ([33eefd6f](https://github.com/badbatch/next-box/commit/33eefd6fd6b7f81a87142d041b9c385e545b0df0))
+
 ## 0.2.36 (2026-11-25)
 
 ### New Features
