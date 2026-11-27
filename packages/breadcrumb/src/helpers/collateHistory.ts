@@ -1,9 +1,11 @@
-import { didBreadcrumbClickTriggerPathnameChange } from '#helpers/didBreadcrumbClickTriggerPathnameChange.ts';
-import { type BreadcrumbItem } from '#types.ts';
+import { type BreadcrumbItem, type GetBreadcrumbRouteKey } from '#types.ts';
+
+const getPathname: GetBreadcrumbRouteKey = url => url.pathname;
 
 export type CollateHistoryOptions = {
   activeBreadcrumbItem: BreadcrumbItem | undefined;
   currentPathname: string;
+  getRouteKey?: GetBreadcrumbRouteKey;
   maxHistory: number;
   rootPath: string;
   search?: string;
@@ -11,11 +13,18 @@ export type CollateHistoryOptions = {
 
 export const collateHistory = (
   history: string[],
-  { activeBreadcrumbItem, currentPathname, maxHistory, rootPath, search }: CollateHistoryOptions,
+  {
+    activeBreadcrumbItem,
+    currentPathname,
+    getRouteKey = getPathname,
+    maxHistory,
+    rootPath,
+    search,
+  }: CollateHistoryOptions,
 ): string[] => {
   const newHistory = [...history];
-  const isPathnameInHistory = (index: number): boolean => index !== -1;
-  const isEntryWithPathnameLastInHistory = (index: number): boolean => index === newHistory.length - 1;
+  const isRouteInHistory = (index: number): boolean => index !== -1;
+  const isEntryWithRouteLastInHistory = (index: number): boolean => index === newHistory.length - 1;
   const hasHistoryReachedMaxEntries = (): boolean => newHistory.length >= maxHistory;
 
   const isHistoryCountOneAndEntryPathnameNotRoot = (): boolean =>
@@ -31,18 +40,18 @@ export const collateHistory = (
     return [];
   }
 
-  const indexOfEntryWithCurrentPathname = newHistory.findLastIndex(
-    entry => new URL(entry, location.origin).pathname === currentPathname,
-  );
+  const getHrefKey = (entry: string): string => getRouteKey(new URL(entry, location.origin));
+  const currentKey = getHrefKey(href);
+  const indexOfEntryWithCurrentRoute = newHistory.findLastIndex(entry => getHrefKey(entry) === currentKey);
 
-  if (isPathnameInHistory(indexOfEntryWithCurrentPathname)) {
-    if (didBreadcrumbClickTriggerPathnameChange(currentPathname, activeBreadcrumbItem)) {
+  if (isRouteInHistory(indexOfEntryWithCurrentRoute)) {
+    if (activeBreadcrumbItem?.href && getHrefKey(activeBreadcrumbItem.href) === currentKey) {
       // If user has selected breadcrumb link, this node should become
       // the new breadcrumb leaf node.
       newHistory.splice(activeBreadcrumbItem.index + 1);
-    } else if (!isEntryWithPathnameLastInHistory(indexOfEntryWithCurrentPathname)) {
+    } else if (!isEntryWithRouteLastInHistory(indexOfEntryWithCurrentRoute)) {
       newHistory.push(href);
-      newHistory.splice(indexOfEntryWithCurrentPathname, 1);
+      newHistory.splice(indexOfEntryWithCurrentRoute, 1);
     }
   } else {
     newHistory.push(href);

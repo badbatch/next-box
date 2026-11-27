@@ -7,9 +7,20 @@ export type BreadcrumbItem = {
   label: string;
 };
 
+export type GetBreadcrumbRouteKey = (url: URL) => string;
+
+export type BreadcrumbDestinations = {
+  ancestors: readonly string[];
+  parentHref?: string;
+};
+
 export interface BreadcrumbRouteRule<T extends object = object> {
   regex: string;
   resolve: (captured: T, existing: BreadcrumbItem) => Promisable<BreadcrumbItem>;
+  /**
+   * Ancestor hrefs ordered from the outermost route to the immediate parent.
+   */
+  resolveAncestors?: (url: URL) => readonly string[];
 }
 
 // Needs to be as generic as possible

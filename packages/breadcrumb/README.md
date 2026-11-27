@@ -22,6 +22,10 @@ npm add @next-box/breadcrumb
 
 ### `BreadcrumbProvider`
 
+By default, history identifies routes by pathname. Supply `getRouteKey={url => url.pathname + url.search}` to distinguish query-based routes, or return a key containing only the query parameters relevant to your app. The key is used for history deduplication and breadcrumb clicks. Each item still retains its navigation URL.
+
+A route rule can also define `resolveAncestors(url)`. Return ancestor hrefs in order from the outermost route to the immediate parent. `useBreadcrumb().destinations` exposes those hrefs as `ancestors` and the last href as `parentHref`. These values are derived from the current route, so they also work on a direct visit. The app chooses how to navigate to them.
+
 To use the breadcrumb, start by wrapping your React application, or the relevant part of it, in the `BreadcrumbProvider`. You must supply `currentPathname` and `routeRules`.
 
 `BreadcrumbProvider` is a Client Component and can be imported directly. In the App Router example below, a small client component supplies the current pathname and creates route rules locally. The rules contain resolver functions, which cannot be passed as props from a Server Component. Keep their dependencies safe for the client bundle; if resolving a breadcrumb requires secret credentials or server-only data, have the resolver call an application API route.

@@ -66,6 +66,39 @@ describe('BreadcrumbProvider', () => {
     });
   });
 
+  it('When a route declares ancestors, then a direct visit can resolve its parent without prior navigation', async () => {
+    // Arrange
+    const routeRules: BreadcrumbRouteRule[] = [
+      {
+        regex: String.raw`^/items\?id=`,
+        resolve: (_captured, existing) => ({ ...existing, label: 'Item' }),
+        resolveAncestors: url => ['/items', `/items?id=${url.searchParams.get('id') ?? ''}`],
+      },
+    ];
+
+    const cachemap = { set: jest.fn() } as unknown as Cachemap;
+    mockLoadStorageAndRetrieveHistory.mockResolvedValue([cachemap, []]);
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <BreadcrumbProvider currentPathname="/items" routeRules={routeRules} search="id=42&mode=edit">
+        {children}
+      </BreadcrumbProvider>
+    );
+
+    // Act
+    const { result } = renderHook(() => useBreadcrumbContext(), { wrapper });
+
+    // Assert
+    await waitFor(() => {
+      expect(result.current.breadcrumb).toHaveLength(1);
+
+      expect(result.current.destinations).toEqual({
+        ancestors: ['/items', '/items?id=42'],
+        parentHref: '/items?id=42',
+      });
+    });
+  });
+
   it('When loading initial history fails, then it throws an error for the nearest error boundary', async () => {
     // Arrange
     const routeRules: BreadcrumbRouteRule[] = [];

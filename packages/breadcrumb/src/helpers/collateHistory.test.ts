@@ -5,6 +5,28 @@ import { type BreadcrumbItem } from '#types.ts';
 import { type CollateHistoryOptions, collateHistory } from './collateHistory.ts';
 
 describe('collateHistory', () => {
+  it('When a route key includes the query, then same-path entries are distinct and clicks trim to the matching entry', () => {
+    // Arrange
+    const history = ['/', '/items', '/items?id=1'];
+
+    const options: CollateHistoryOptions = {
+      activeBreadcrumbItem: { href: '/items?id=1', index: 2, label: 'Item' },
+      currentPathname: '/items',
+      getRouteKey: url => url.pathname + url.search,
+      maxHistory: 10,
+      rootPath: '/',
+      search: 'id=1&mode=edit',
+    };
+
+    // Act
+    const editingHistory = collateHistory(history, options);
+    const viewedHistory = collateHistory(editingHistory, { ...options, search: 'id=1' });
+
+    // Assert
+    expect(editingHistory).toEqual([...history, '/items?id=1&mode=edit']);
+    expect(viewedHistory).toEqual(history);
+  });
+
   it('When the current pathname is the root path, then it returns an empty history', () => {
     // Arrange
     const history = ['/', '/users'];

@@ -6,7 +6,12 @@ import { loadStorageAndRetrieveHistory } from '#helpers/loadStorageAndRetrieveHi
 import { BreadcrumbContext } from './BreadcrumbContext.ts';
 import { buildBreadcrumb } from './helpers/buildBreadcrumb.ts';
 import { collateHistory } from './helpers/collateHistory.ts';
-import { type BreadcrumbItem, type BreadcrumbRouteRule, type OnBreadcrumbLinkClick } from './types.ts';
+import {
+  type BreadcrumbItem,
+  type BreadcrumbRouteRule,
+  type GetBreadcrumbRouteKey,
+  type OnBreadcrumbLinkClick,
+} from './types.ts';
 
 export type BreadcrumbProviderProps = {
   children: ReactNode;
@@ -14,6 +19,11 @@ export type BreadcrumbProviderProps = {
    * The pathname of the current browser URL.
    */
   currentPathname: string;
+  /**
+   * Identifies equivalent routes for history tracking.
+   * Defaults to the pathname.
+   */
+  getRouteKey?: GetBreadcrumbRouteKey;
   /**
    * Use this to import history.
    */
@@ -44,6 +54,7 @@ export type BreadcrumbProviderProps = {
 export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
   children,
   currentPathname,
+  getRouteKey,
   initialHistory,
   maxHistory = 10,
   onHistoryChange,
@@ -65,6 +76,7 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
     const history = collateHistory(historyRef.current, {
       activeBreadcrumbItem,
       currentPathname,
+      getRouteKey,
       maxHistory,
       rootPath,
       search,
@@ -77,7 +89,7 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
     // after checking whether cachemapRef.current is defined.
     await cachemapRef.current?.set('history', history);
     setBreadcrumb(breadcrumbEntries);
-  }, [activeBreadcrumbItem, currentPathname, maxHistory, onHistoryChange, rootPath, routeRules, search]);
+  }, [activeBreadcrumbItem, currentPathname, getRouteKey, maxHistory, onHistoryChange, rootPath, routeRules, search]);
 
   const setCachemapAndInitialHistory = useCallback(async (): Promise<void> => {
     try {
@@ -118,5 +130,13 @@ export const BreadcrumbProvider: FC<BreadcrumbProviderProps> = ({
     void setBreadcrumbAndHistory();
   }, [setBreadcrumbAndHistory]);
 
-  return <BreadcrumbContext value={{ breadcrumb, onBreadcrumbLinkClick }}>{children}</BreadcrumbContext>;
+  const href = search ? `${currentPathname}?${search}` : currentPathname;
+  const ancestorRule = routeRules.find(rule => rule.resolveAncestors && new RegExp(rule.regex).test(href));
+
+  const ancestors = ancestorRule?.resolveAncestors?.(
+    new URL(href, typeof location === 'undefined' ? 'http://localhost' : location.origin),
+  );
+
+  const destinations = ancestors ? { ancestors, parentHref: ancestors.at(-1) } : undefined;
+  return <BreadcrumbContext value={{ breadcrumb, destinations, onBreadcrumbLinkClick }}>{children}</BreadcrumbContext>;
 };
